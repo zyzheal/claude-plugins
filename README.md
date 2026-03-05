@@ -7,9 +7,81 @@
 
 ## 📚 Plugins 列表
 
+### 🚀 开发效率类
+
+#### [DevEngine](dev-enegine/) - 自动化开发引擎
+**基于 Anthropic 论文《Effective Harnesses for Long-Running Agents》设计的多 Agent 协作系统**
+
+- 🔄 需求规划 → 编码 → 测试全流程自动化
+- 📋 智能需求拆解，生成技术方案和 Feature 清单
+- ⚡ 支持 DAG 依赖分析和并行开发
+- 🎛️ 三级人工控制（high/medium/low）灵活可控
+- 🔗 原生 Hooks 实现自动副作用处理
+
+**适用场景**：
+- 复杂项目增量开发
+- 多 Feature 并行协作
+- 长期项目需求管理
+
+**[📖 查看详细文档](dev-enegine/README.md)**
+
+---
+
+#### [Claude HUD](claude-hud/) - 实时状态栏
+**终端里的实时监控面板**
+
+- 📊 Context 使用量实时可视化
+- 🤖 Subagent 活动状态追踪
+- 🔧 工具调用历史展示
+- ✅ Todo 进度实时显示
+- 📈 Usage 配额消耗监控
+
+**适用场景**：
+- 长时间运行的任务
+- 多 Agent 协作开发
+- Context 配额管理
+
+**[📖 查看详细文档](claude-hud/README.md)**
+
+---
+
+#### [Architect Collaboration](architect-collaboration/) - 架构师协作
+**四阶段结构化协作工作流**
+
+- 📝 需求分析 - 协作需求收集与评估
+- 🏗️ 技术设计 - 架构方案与 TDD 支持
+- 📋 任务拆解 - 粒度任务创建与依赖管理
+- 💻 功能开发 - 实施指导与质量把控
+
+**适用场景**：
+- 复杂系统设计
+- 团队协作开发
+- 技术方案评审
+
+**[📖 查看详细文档](architect-collaboration/README.md)**
+
+---
+
+#### [Long-Running Agent](long-running-agent/) - 长时任务 Agent
+**基于 Anthropic 论文设计的双轨 Agent 系统**
+
+- 🎯 单一入口自动判断项目状态
+- 🔄 初始化 Agent / 编码 Agent 自动切换
+- ✅ 验证驱动：测试通过才标记完成
+- 📝 自动 commit 保持清晰历史
+
+**适用场景**：
+- 一次性 Demo 或原型快速开发
+- 单一需求完整实现
+- 简单项目增量迭代
+
+**[📖 查看详细文档](long-running-agent/README.md)**
+
+---
+
 ### 🎨 内容创作类
 
-#### [Content Creator](content-creator/) - AI 内容助手
+#### [Content Creator](content-create/) - AI 内容助手
 **一站式内容创作与发布解决方案**
 
 - 🔍 自动收集热点信息（RSS + 搜索）
@@ -24,7 +96,7 @@
 - 个人品牌打造
 - 热点资讯发布
 
-**[📖 查看详细文档](content-creator/README.md)**
+**[📖 查看详细文档](content-create/README.md)**
 
 ---
 
@@ -34,7 +106,12 @@
 进入 Claude Code 命令行，执行以下命令：
 ```bash
 /plugins marketplace add https://github.com/xyzbit/claude-plugins.git
-
+```
+按需安装
+```bash
+/plugins install dev-enegine
+/plugins install long-running-agent
+/plugins install content-create
 ```
 
 ### 使用
