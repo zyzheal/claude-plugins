@@ -1,227 +1,84 @@
-# Claude Code Plugins 精选集
+"GDPR 合规检查"                     → 合规专家介入
+```
 
-> 收集日常工作中最常用、好用的 Claude Code Plugins，覆盖多个领域：编码、测试、内容创作、分发、分析...
+### Content-Create（自媒体内容创作）
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://code.claude.com)
+**首次激活命令**：
+```bash
+/content-create:config
+```
 
-## 📚 Plugins 列表
+**完整使用流程**：
+```bash
+# 1. 首次配置
+/content-create:config                  # 配置 API 密钥、发布平台、风格参考
 
-### 🚀 开发效率类
+# 2. 内容创作
+/content-create:write "AI 手机热点分析"  # 创作内容（多平台通用）
+/content-create:write "DeepSeek V3 评测" platforms:wx
+                                        # 指定平台（wx/xiaohongshu/feishu）
 
-#### [DevEngine](dev-enegine/) - 自动化开发引擎
-**基于 Anthropic 论文《Effective Harnesses for Long-Running Agents》设计的多 Agent 协作系统**
+# 3. 数据分析
+/content-create:analysis article/metrics.csv
+                                        # 分析已发布文章数据，优化风格
 
-- 🔄 需求规划 → 编码 → 测试 → 审查全流程自动化
-- 📋 智能需求拆解，生成技术方案和 Feature 清单
-- ⚡ 支持 DAG 依赖分析和并行开发
-- 🎛️ 三级人工控制（high/medium/low）灵活可控
-- 🔗 原生 Hooks 实现自动副作用处理
-- 🔒 代码审查：安全性/性能/规范性/可维护性审查
+# 4. 配置管理
+/content-create:config                  # 查看/修改配置
+```
 
-**适用场景**：
-- 企业级 SaaS 开发、核心业务系统
-- 多需求并行开发、长期项目迭代
-- 需要严格代码审查和质量把控的团队
+**参数详解**：
 
-**[📖 查看详细文档](dev-enegine/README.md)**
+| 命令 | 参数 | 说明 | 必填 |
+|------|------|------|------|
+| `/content-create:write` | `<主题>` | 文章主题/标题 | 是 |
+| `/content-create:write` | `platforms:wx` | 指定发布平台 | 否 |
+| `/content-create:analysis` | `<数据文件>` |  metrics.csv 路径 | 是 |
+| `/content-create:config` | - | 配置管理 | - |
+
+**支持平台**：
+- `wx` - 微信公众号
+- `xiaohongshu` - 小红书
+- `feishu` - 飞书文档
 
 ---
 
-#### [Claude HUD](claude-hud/) - 实时状态栏
-**终端里的实时监控面板**
+### Claude HUD（实时状态监控）
 
-- 📊 Context 使用量实时可视化
-- 🤖 Subagent 活动状态追踪
-- 🔧 工具调用历史展示
-- ✅ Todo 进度实时显示
-- 📈 Usage 配额消耗监控
-- 🚀 **新增**：插件进度统一追踪（支持 dev-enegine / long-running-agent / architect-collaboration）
+**首次激活命令**：
+```bash
+/claude-hud:setup
+```
 
-**进度追踪功能**：
+**完整使用流程**：
+```bash
+# 1. 初始配置（首次使用）
+/claude-hud:setup                         # 自动检测平台、应用配置
+
+# 2. 自定义配置（可选）
+/claude-hud:configure                     # 交互式配置界面
+
+# 3. 默认显示（无需命令）
+                                          # Line 1: [模型] 项目名 git 分支
+                                          # Line 2: Context 用量 | Usage 配额
+                                          # Line 3+: 工具/Agent/Todo/进度（可选）
+```
+
+**配置选项**：
+
+| 配置项 | 默认值 | 说明 |
+|--------|--------|------|
+| `display.showProgress` | `true` | 插件进度追踪（新增！） |
+| `display.showTools` | `false` | 工具活动行 |
+| `display.showAgents` | `false` | Agent 状态行 |
+| `display.showTodos` | `false` | Todo 进度行 |
+| `display.showDuration` | `false` | 会话时长 |
+| `display.showConfigCounts` | `false` | 配置文件计数 |
+
+**进度追踪显示示例**：
 ```
 🚀 [Feature 3/10] my-project → 实现用户登录  3/10     # long-running-agent
 ⚙️ [Developing] api-gateway → Add auth middleware  5/8   # dev-enegine
 📐 [Task Breakdown] user-system → [ ] 编写单元测试  2/5  # architect-collaboration
-```
-
-**适用场景**：
-- 长时间运行的任务监控
-- 多 Agent 协作开发
-- Context 配额敏感的项目
-- 需要实时了解插件执行进度
-
-**[📖 查看详细文档](claude-hud/README.md)**
-
----
-
-#### [Architect Collaboration](architect-collaboration/) - 架构师协作
-**四阶段结构化协作工作流 + 10 位专家技能**
-
-- 📝 需求分析 - 业务目标、成功指标、干系人识别
-- 🏗️ 技术设计 - 架构模式、技术选型、伪代码生成
-- 📋 任务拆解 - 任务粒度≤2 天、DAG 依赖分析
-- 💻 功能开发 - TDD 实施、代码质量把控
-- 🔒 10 位专家：安全/数据库/SRE/可观测性/合规/代码审查等
-
-**适用场景**：
-- 复杂系统设计、技术方案评审
-- 团队协作开发、跨团队沟通
-- 需要多领域专家评审的项目（安全、合规、SRE）
-
-**[📖 查看详细文档](architect-collaboration/README.md)**
-
----
-
-#### [Long-Running Agent](long-running-agent/) - 长时任务 Agent
-**基于 Anthropic 论文设计的双轨 Agent 系统**
-
-- 🎯 单一入口自动判断项目状态
-- 🔄 初始化 Agent / 编码 Agent 自动切换
-- ✅ 验证驱动：测试通过才标记完成
-- 📝 自动 commit 保持清晰历史
-
-**适用场景**：
-- 个人项目、原型快速开发
-- 单一需求完整实现
-- Demo、MVP、一次性工具
-
-**[📖 查看详细文档](long-running-agent/README.md)**
-
----
-
-### 🎨 内容创作类
-
-#### [Content Creator](content-create/) - AI 内容助手
-**一站式内容创作与发布解决方案**
-
-- 🔍 自动收集热点信息（RSS + 搜索）
-- ✍️ 多平台内容创作（微信、小红书、飞书）
-- 🎯 智能风格模仿，保持个人 IP 特色
-- 📊 质量评审打分，多轮迭代优化
-- 🚀 一键发布到多个平台
-
-**适用场景**：
-- 自媒体日常运营
-- 企业内容营销
-- 个人品牌打造
-
-**[📖 查看详细文档](content-create/README.md)**
-
----
-
-## 🚀 快速开始
-
-### 📖 使用指南
-
-**强烈建议先阅读**：
-- [使用指南](USAGE.md) - 插件选择决策树、功能对比、参数说明、详细命令文档
-- [工作流程](WORKFLOW.md) - 各插件详细工作流程、自动触发的 Skill/Agent、产出物规范
-- [企业级评估](ENTERPRISE_ASSESSMENT.md) - 企业级 SaaS 能力覆盖分析
-
-### 安装插件
-
-**步骤 1: 添加插件市场**
-```bash
-/plugins marketplace add https://github.com/zyzheal/claude-plugins.git
-```
-
-**步骤 2: 按需安装插件**
-```bash
-/plugins install dev-enegine
-/plugins install claude-hud
-/plugins install long-running-agent
-/plugins install content-create
-/plugins install architect-collaboration
-```
-
-**步骤 3: 重新加载插件**
-```bash
-/reload-plugins
-```
-
----
-
-## 🎯 插件选择决策树
-
-```
-开始
- │
- ├─ 企业级 SaaS / 核心业务系统？
- │   ├─ 需要架构设计/技术方案评审？ → architect-collaboration
- │   └─ 需要多需求并行开发？ → dev-enegine
- │
- ├─ 个人项目 / 快速原型？
- │   └─ 单一需求完整实现？ → long-running-agent
- │
- ├─ 自媒体内容创作？
- │   └─ 微信公众号/小红书发布？ → content-create
- │
- └─ 需要实时监控状态？
-     └─ Context 使用量/Agent 活动追踪？ → claude-hud（推荐与以上任意组合）
-```
-
----
-
-## 📊 插件对比表
-
-| 特性 | DevEngine | Long-Running | Architect | Content-Create |
-|------|-----------|--------------|-----------|----------------|
-| **目标用户** | 企业团队 | 个人开发者 | 架构师/技术负责人 | 自媒体运营 |
-| **需求管理** | 多需求并行 | 单需求 | 四阶段结构化 | 热点驱动 |
-| **代码审查** | ✅ 5 维度审查 | ❌ | ✅ 10 位专家 | ❌ |
-| **Hooks 自动化** | ✅ 原生 Hooks | ❌ | ❌ | ✅ MCP |
-| **多平台发布** | ❌ | ❌ | ❌ | ✅ 微信/小红书/飞书 |
-| **状态监控** | ✅ (需 claude-hud) | ✅ (需 claude-hud) | ✅ (需 claude-hud) | ✅ (需 claude-hud) |
-| **适用项目规模** | 大型 | 小型 | 中大型 | 内容创作 |
-
----
-
-## 🔧 常用命令速查
-
-### DevEngine
-```bash
-/project-init "Task Management App"     # 初始化项目
-/requirement-dev "用户认证系统"           # 需求开发全流程
-/review-code --last                     # 审查最近提交
-/config control_level=high              # 设置高控制级别
-```
-
-### Long-Running Agent
-```bash
-/requirement-develop "Todo App"         # 唯一入口，自动判断项目状态
-```
-
-### Architect Collaboration
-```bash
-/architect:phase-workflow --phase 1 --generate    # 启动需求分析
-/architect:phase-workflow --phase 2 --validate    # 验证技术设计完成
-/architect:manage-progress --status               # 查看进度状态
-/architect:manage-progress --report --publish slack  # 发布进度报告
-```
-
-**自然语言触发专家技能**（无需命令）：
-```
-"分析这个需求的业务目标"              → 需求分析师介入
-"设计系统架构和数据库"               → 架构师介入
-"审查代码安全性"                    → 安全专家 + 代码审查员介入
-"数据库表设计合理吗？"               → 数据库专家介入
-"定义 SLO 和监控指标"               → SRE 专家介入
-"GDPR 合规检查"                     → 合规专家介入
-```
-
-### Content-Create
-```bash
-/content-create:write "AI 手机热点分析"              # 创作内容
-/content-create:write "DeepSeek V3评测" platforms:wx  # 指定平台
-/content-create:analysis article/metrics.csv         # 数据分析
-/content-create:config                               # 配置管理
-```
-
-### Claude HUD
-```bash
-/claude-hud:setup                                    # 初始配置
-/claude-hud:configure                                # 自定义配置
 ```
 
 ---
@@ -301,6 +158,72 @@
 | **技术探索/Demo** | long-running-agent | 单一需求完整实现 |
 | **核心业务系统** | architect-collaboration → dev-enegine | 先架构设计，后迭代开发 |
 | **团队协作项目** | architect-collaboration + claude-hud | 多阶段协作 + 进度可视化 |
+
+---
+
+## 🔄 完整工作流程示例
+
+### 示例 1：从零开始企业级项目
+
+```bash
+# 第 1 步：安装插件（一次性）
+/plugins install dev-enegine
+/plugins install architect-collaboration
+/plugins install claude-hud
+
+# 第 2 步：架构设计（Architect Collaboration）
+/architect:phase-workflow --phase 1    # 需求分析 → docs/requirements.md
+/architect:phase-workflow --phase 2    # 技术设计 → docs/tech-design.md
+/architect:phase-workflow --phase 3    # 任务拆解 → docs/开发任务.md
+
+# 第 3 步：初始化开发环境（DevEngine）
+/project-init "MySaaS Platform"
+
+# 第 4 步：需求开发（DevEngine）
+/requirement-dev "用户管理系统"          # 自动读取架构文档
+                                        # Planner → Coder → Reviewer 循环
+
+# 第 5 步：实时监控（Claude HUD）
+# 无需命令，HUD 自动显示进度：
+# ⚙️ [Developing] MySaaS → 实现用户登录  3/10
+```
+
+### 示例 2：个人快速原型
+
+```bash
+# 第 1 步：安装插件
+/plugins install long-running-agent
+/plugins install claude-hud
+
+# 第 2 步：开始开发（自动初始化 + 开发）
+/requirement-develop "Todo App"         # 新项目 → Initializer Agent
+                                        # 创建 feature_list.json
+                                        # 实现第一个功能
+
+# 第 3 步：继续开发
+/requirement-develop "添加任务分类功能"   # Coding Agent 读取进度
+                                        # 实现下一个功能
+
+# 第 4 步：实时监控（Claude HUD）
+# 🚀 [Feature 2/5] todo-app → 添加分类  2/5
+```
+
+### 示例 3：架构评审 + 自主开发
+
+```bash
+# 第 1 步：架构评审
+"请设计一个高并发的秒杀系统架构"
+# → architect-collaboration 自动介入
+# → 产出：requirements.md + tech-design.md + 开发任务.md
+
+# 第 2 步：初始化开发
+/project-init "Seckill System" --no-template
+
+# 第 3 步：需求开发
+/requirement-dev "秒杀核心流程" --level high
+                                        # 高控制级别，每步确认
+                                        # 适合核心业务
+```
 
 ---
 
