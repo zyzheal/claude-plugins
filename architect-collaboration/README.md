@@ -20,6 +20,7 @@ This plugin implements the **Senior Architect Collaboration** methodology, provi
 - ✅ Interactive phase guidance with structured prompts
 - ✅ Automatic template generation for each phase
 - ✅ Validation and quality checks
+- ✅ **Code review with security/performance/maintainability analysis**
 - ✅ Progress tracking and dependency management
 - ✅ Documentation system integration
 - ✅ Risk identification and communication
@@ -38,51 +39,45 @@ cp -r architect-collaboration ~/.claude-plugins/
 
 ## Usage
 
-### Skills
+### Natural Language Triggers (Recommended)
 
-Invoke architect guidance using natural language:
+直接用自然语言描述需求，系统自动匹配技能：
 
 ```
-"Analyze requirements for my new feature"
-"Design a solution for user authentication"
-"Break down tasks for the payment module"
-"Help me implement the feature with tests"
+"分析这个功能的需求" → Phase 1 需求分析
+"设计系统架构和数据库" → Phase 2 技术设计
+"拆解开发任务" → Phase 3 任务拆解
+"实现用户登录功能" → Phase 4 功能开发
+"审查代码安全性" → Code Review
+"设计监控方案和告警" → Observability Skill
+"定义 SLO 和灾备方案" → SRE Review Skill
+"GDPR 合规检查" → Compliance Review Skill
 ```
+
+**完整触发词列表**: 查看 [QUICKSTART.md](QUICKSTART.md)
 
 ### Commands
 
-#### Phase Workflow Management
+Commands are optional - natural language triggers are recommended:
 
 ```bash
+# Phase workflow management
 /architect:phase-workflow --phase 1 --project "E-commerce Platform"
-```
 
-Interactive mode (recommended):
-```bash
-/architect:phase-workflow
-# Follow prompts for phase selection and project details
-```
-
-#### Progress Tracking
-
-```bash
+# Progress tracking
 /architect:manage-progress --export markdown
-/architect:manage-progress --publish confluence --url "https://wiki.company.com"
 ```
 
 ## Plugin Components
 
-### Skills (4)
+### Skills (10 个)
 
-1. **Requirements Analysis Skill** - Guides Phase 1: Requirements gathering and validation
-2. **Technical Design Skill** - Guides Phase 2: Architecture and solution design
-3. **Task Breakdown Skill** - Guides Phase 3: Task creation and prioritization
-4. **Feature Development Skill** - Guides Phase 4: Implementation and testing
+See [Skills](#skills-10-个专家技能) section above for the full list.
 
-### Commands (2)
+### Commands (2 个)
 
-1. **`/architect:phase-workflow`** - Complete phase management (start, validate, generate templates)
-2. **`/architect:manage-progress`** - Progress tracking and documentation publishing
+1. **`/architect:phase-workflow`** - Phase 流程管理（启动、验证、生成模板）
+2. **`/architect:manage-progress`** - 进度跟踪和文档发布
 
 ## Documentation Templates
 
@@ -131,26 +126,37 @@ Each phase follows:
 - **Validate** - Check against quality criteria
 - **Confirm** - User approval before proceeding
 
-## Examples
+## Usage Examples
 
-### Requirements Analysis Example
-
-```
-User: "I need to build a user authentication system"
-
-Architect: "Let's analyze the requirements. What are your success metrics?
-- Response time < 200ms?
-- Support for OAuth and password?
-- Any regulatory requirements?"
-```
-
-### Technical Design Example
+### Complete Workflow Example
 
 ```
-User: "Design the authentication solution"
+# Phase 1: Requirements
+"我需要开发一个多角色用户管理系统，请分析需求"
 
-Architect: "I'll create a technical design with TDD approach.
-First, let me write test cases for login flow..."
+# Phase 2: Technical Design
+"基于需求分析，设计系统架构和数据库表结构"
+"定义 SLO 和监控指标"
+"做威胁建模和安全设计"
+
+# Phase 3: Task Breakdown
+"根据技术设计，拆解开发任务"
+
+# Phase 4: Development
+"开始实现用户认证模块，使用 TDD 方式"
+
+# Review
+"审查已完成的代码安全性"
+```
+
+### Single Skill Invocation
+
+```
+"设计数据库表结构，画 ER 图" → db-design-skill
+"定义 SLO 和灾备方案" → sre-review-skill
+"设计监控方案和告警规则" → observability-skill
+"GDPR 合规检查" → compliance-review-skill
+"审查代码安全性" → security-review-skill + code-review-skill
 ```
 
 ## Best Practices
@@ -163,18 +169,26 @@ First, let me write test cases for login flow..."
 
 ## Troubleshooting
 
-### Common Issues
+### Skills 没有触发？
 
-**Skills not triggering?**
-- Ensure you're using trigger phrases: "analyze requirements", "design solution", "break down tasks", "implement feature"
+确保使用自然语言触发短语：
+- "分析需求"、"设计方案"、"拆解任务"、"实现功能"
+- 或者直接说技能名称："使用 db-design-skill 设计数据库"
 
-**Commands not found?**
-- Verify plugin is installed: `cc --list-plugins`
-- Check plugin directory permissions
+### Commands 找不到？
 
-**Templates not generating?**
-- Ensure write permissions in project directory
-- Check `.claude/` directory exists
+验证插件已安装：
+```bash
+cc --list-plugins
+```
+
+### 模板没有生成？
+
+确保项目目录有写权限，`.claude/` 目录存在。
+
+### 如何查看完整触发词列表？
+
+查看 [QUICKSTART.md](QUICKSTART.md) 获取完整的使用指南和触发词列表。
 
 ## Contributing
 
@@ -183,6 +197,57 @@ Contributions welcome! Please read our contributing guidelines and submit PRs fo
 - Additional validation rules
 - Integration with other tools
 - Documentation improvements
+
+---
+
+## 🔄 工作流程详解
+
+### 四阶段流程
+
+```
+/architect:phase-workflow
+        ↓
+Phase 1: Requirements Analysis Skill → requirements.md
+        ↓
+Phase 2: Technical Design Skill → tech-design.md
+        ↓
+Phase 3: Task Breakdown Skill → 开发任务.md
+        ↓
+Phase 4: Feature Development Skill → 代码 + 测试
+        ↓
+        Code Review Skill → review-report.md
+```
+
+### 自动触发的 Skill
+
+| 阶段 | 触发方式 | Skill | 产出物 |
+|------|----------|-------|--------|
+| Phase 1 | 命令/自然语言 | Requirements Analysis | requirements.md |
+| Phase 2 | 命令/自然语言 | Technical Design | tech-design.md |
+| Phase 3 | 命令/自然语言 | Task Breakdown | 开发任务.md |
+| Phase 4 | 命令/自然语言 | Feature Development | 代码 + 测试 |
+| Phase 4 完成后 | 自动/手动 | Code Review | review-report.md |
+
+### 触发短语
+
+**自然语言触发**：
+- "分析需求" → Phase 1
+- "设计方案" → Phase 2
+- "拆解任务" → Phase 3
+- "实现功能" → Phase 4
+- "审查代码" → Code Review
+
+详细工作流程请查看 [WORKFLOW.md](../WORKFLOW.md#3-architect-collaboration---架构师协作)
+
+---
+
+## 📚 相关文档
+
+- [QUICKSTART.md](QUICKSTART.md) - 快速使用指南、完整触发词列表
+- [TRIGGERS.md](TRIGGERS.md) - 自然语言触发快速参考
+- [ENTERPRISE_CHECKLIST.md](ENTERPRISE_CHECKLIST.md) - 19 角色专家检查清单
+- [使用指南](../USAGE.md) - 插件选择、功能对比、参数说明
+- [工作流程](../WORKFLOW.md) - 详细工作流程、产出物规范
 
 ## License
 

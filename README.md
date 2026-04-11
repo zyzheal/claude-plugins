@@ -12,11 +12,12 @@
 #### [DevEngine](dev-enegine/) - 自动化开发引擎
 **基于 Anthropic 论文《Effective Harnesses for Long-Running Agents》设计的多 Agent 协作系统**
 
-- 🔄 需求规划 → 编码 → 测试全流程自动化
+- 🔄 需求规划 → 编码 → 测试 → 审查全流程自动化
 - 📋 智能需求拆解，生成技术方案和 Feature 清单
 - ⚡ 支持 DAG 依赖分析和并行开发
 - 🎛️ 三级人工控制（high/medium/low）灵活可控
 - 🔗 原生 Hooks 实现自动副作用处理
+- 🔒 代码审查：安全性/性能/规范性/可维护性审查
 
 **适用场景**：
 - 复杂项目增量开发
@@ -46,17 +47,19 @@
 ---
 
 #### [Architect Collaboration](architect-collaboration/) - 架构师协作
-**四阶段结构化协作工作流**
+**四阶段结构化协作工作流 + 专业代码审查**
 
 - 📝 需求分析 - 协作需求收集与评估
 - 🏗️ 技术设计 - 架构方案与 TDD 支持
 - 📋 任务拆解 - 粒度任务创建与依赖管理
 - 💻 功能开发 - 实施指导与质量把控
+- 🔒 代码审查 - 安全性/性能/规范性/可维护性/测试审查
 
 **适用场景**：
 - 复杂系统设计
 - 团队协作开发
 - 技术方案评审
+- 代码质量审查
 
 **[📖 查看详细文档](architect-collaboration/README.md)**
 
@@ -102,17 +105,28 @@
 
 ## 🚀 快速开始
 
-使用插件市场安装
+### 📖 使用指南
+
+**强烈建议先阅读**：
+- [使用指南](USAGE.md) - 插件选择决策树、功能对比、推荐使用顺序、参数说明
+- [工作流程](WORKFLOW.md) - 各插件详细工作流程、自动触发的 Skill/Agent、产出物规范
+- [企业级评估](ENTERPRISE_ASSESSMENT.md) - 企业级 SaaS 能力覆盖分析、缺口评估、工具链推荐
+
+### 使用插件市场安装
+
+**步骤 1: 添加插件市场**
 进入 Claude Code 命令行，执行以下命令：
 ```bash
-/plugins marketplace add https://github.com/xyzbit/claude-plugins.git
+/plugin marketplace add https://github.com/zyzheal/claude-plugins.git
 ```
-按需安装
+
+**步骤 2: 按需安装插件**
 ```bash
-/plugins install dev-enegine
-/plugins install claude-hud
-/plugins install long-running-agent
-/plugins install content-create
+/plugin install dev-enegine
+/plugin install claude-hud
+/plugin install long-running-agent
+/plugin install content-create
+/plugin install architect-collaboration
 ```
 
 ### 使用
@@ -138,8 +152,8 @@
 ### Plugin 开发规范
 
 - 每个 Plugin 独立目录
-- 必须包含 `manifest.json` 和 `README.md`
-- Skills 采用 Markdown 格式
+- 必须包含 `.claude-plugin/plugin.json` 和 `README.md`
+- Skills/Commands/Agents 采用 Markdown 格式
 - 提供完整的使用示例
 - 添加必要的配置说明
 

@@ -1,6 +1,6 @@
 ---
 name: "Requirements Analysis Skill"
-description: "Interactive guidance for Phase 1 of the Senior Architect Collaboration workflow - Requirements gathering, analysis, and validation"
+description: "Interactive guidance for Phase 1 of the Senior Architect Collaboration workflow - Requirements gathering, analysis, and validation. 需求分析、需求收集、可行性评估"
 triggers:
   - "analyze requirements"
   - "clarify scope"
@@ -8,6 +8,12 @@ triggers:
   - "gather requirements"
   - "business requirements"
   - "user story analysis"
+  - "分析需求"
+  - "需求分析"
+  - "需求收集"
+  - "澄清范围"
+  - "可行性评估"
+  - "需求评审"
 ---
 
 # Requirements Analysis Skill
@@ -158,14 +164,50 @@ Requirements are validated against:
 
 ## Validation Checklist
 
-Before proceeding to Phase 2 (Technical Design), ensure:
+### 基础验证清单
 
-- [ ] Business goals clearly defined and quantified
-- [ ] Success metrics established and measurable
-- [ ] All stakeholders identified and aligned
-- [ ] Constraints documented and understood
-- [ ] Feasibility confirmed with risk assessment
-- [ ] Requirements reviewed and approved by stakeholders
+- [ ] 业务目标清晰定义并可量化
+- [ ] 成功指标已建立且可测量
+- [ ] 所有干系人已识别并对齐
+- [ ] 约束条件已文档化并理解
+- [ ] 可行性已确认并附风险评估
+- [ ] 需求已 reviewed 并获得干系人批准
+
+### ① 产品专家视角检查清单
+
+- [ ] **功能范围** - 核心功能与边界清晰定义
+- [ ] **权限模型** - 用户角色、权限矩阵已定义
+- [ ] **业务闭环** - 端到端业务流程完整
+- [ ] **用户故事** - 关键用户场景已覆盖
+- [ ] **验收标准** - 每个功能有明确验收条件
+
+### ③ PMO 视角检查清单
+
+- [ ] **进度风险** - 关键路径和里程碑已识别
+- [ ] **资源需求** - 人力、技术资源已评估
+- [ ] **依赖关系** - 外部依赖和内部依赖已梳理
+- [ ] **风险矩阵** - 高/中/低风险已分类并制定应对策略
+- [ ] **沟通计划** - 干系人沟通机制已建立
+
+### ④ 首席架构师视角检查清单
+
+- [ ] **模块拆分** - 系统边界和模块划分初步明确
+- [ ] **服务边界** - 服务间接口和职责已定义
+- [ ] **解耦程度** - 关键依赖和耦合点已识别
+- [ ] **技术约束** - 技术栈限制和兼容性要求已明确
+- [ ] **架构风险** - 架构层面的风险已识别
+
+---
+
+## Multi-Role Review Checklist (多角色评审清单)
+
+Before proceeding to Phase 2, ensure all relevant perspectives are covered:
+
+| 角色 | 评审维度 | 检查状态 | 产出物 |
+|------|----------|----------|--------|
+| ① 产品专家 | 功能范围、权限模型、业务闭环 | [ ] | PRD 文档、业务流程图 |
+| ③ PMO | 进度、资源、风险、依赖 | [ ] | 风险矩阵表、依赖关系图 |
+| ④ 首席架构师 | 模块拆分、服务边界、解耦 | [ ] | 架构草图、ADR 文档 |
 
 ## Best Practices
 

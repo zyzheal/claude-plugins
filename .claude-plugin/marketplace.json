@@ -1,13 +1,12 @@
 {
-  "name": "xyzbit-plugins",
+  "name": "zyzheal-plugins",
   "owner": {
-    "name": "xyzbit",
-    "email": "1425895909@qq.com"
+    "name": "zyzheal"
   },
   "metadata": {
     "description": "收集日常工作中最常用、好用的 Claude Code Plugins，覆盖编码、测试、内容创作、分发、分析等多个领域",
     "version": "1.0.0",
-    "homepage": "https://github.com/xyzbit/claude-plugins"
+    "homepage": "https://github.com/zyzheal/claude-plugins"
   },
   "plugins": [
     {
@@ -16,8 +15,7 @@
       "description": "智能内容创作工作流插件，支持从热点收集到多平台发布的一站式自动化流程",
       "version": "1.0.0",
       "author": {
-        "name": "xiaoyan",
-        "email": "1425895909@qq.com"
+        "name": "xiaoyan"
       },
       "keywords": [
         "content-creation",
@@ -73,17 +71,21 @@
       "version": "0.1.0",
       "source": "./claude-hud",
       "description": "Real-time statusline showing context usage, active tools, running agents, and todo progress. Always visible below your input, zero config required.",
+      "author": {
+        "name": "Jarrod Watts",
+        "url": "https://github.com/jarrodwatts"
+      },
       "category": "monitoring",
-      "tags": ["hud", "statusline", "monitoring", "context", "tools", "agents", "todos"]
+      "license": "MIT",
+      "keywords": ["hud", "statusline", "monitoring", "context", "tools", "agents", "todos"]
     },
     {
       "name": "architect-collaboration",
       "source": "./architect-collaboration",
-      "description": "高级架构师协作工作流插件，通过需求分析、技术设计、任务分解、功能开发四阶段结构化引导开发流程",
-      "version": "0.1.0",
+      "description": "高级架构师协作工作流插件，通过需求分析、技术设计、任务分解、功能开发四阶段结构化引导开发流程，集成 10 位专家角色评审能力",
+      "version": "1.0.0",
       "author": {
-        "name": "xyzbit",
-        "email": "1425895909@qq.com"
+        "name": "zyzheal"
       },
       "keywords": [
         "architecture",
@@ -91,7 +93,12 @@
         "requirements",
         "technical-design",
         "task-management",
-        "collaboration"
+        "collaboration",
+        "code-review",
+        "database-design",
+        "sre",
+        "observability",
+        "compliance"
       ],
       "category": "项目管理",
       "license": "MIT"

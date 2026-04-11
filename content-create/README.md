@@ -349,6 +349,46 @@ project-root/
 
 欢迎提交 Issue 和 Pull Request！
 
+---
+
+## 🔄 工作流程详解
+
+### 完整流程
+
+```
+/content-create:write <topic>
+        ↓
+Step 1: 初始化工作空间 → article/YYYY-MM-DD-HH-MM/
+        ↓
+Step 2: collector agent → hot_topic_data.md
+        ↓
+Step 3: writer-wx/xhs agent → wx_article.md / xhs_article.md
+        ↓
+Step 4: reviewer agent → review_report.md (评分<85 则重新撰写)
+        ↓
+Step 5: 多平台发布 → 公众号/小红书/飞书
+        ↓
+Step 6: workflow_summary.md
+```
+
+### 自动触发的 Agent
+
+| 步骤 | Agent | 说明 |
+|------|-------|------|
+| Step 2 | collector | 热点信息收集（RSS + Web 搜索） |
+| Step 3 | writer-wx | 公众号文章撰写 |
+| Step 3 | writer-xhs | 小红书文章改写 |
+| Step 4 | reviewer | 文章质量评审（可跳过） |
+
+详细工作流程请查看 [WORKFLOW.md](../WORKFLOW.md#4-content-create---智能内容创作)
+
+---
+
+## 📚 相关文档
+
+- [使用指南](../USAGE.md) - 插件选择、功能对比、参数说明
+- [工作流程](../WORKFLOW.md) - 详细工作流程、产出物规范
+
 ## 许可证
 
 MIT License

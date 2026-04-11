@@ -1,6 +1,6 @@
 ---
 name: "Feature Development Skill"
-description: "Interactive guidance for Phase 4 of the Senior Architect Collaboration workflow - Implementation, testing, and quality assurance"
+description: "Interactive guidance for Phase 4 of the Senior Architect Collaboration workflow - Implementation, testing, and quality assurance. 功能开发、代码实现、TDD 测试驱动开发"
 triggers:
   - "implement feature"
   - "develop code"
@@ -8,6 +8,12 @@ triggers:
   - "code development"
   - "feature implementation"
   - "TDD development"
+  - "实现功能"
+  - "功能开发"
+  - "代码开发"
+  - "编写代码"
+  - "编写测试"
+  - "TDD 开发"
 ---
 
 # Feature Development Skill
@@ -496,6 +502,29 @@ After completing feature development:
 4. Update task status to completed
 5. Begin next task in 开发任务.md
 6. Continue until all tasks complete
+
+---
+
+## Multi-Role Review Checklist (多角色评审清单)
+
+### ⑩ 测试专家视角检查清单
+
+- [ ] **单元测试覆盖率** - 代码覆盖率 ≥ 80%
+- [ ] **边界条件测试** - 空值、极值、异常值测试完整
+- [ ] **集成测试** - 模块交互、接口测试通过
+- [ ] **E2E 测试** - 核心业务流程测试覆盖
+- [ ] **测试数据** - 测试数据准备充分
+- [ ] **自动化测试** - 测试脚本可自动化执行
+
+### ⑪ 安全专家视角检查清单
+
+- [ ] **输入验证** - 所有外部输入已验证
+- [ ] **认证授权** - 权限校验完整
+- [ ] **数据安全** - 敏感数据加密/脱敏
+- [ ] **错误处理** - 错误信息不泄露敏感数据
+- [ ] **依赖安全** - 无已知安全漏洞
+
+---
 
 ## Completion Criteria
 

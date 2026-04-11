@@ -5,6 +5,9 @@
   "author": {
     "name": "Long Running Agent Team"
   },
+  "homepage": "https://github.com/zyzheal/claude-plugins",
+  "repository": "https://github.com/zyzheal/claude-plugins/tree/master/long-running-agent",
+  "license": "MIT",
   "keywords": ["agent", "development", "harness", "coding-assistant"],
   "agents": [
     "./agents/coding.md",

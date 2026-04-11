@@ -1,6 +1,6 @@
 ---
 name: "Task Breakdown Skill"
-description: "Interactive guidance for Phase 3 of the Senior Architect Collaboration workflow - Task creation, prioritization, and dependency management"
+description: "Interactive guidance for Phase 3 of the Senior Architect Collaboration workflow - Task creation, prioritization, and dependency management. 任务拆解、任务管理、依赖分析"
 triggers:
   - "break down tasks"
   - "create tasks"
@@ -8,6 +8,12 @@ triggers:
   - "task breakdown"
   - "work breakdown"
   - "sprint planning"
+  - "拆解任务"
+  - "任务分解"
+  - "任务拆解"
+  - "任务规划"
+  - "任务评审"
+  - "创建任务"
 ---
 
 # Task Breakdown Skill
@@ -351,6 +357,95 @@ After completing task breakdown:
 3. Set sprint start date
 4. Proceed to **Phase 4: Feature Development**
 5. Use Feature Development Skill for implementation guidance
+
+---
+
+## Multi-Role Review Checklist (多角色评审清单)
+
+### ③ PMO 视角检查清单
+
+- [ ] **任务粒度** - 所有任务 ≤ 2 人天
+- [ ] **任务依赖** - 依赖关系清晰，关键路径明确
+- [ ] **优先级** - 任务优先级明确 (High/Medium/Low)
+- [ ] **里程碑** - 关键里程碑定义清晰
+- [ ] **资源分配** - 人力资源已分配或可分配
+
+### ⑩ 测试专家视角检查清单
+
+- [ ] **测试任务独立** - 单元测试、集成测试、E2E 测试作为独立任务
+- [ ] **测试覆盖率要求** - 验收标准中包含覆盖率要求 (≥80%)
+- [ ] **测试数据准备** - 测试数据准备任务已创建
+- [ ] **测试环境准备** - 测试环境搭建任务已创建
+- [ ] **验收标准** - 每个任务有明确验收标准 (Given/When/Then)
+
+### ⑰ DevOps 视角检查清单
+
+- [ ] **CI/CD 任务** - 流水线配置作为独立任务
+- [ ] **环境一致性** - 开发/测试/生产环境一致性保证
+- [ ] **工具链** - 开发工具链配置任务已创建
+- [ ] **监控告警** - 监控告警配置任务已创建
+- [ ] **部署文档** - 部署文档编写任务已创建
+
+---
+
+## Test Expert Enhancement (测试专家增强)
+
+### 测试金字塔任务划分
+
+```
+每个功能模块应包含以下测试任务：
+
+L1: 单元测试任务 (必选)
+   - 核心逻辑单元测试
+   - 边界条件测试
+   - 异常场景测试
+   - 目标覆盖率：≥80%
+
+L2: 集成测试任务 (必选)
+   - 模块间接口测试
+   - 数据库集成测试
+   - 外部服务集成测试
+   - 目标覆盖率：关键路径 100%
+
+L3: E2E 测试任务 (可选，核心功能必选)
+   - 端到端业务流程测试
+   - 用户场景测试
+   - 回归测试集
+```
+
+### 测试任务模板
+
+```markdown
+[ ] 任务 X: [功能名] 单元测试
+  - **描述**: 为核心逻辑编写单元测试
+  - **输入**: 功能代码
+  - **输出**: 测试文件，覆盖率报告
+  - **依赖**: 功能开发完成
+  - **优先级**: High
+  - **估算**: 0.5-1 person-days
+  - **验收标准**:
+    - ✅ 核心逻辑测试覆盖
+    - ✅ 边界条件测试完整
+    - ✅ 异常场景测试完整
+    - ✅ 代码覆盖率 ≥ 80%
+  - **状态**: 待开始
+  - **负责人**: [待分配]
+
+[ ] 任务 X: [功能名] 集成测试
+  - **描述**: 编写模块集成测试
+  - **输入**: 完成的功能模块
+  - **输出**: 集成测试文件，测试报告
+  - **依赖**: 单元测试完成
+  - **优先级**: High
+  - **估算**: 0.5-1 person-days
+  - **验收标准**:
+    - ✅ 模块间接口测试通过
+    - ✅ 数据库集成测试通过
+    - ✅ 外部服务 Mock 测试通过
+    - ✅ 关键路径测试 100% 覆盖
+  - **状态**: 待开始
+  - **负责人**: [待分配]
+```
 
 ---
 

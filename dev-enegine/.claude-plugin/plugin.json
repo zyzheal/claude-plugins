@@ -5,16 +5,20 @@
   "author": {
     "name": "Long Running Agent Team"
   },
-  "keywords": ["agent", "development", "harness", "coding-assistant", "planner", "coder", "hooks"],
+  "homepage": "https://github.com/zyzheal/claude-plugins",
+  "repository": "https://github.com/zyzheal/claude-plugins/tree/master/dev-enegine",
+  "license": "MIT",
+  "keywords": ["agent", "development", "harness", "coding-assistant", "planner", "coder", "hooks", "code-review"],
   "agents": [
     "./agents/initializer.md",
     "./agents/planner.md",
-    "./agents/coder.md"
+    "./agents/coder.md",
+    "./agents/reviewer.md"
   ],
-  "skills": "./skills/",
   "commands": [
     "./commands/project-init.md",
     "./commands/requirement-dev.md",
-    "./commands/config.md"
+    "./commands/config.md",
+    "./commands/review-code.md"
   ]
 }

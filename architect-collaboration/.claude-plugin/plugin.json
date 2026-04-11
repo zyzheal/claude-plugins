@@ -1,0 +1,28 @@
+{
+  "name": "architect-collaboration",
+  "description": "Senior Architect Collaboration workflow plugin providing structured guidance through 4-phase development process: Requirements Analysis, Technical Design, Task Breakdown, and Feature Development",
+  "version": "0.1.0",
+  "author": {
+    "name": "zyzheal"
+  },
+  "homepage": "https://github.com/zyzheal/claude-plugins",
+  "repository": "https://github.com/zyzheal/claude-plugins/tree/master/architect-collaboration",
+  "license": "MIT",
+  "keywords": ["architecture", "workflow", "requirements", "technical-design", "task-management", "collaboration", "code-review", "security-review", "database-design", "sre", "observability", "compliance", "gdpr"],
+  "skills": [
+    "./skills/requirements-analysis-skill.md",
+    "./skills/technical-design-skill.md",
+    "./skills/task-breakdown-skill.md",
+    "./skills/feature-development-skill.md",
+    "./skills/code-review-skill.md",
+    "./skills/security-review-skill.md",
+    "./skills/db-design-skill.md",
+    "./skills/sre-review-skill.md",
+    "./skills/observability-skill.md",
+    "./skills/compliance-review-skill.md"
+  ],
+  "commands": [
+    "./commands/architect-phase-workflow.md",
+    "./commands/architect-manage-progress.md"
+  ]
+}

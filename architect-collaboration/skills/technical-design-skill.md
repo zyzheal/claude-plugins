@@ -1,6 +1,6 @@
 ---
 name: "Technical Design Skill"
-description: "Interactive guidance for Phase 2 of the Senior Architect Collaboration workflow - Technical architecture, solution design, and documentation"
+description: "Interactive guidance for Phase 2 of the Senior Architect Collaboration workflow - Technical architecture, solution design, and documentation. 技术方案设计、架构设计、TDD 方法"
 triggers:
   - "design solution"
   - "technical architecture"
@@ -8,6 +8,12 @@ triggers:
   - "system design"
   - "solution architecture"
   - "create technical design"
+  - "设计方案"
+  - "技术设计"
+  - "架构设计"
+  - "系统设计"
+  - "技术方案"
+  - "技术评审"
 ---
 
 # Technical Design Skill
@@ -358,6 +364,84 @@ Technical design is validated against:
 - ✅ **Clarity** - Easy to understand
 - ✅ **Feasibility** - Can be implemented
 - ✅ **Maintainability** - Easy to evolve
+
+---
+
+## Multi-Role Review Checklist (多角色评审清单)
+
+### ⑧ 数据库专家视角检查清单
+
+- [ ] **表结构设计** - ER 图完整、范式/反范式合理
+- [ ] **索引策略** - 查询热点已分析、索引覆盖合理
+- [ ] **数据一致性** - 事务边界清晰、隔离级别适当
+- [ ] **扩展性** - 分区/分片策略、读写分离设计
+- [ ] **备份恢复** - 备份策略、RTO/RPO 定义
+
+### ⑬ 可观测性专家视角检查清单
+
+- [ ] **日志设计** - 结构化日志、日志级别、敏感数据脱敏
+- [ ] **指标监控** - 关键业务指标、技术指标已定义
+- [ ] **链路追踪** - 分布式追踪方案、TraceID 传递
+- [ ] **告警设计** - 告警分级、收敛策略、通知渠道
+- [ ] **Dashboard** - 关键视图已定义
+
+### ⑮ SRE 专家视角检查清单
+
+- [ ] **SLO 定义** - 可用性、延迟、吞吐量 SLO 已定义
+- [ ] **故障域隔离** - 优雅降级、熔断、限流设计
+- [ ] **灾备设计** - 多活/主备、故障切换策略
+- [ ] **容量规划** - 资源估算、弹性伸缩策略
+- [ ] **Runbook** - 故障处理流程已定义
+
+### ⑦ AI/算法专家视角检查清单（如适用）
+
+- [ ] **模型选型** - 模型对比、选型理由充分
+- [ ] **推理延迟** - 延迟预算、优化策略
+- [ ] **Token 成本** - 成本估算、优化方案
+- [ ] **Prompt 管理** - Prompt 版本管理、测试策略
+
+### ⑨ 开源集成视角检查清单
+
+- [ ] **选型成熟度** - 社区活跃度、版本稳定性
+- [ ] **License 合规** - License 清单、合规风险
+- [ ] **替代方案** - 备选方案、迁移成本
+
+### ⑭ 中间件专家视角检查清单
+
+- [ ] **消息队列** - 选型合理、消息可靠性保证
+- [ ] **缓存设计** - 缓存策略、一致性方案
+- [ ] **API 网关** - 路由、限流、认证设计
+- [ ] **高可用** - 集群、故障切换设计
+
+### ⑪ 安全专家视角检查清单
+
+- [ ] **威胁建模** - STRIDE 分析完成
+- [ ] **认证授权** - 认证流程、权限模型清晰
+- [ ] **数据加密** - 传输/存储加密方案
+- [ ] **OWASP 防护** - Top 10 防护措施到位
+
+### ⑫ 合规专家视角检查清单
+
+- [ ] **数据本地化** - 数据驻留要求满足
+- [ ] **隐私保护** - GDPR/个人信息保护合规
+- [ ] **审计要求** - 审计日志、追溯能力
+
+---
+
+## Enterprise Architecture Checklist (企业级架构检查清单)
+
+Before completing Phase 2, ensure enterprise-level concerns are addressed:
+
+| 角色 | 评审维度 | 检查状态 | 产出物 |
+|------|----------|----------|--------|
+| ⑧ 数据库专家 | 表结构、索引、一致性、扩展性 | [ ] | ER 图、索引分析报告 |
+| ⑬ 可观测性专家 | 日志、指标、追踪、告警 | [ ] | 监控 Dashboard、告警规则表 |
+| ⑮ SRE 专家 | SLO、故障域、灾备、容量 | [ ] | SLO 报告、故障树、降级策略表 |
+| ⑦ AI/算法专家 | 模型选型、延迟、成本 | [ ] | 模型选型对比表、成本估算表 |
+| ⑨ 开源集成专家 | 成熟度、License、社区 | [ ] | 技术选型对比表、License 清单 |
+| ⑭ 中间件专家 | MQ、缓存、网关、高可用 | [ ] | 消息流向图、缓存架构拓扑 |
+| ⑪ 安全专家 | 威胁建模、认证、加密、OWASP | [ ] | 威胁模型图、安全架构设计 |
+| ⑫ 合规专家 | 数据本地化、隐私、审计 | [ ] | 合规检查清单、数据流向图 |
 
 ## Best Practices
 

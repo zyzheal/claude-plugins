@@ -240,3 +240,54 @@ Agent 会自动：
 | `feature_list.json` | 功能清单，记录所有待实现功能及完成状态 |
 | `claude-progress.txt` | 进度日志，记录当前状态和下一步计划 |
 | `init.sh` | 启动脚本，用于启动开发服务器 |
+
+---
+
+## 🔄 工作流程详解
+
+### 完整流程
+
+```
+/requirement-develop <需求描述>
+        ↓
+检查项目状态
+        │
+        ├── 新项目 → Initializer Agent
+        │            ├── 拉取模板/从零搭建
+        │            ├── 创建 feature_list.json
+        │            ├── 创建 init.sh
+        │            └── Git 初始提交
+        │
+        └── 已有项目 → Coding Agent
+                     ├── 读取 feature_list.json
+                     ├── 实现最高优先级功能
+                     ├── 运行测试验证
+                     ├── 更新 feature_list.json (passes=true)
+                     └── Git 提交
+```
+
+### 自动触发的 Agent
+
+| 触发时机 | 触发方式 | Agent | 说明 |
+|----------|----------|-------|------|
+| `/requirement-develop` | 命令触发 | Initializer/Coding | 自动判断项目状态 |
+| Initializer 完成 | 自动 | Coding Agent | 开始开发循环 |
+| Coding 完成 | 自动 | - | 更新进度，准备下一轮 |
+
+### Skills（Agent 内部参考）
+
+| Skill | 用途 | 修改的文件 |
+|-------|------|----------|
+| `skills/session/status.md` | 读取当前项目状态和进度 | 无（只读） |
+| `skills/session/complete.md` | 将功能标记为已完成 | `feature_list.json`, `claude-progress.txt` |
+| `skills/session/commit.md` | 提交代码更改 | Git |
+| `skills/test/run.md` | 运行前端/后端/集成测试 | 无（只读） |
+
+详细工作流程请查看 [WORKFLOW.md](../WORKFLOW.md#2-long-running-agent---长时任务-agent)
+
+---
+
+## 📚 相关文档
+
+- [使用指南](../USAGE.md) - 插件选择、功能对比、参数说明
+- [工作流程](../WORKFLOW.md) - 详细工作流程、产出物规范

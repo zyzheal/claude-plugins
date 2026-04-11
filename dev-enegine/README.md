@@ -10,8 +10,9 @@ dev-enegine/
 │   └── plugin.json              # 插件元数据
 ├── agents/
 │   ├── initializer.md           # 初始化代理（项目搭建）
-│   ├── planner.md              # 规划代理（需求分析 + 技术方案）
-│   └── coder.md                 # 编码代理（实现 + 自检 + commit）
+│   ├── planner.md               # 规划代理（需求分析 + 技术方案）
+│   ├── coder.md                 # 编码代理（实现 + 自检 + commit）
+│   └── reviewer.md              # 审查代理（安全性/性能/规范性审查）
 ├── hooks/
 │   ├── hooks.json               # 原生 Hooks 配置
 │   ├── README.md                # Hooks 详细说明
@@ -22,9 +23,7 @@ dev-enegine/
 │   ├── project-init.md          # 项目初始化命令
 │   ├── requirement-dev.md       # 需求开发主流程命令
 │   ├── config.md                # 配置管理命令
-│   └── hud-setup.md             # HUD 可视化设置命令
-├── hud/
-│   └── dist/index.js            # HUD 前端资源
+│   └── review-code.md           # 代码审查命令
 └── README.md
 ```
 
@@ -181,6 +180,44 @@ Coder 完成时自动解析输出结果：
 | **Initializer** | 项目初始化：拉取模板/从零搭建、创建配置和需求管理目录 |
 | **Planner** | 需求规划：阅读代码、编写技术方案、拆解 feature 清单（含 DAG） |
 | **Coder** | 功能实现：遵循技术方案实现代码、自检验证、commit（feat/fix）、返回 PASS/FAIL |
+| **Reviewer** | 代码审查：安全性/性能/规范性/可维护性/测试审查，生成审查报告 |
+
+### Reviewer Agent 审查维度
+
+| 维度 | 权重 | 检查内容 |
+|------|------|----------|
+| 安全性 | 25% | SQL 注入、XSS、认证授权、敏感数据、依赖安全 |
+| 性能 | 20% | 时间复杂度、N+1 查询、内存管理、缓存使用 |
+| 可维护性 | 25% | 单一职责、代码复用、依赖管理、可测试性 |
+| 规范性 | 15% | 命名、格式、注释、错误处理 |
+| 测试 | 15% | 单元测试、边界测试、集成测试 |
+
+### 审查结果分级
+
+| 等级 | 标识 | 说明 | 处理 |
+|------|------|------|------|
+| **阻塞** | 🔴 | 必须修复，否则不能合并 | 立即修复 |
+| **严重** | 🟠 | 强烈建议修复 | 本迭代修复 |
+| **主要** | 🟡 | 推荐修复 | 可放入技术债务 |
+| **次要** | 🟢 | 可选优化 | 有空时修复 |
+
+### 代码审查命令
+
+```bash
+# 审查最近提交
+/review-code --last
+
+# 审查指定功能
+/review-code --feature F001
+
+# 审查指定文件
+/review-code --files src/auth.ts,src/api/user.ts
+
+# 重点审查安全性
+/review-code --last --focus security
+```
+
+审查报告保存到：`.dev-enegine/requirements/<需求>/review-report.md`
 
 ## 配置项
 
@@ -192,4 +229,43 @@ Coder 完成时自动解析输出结果：
 | `parallel_features` | `false` | 是否并行开发无依赖的 features |
 | `template_repo` | github 地址 | 项目模板仓库 |
 
-// TODO: 添加 Analysis Agent 用于需求分析、澄清，保证更加可控
+---
+
+## 🔄 工作流程详解
+
+### 完整流程图
+
+```
+/project-init → Initializer Agent → 项目结构 + 配置
+                      ↓
+/requirement-dev → Planner Agent → requirement.md + tech-design.md + feature_list.json
+                      ↓
+              Coder Agent (按 DAG 实现功能)
+                      ↓
+              Hook: on-coder-complete (自动处理)
+                      ↓
+              Reviewer Agent (代码审查)
+                      ↓
+              需求完成
+```
+
+### 自动触发的 Agent
+
+| 触发时机 | 触发方式 | Agent | 说明 |
+|----------|----------|-------|------|
+| `/project-init` | 命令触发 | Initializer | 项目初始化 |
+| `/requirement-dev` | 命令触发 | Planner | 需求规划 |
+| Planner 完成后 | 自动 | Coder | 按 DAG 实现功能 |
+| Coder 完成 | Hook (SubagentStop) | - | 自动处理审查/更新 |
+| control_level=high | Hook 触发 | Reviewer | 代码审查 |
+| `/review-code` | 命令触发 | Reviewer | 手动审查 |
+
+详细工作流程请查看 [WORKFLOW.md](../WORKFLOW.md#1-dev-enegine---自动化开发引擎)
+
+---
+
+## 📚 相关文档
+
+- [使用指南](../USAGE.md) - 插件选择、功能对比、参数说明
+- [工作流程](../WORKFLOW.md) - 详细工作流程、产出物规范
+- [Hooks 说明](hooks/README.md) - Hooks 配置和脚本说明
