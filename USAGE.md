@@ -165,9 +165,72 @@
 
 ---
 
+## 🔧 插件安装与使用
+
+### 安装插件
+
+```bash
+# 从 GitHub 安装
+/plugins install https://github.com/zyzheal/claude-plugins
+
+# 安装后重新加载插件
+/reload-plugins
+```
+
+### 查看已安装插件
+
+```bash
+# 查看已安装的插件
+/plugins list
+```
+
+### 启用插件
+
+安装完成后，在 `~/.claude/settings.json` 中配置：
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "zyzheal": {
+      "source": {
+        "source": "github",
+        "repo": "zyzheal/claude-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "architect-collaboration@zyzheal": true,
+    "dev-enegine@zyzheal": true,
+    "long-running-agent@zyzheal": true,
+    "content-create@zyzheal": true,
+    "claude-hud@zyzheal": true
+  }
+}
+```
+
+然后重新加载：
+```bash
+/reload-plugins
+```
+
+---
+
 ## 📖 插件详细参数说明
 
 ### 1. dev-enegine - 自动化开发引擎
+
+**安装后首次使用**：
+
+```bash
+# 1. 初始化新项目
+/project-init MyApp
+
+# 2. 开始需求开发
+/requirement-dev "实现用户管理系统，支持多角色权限控制"
+
+# 3. 代码审查（可选）
+/review-code --last
+```
 
 #### 命令列表
 
@@ -178,13 +241,17 @@
 | `/review-code` | 代码审查 | `[--feature F001]` `[--last]` `[--files ...]` `[--focus security]` |
 | `/config` | 配置管理 | `[key=value]` |
 
+---
+
 #### /project-init
+
+**作用**：初始化新项目，创建项目骨架、Makefile、配置文件
 
 ```bash
 # 基础用法
 /project-init MyApp
 
-# 不使用模板
+# 不使用模板（从零搭建）
 /project-init MyApp --no-template
 ```
 
@@ -194,19 +261,37 @@
 
 **产出物**：
 - 项目骨架（frontend/ 和/或 backend/）
-- Makefile（包含 start/stop/logs）
+- Makefile（包含 start/stop/logs 命令）
 - `.dev-enegine/` 配置目录
 - Git 初始提交
+
+**输出示例**：
+```
+📦 项目初始化：MyApp
+
+✅ 创建项目目录：MyApp/
+✅ 创建 frontend/ 目录
+✅ 创建 backend/ 目录
+✅ 创建 Makefile
+✅ 创建 .dev-enegine/manifest.json
+✅ Git 初始提交：feat: project initialization
+
+下一步：
+1. cd MyApp
+2. /requirement-dev "你的需求描述"
+```
 
 ---
 
 #### /requirement-dev
 
+**作用**：启动需求开发流程，Planner 分析需求→Coder 实现→Reviewer 审查
+
 ```bash
 # 基础用法
 /requirement-dev "实现用户登录功能"
 
-# 指定控制等级
+# 指定控制等级（高/中/低）
 /requirement-dev "用户管理系统" --level high
 /requirement-dev "用户管理系统" --level medium
 /requirement-dev "用户管理系统" --level low
@@ -226,14 +311,38 @@
 
 **执行流程**：
 1. Planner Agent 分析需求
-2. 生成 requirement.md、tech-design.md、feature_list.json、dependency-graph.md
+2. 生成 `docs/requirement.md`、`docs/tech-design.md`、`docs/feature_list.json`、`docs/dependency-graph.md`
 3. Coder Agent 按 DAG 顺序实现功能
 4. Reviewer Agent 审查代码
 5. Hooks 自动处理审查结果
 
+**输出示例**：
+```
+🚀 需求开发：实现用户登录功能
+控制等级：low
+
+Step 1: Planner Agent 分析需求...
+✅ 生成需求文档：docs/requirement.md
+✅ 生成技术方案：docs/tech-design.md
+✅ 生成功能清单：docs/feature_list.json
+✅ 生成依赖图：docs/dependency-graph.md
+
+Step 2: Coder Agent 开始实现...
+[F001] 用户认证模块 - 完成 ✅
+[F002] 登录 API - 完成 ✅
+[F003] JWT Token 生成 - 完成 ✅
+
+Step 3: Reviewer Agent 审查代码...
+✅ 代码审查通过
+
+完成！提交 3 个功能，代码审查通过
+```
+
 ---
 
 #### /review-code
+
+**作用**：独立代码审查命令，支持指定文件、功能、审查重点
 
 ```bash
 # 审查最近提交
@@ -247,30 +356,65 @@
 
 # 重点审查安全性
 /review-code --last --focus security
+
+# 审查全部维度
+/review-code --files src/*.ts --focus all
 ```
 
 **参数说明**：
-- `--feature` (可选) - 指定功能 ID
+- `--feature` (可选) - 指定功能 ID（如 F001）
 - `--commit` (可选) - 指定 commit hash
 - `--last` (可选) - 审查最近一次提交
 - `--files` (可选) - 指定文件路径（逗号分隔）
-- `--focus` (可选) - 重点审查维度（security/performance/maintainability/style/testing）
+- `--focus` (可选) - 重点审查维度
 
 **审查维度**：
-- 🔒 安全性 (25%) - SQL 注入、XSS、认证授权等
-- ⚡ 性能 (20%) - 时间复杂度、N+1 查询等
-- 🔧 可维护性 (25%) - 单一职责、代码复用等
-- 📐 规范性 (15%) - 命名、格式、注释等
-- ✅ 测试 (15%) - 单元测试、边界测试等
+- 🔒 **安全性 (25%)** - SQL 注入、XSS、认证授权等
+- ⚡ **性能 (20%)** - 时间复杂度、N+1 查询等
+- 🔧 **可维护性 (25%)** - 单一职责、代码复用等
+- 📐 **规范性 (15%)** - 命名、格式、注释等
+- ✅ **测试 (15%)** - 单元测试、边界测试等
 
-**审查结果**：
-- ✅ 通过 - 无阻塞/严重问题
-- ⚠️ 条件通过 - 有主要/次要问题
-- ❌ 不通过 - 有阻塞/严重问题
+**审查结果等级**：
+- ✅ **通过** - 无阻塞/严重问题
+- ⚠️ **条件通过** - 有主要/次要问题
+- ❌ **不通过** - 有阻塞/严重问题
+
+**输出示例**：
+```
+🔍 代码审查报告
+审查对象：最近提交 (abc123)
+审查范围：src/auth.ts, src/api/user.ts
+
+评分：
+┌─────────────┬──────┬──────┬──────┐
+│ 维度        │ 得分 │ 满分 │ 评级 │
+├─────────────┼──────┼──────┼──────┤
+│ 安全性      │ 23   │ 25   │ 🟢   │
+│ 性能        │ 18   │ 20   │ 🟢   │
+│ 可维护性    │ 20   │ 25   │ 🟡   │
+│ 规范性      │ 14   │ 15   │ 🟢   │
+│ 测试        │ 12   │ 15   │ 🟡   │
+├─────────────┼──────┼──────┼──────┤
+│ 总分        │ 87   │ 100  │ B    │
+└─────────────┴──────┴──────┴──────┘
+
+审查结果：⚠️ 条件通过
+
+🟡 主要问题：
+1. src/auth.ts:45 - 密码哈希 iterations 建议从 10 增加到 12
+2. src/api/user.ts:78 - 缺少输入验证
+
+✅ 亮点：
+- JWT token 过期时间配置合理
+- 错误处理完善
+```
 
 ---
 
 #### /config
+
+**作用**：查看或修改 dev-enegine 配置
 
 ```bash
 # 查看当前配置
@@ -290,7 +434,7 @@
 | `max_test_retry` | `5` | 单个 feature 最大重试次数 |
 | `auto_commit` | `true` | Coder Agent 是否在实现后自动 commit |
 | `parallel_features` | `false` | 是否并行开发无依赖的 features |
-| `template_repo` | `git@github.com:xyzbit/ai-coding-layout.git` | 项目模板仓库 |
+| `template_repo` | `git@...` | 项目模板仓库 |
 
 ---
 
@@ -325,22 +469,141 @@
 | `claude-progress.txt` | 进度日志 |
 | `init.sh` | 启动脚本 |
 
+**输出示例**：
+```
+🚀 长时任务启动：任务管理 App
+
+Step 1: 检查项目状态...
+✅ 检测到新项目，启动 Initializer Agent
+
+Step 2: 项目初始化...
+✅ 创建项目目录结构
+✅ 生成 feature_list.json（5 个功能）
+✅ 创建 init.sh 启动脚本
+✅ Git 初始提交
+
+Step 3: 开始实现功能...
+[F001] 用户注册 - 完成 ✅
+[F002] 任务创建 - 完成 ✅
+[F003] 任务列表 - 进行中 🔄
+
+Step 4: 验证测试...
+✅ 所有测试通过
+
+下一步：继续实现剩余功能，或查看 claude-progress.txt 查看详细进度
+```
+
 ---
 
 ### 3. architect-collaboration - 架构师协作
+
+**两种使用方式**：
+
+1. **命令调用** - 使用 `/architect:phase-workflow` 和 `/architect:manage-progress` 管理流程
+2. **自然语言触发** - 直接对话触发 10 位专家技能（无需命令）
+
+#### 自然语言触发专家技能
+
+无需记忆命令，直接对话即可调用专家评审能力：
+
+| 专家技能 | 触发关键词（中英文皆可） | 评审重点 |
+|----------|------------------------|----------|
+| **需求分析师** | "需求分析"、"requirements"、"业务目标"、"用户故事" | 业务价值、成功指标、干系人、验收标准 |
+| **架构师** | "技术设计"、"架构设计"、"technical design"、"系统架构" | 架构模式、技术选型、系统边界、伪代码 |
+| **项目经理** | "任务拆解"、"任务分解"、"task breakdown"、"WBS" | 任务粒度、依赖关系、里程碑、风险评估 |
+| **高级工程师** | "功能开发"、"代码实现"、"feature development"、"编码" | 设计模式、代码结构、最佳实践、可测试性 |
+| **安全专家** | "安全评审"、"security review"、"OWASP"、"威胁建模" | SQL 注入、XSS、认证授权、STRIDE 分析 |
+| **数据库专家** | "数据库设计"、"ER 建模"、"索引优化"、"数据库评审" | ER 图、索引策略、数据一致性、分库分表 |
+| **SRE 专家** | "SRE 评审"、"SLO 定义"、"灾备设计"、"故障应急" | 可用性目标、故障域隔离、容量规划 |
+| **可观测性专家** | "监控设计"、"日志规范"、"告警策略"、"observability" | 日志分级、指标体系、链路追踪、告警分级 |
+| **合规专家** | "合规评审"、"GDPR 合规"、"隐私保护"、"PIPL" | 数据本地化、用户同意、隐私影响评估 |
+| **代码审查员** | "代码审查"、"code review"、"CR"、"评审代码" | 5 维度评分（安全/性能/维护/规范/测试） |
+
+**使用示例**：
+
+```bash
+# 需求分析阶段
+"请帮我分析这个需求的业务目标和成功指标"  → 需求分析师自动介入
+
+# 技术方案阶段
+"这个架构的技术可行性如何？有什么风险？"  → 架构师自动介入
+"系统应该用什么技术栈？为什么？"  → 架构师自动介入
+
+# 任务拆解阶段
+"把这个功能拆解成具体的开发任务"  → 项目经理自动介入
+"任务之间的依赖关系是什么？"  → 项目经理自动介入
+
+# 代码审查阶段
+"请审查这个 PR 的安全性"  → 安全专家 + 代码审查员介入
+"这段代码的性能有什么优化空间？"  → 代码审查员介入
+"数据库表设计是否合理？"  → 数据库专家介入
+"监控和告警策略是否完善？"  → 可观测性专家介入
+```
+
+**代码审查 5 维度**：
+
+当触发代码审查时，审查员会从以下维度评分：
+
+| 维度 | 权重 | 评审要点 |
+|------|------|----------|
+| 🔒 **安全性** | 25% | SQL 注入、XSS、CSRF、认证授权、敏感数据加密 |
+| ⚡ **性能** | 20% | 时间复杂度、N+1 查询、缓存策略、数据库索引 |
+| 🔧 **可维护性** | 25% | 单一职责、代码复用、依赖注入、设计模式 |
+| 📐 **规范性** | 15% | 命名规范、代码格式、注释完整性、类型定义 |
+| ✅ **测试** | 15% | 单元测试、集成测试、边界条件、Mock 使用 |
+
+**审查结果等级**：
+- ✅ **通过** - 无阻塞/严重问题
+- ⚠️ **条件通过** - 有主要/次要问题，需后续修复
+- ❌ **不通过** - 有阻塞/严重问题，必须修改
 
 #### 命令列表
 
 | 命令 | 功能 | 参数 |
 |------|------|------|
-| `/architect:phase-workflow` | 阶段工作流 | `[--phase 1/2/3/4]` `[--project "项目名"]` |
-| `/architect:manage-progress` | 进度跟踪 | `[--export markdown]` `[--publish confluence]` |
+| `/architect:phase-workflow` | 阶段工作流管理 | `[--phase 1/2/3/4]` `[--project "项目名"]` `[--generate]` `[--validate]` |
+| `/architect:manage-progress` | 进度跟踪与发布 | `[--export markdown]` `[--publish confluence]` `[--status]` `[--report]` `[--update]` |
+
+#### /architect:phase-workflow vs /architect:manage-progress
+
+**核心区别**：
+
+| 维度 | phase-workflow | manage-progress |
+|------|----------------|-----------------|
+| **定位** | 阶段入口/出口管理 | 持续进度跟踪 |
+| **主要功能** | 生成阶段文档模板、验证阶段完成标准 | 查看进度、生成报告、发布到 Wiki |
+| **使用时机** | 阶段开始/结束时 | 日常/每周定期使用 |
+| **验证功能** | ✅ 阶段完成标准验证 | ❌ |
+| **发布功能** | ❌ | ✅ 多平台发布 (Confluence/Notion/GitHub) |
+| **任务更新** | ❌ | ✅ 交互式更新任务状态 |
+
+**典型工作流**：
+```bash
+# 1. 启动 Phase 1 - 使用 phase-workflow
+/architect:phase-workflow --phase 1 --generate
+
+# 2. 每周更新进度 - 使用 manage-progress
+/architect:manage-progress --update          # 更新任务状态
+/architect:manage-progress --status          # 查看进度
+/architect:manage-progress --report --publish slack  # 发布周报
+
+# 3. 验证 Phase 1 完成 - 使用 phase-workflow
+/architect:phase-workflow --phase 1 --validate
+
+# 4. 进入 Phase 2 - 使用 phase-workflow
+/architect:phase-workflow --phase 2 --generate
+```
+
+---
 
 #### /architect:phase-workflow
 
 ```bash
-# 指定阶段
-/architect:phase-workflow --phase 1 --project "E-commerce Platform"
+# 指定阶段并生成模板
+/architect:phase-workflow --phase 1 --project "E-commerce Platform" --generate
+
+# 验证阶段完成
+/architect:phase-workflow --phase 1 --validate
 
 # 交互式模式（推荐）
 /architect:phase-workflow
@@ -349,32 +612,79 @@
 **参数说明**：
 - `--phase` (可选) - 指定阶段（1-4），不指定则提示选择
 - `--project` (可选) - 项目名称
+- `--generate` (可选) - 生成阶段模板
+- `--validate` (可选) - 验证阶段完成标准
+- `--interactive` (可选) - 强制交互模式
 
 **四阶段说明**：
 
-| 阶段 | 名称 | 产出物 |
-|------|------|--------|
-| 1 | 需求分析 | 需求文档 |
-| 2 | 技术设计 | 架构方案、伪代码 |
-| 3 | 任务拆解 | 开发任务.md |
-| 4 | 功能开发 + 审查 | 代码 + 测试 + 审查报告 |
+| 阶段 | 名称 | 产出物 | 验证标准 |
+|------|------|--------|----------|
+| 1 | 需求分析 | requirements.md | 6 项标准（业务目标、成功指标、干系人等） |
+| 2 | 技术设计 | tech-design.md、架构图、伪代码 | 6 项标准（技术可行性、架构模式、TDD 方案等） |
+| 3 | 任务拆解 | 开发任务.md、依赖图 | 6 项标准（任务粒度≤2 天、依赖映射、验收标准等） |
+| 4 | 功能开发 | 代码 + 测试 + 审查报告 | 6 项标准（开发流程、代码质量、测试覆盖率≥80% 等） |
+
+**模板生成位置**：
+- Phase 1: `docs/requirements.md`, `docs/risk-assessment.md`
+- Phase 2: `docs/technical-design.md`, `docs/architecture-diagram.md`, `docs/pseudocode.md`
+- Phase 3: `docs/ 开发任务.md`, `docs/task-dependencies.md`, `docs/sprint-plan.md`
+- Phase 4: `docs/implementation-plan.md`, `docs/testing-guide.md`, `docs/progress-tracker.md`
 
 ---
 
 #### /architect:manage-progress
 
 ```bash
-# 导出进度报告
-/architect:manage-progress --export markdown
+# 查看进度状态
+/architect:manage-progress --status
+
+# 生成 Markdown 报告
+/architect:manage-progress --report --export markdown
 
 # 发布到 Confluence
 /architect:manage-progress --publish confluence --url "https://wiki.company.com"
+
+# 交互式更新任务状态
+/architect:manage-progress --update
 ```
 
 **参数说明**：
-- `--export` (可选) - 导出格式（markdown/pdf）
-- `--publish` (可选) - 发布平台（confluence/jira）
+- `--status` (可选) - 显示当前进度状态
+- `--report` (可选) - 生成进度报告
+- `--export` (可选) - 导出格式（markdown/json/pdf/html/csv）
+- `--publish` (可选) - 发布平台（confluence/gitbook/github/notion/slack）
 - `--url` (可选) - 发布目标 URL
+- `--update` (可选) - 交互式更新任务状态
+- `--project` (可选) - 项目名称
+
+**输出示例**：
+```
+📊 Project Progress: User Authentication System
+
+Phase Status:
+┌────────────────────────────────────────┬──────────┬────────────┐
+│ Phase                                  │ Status   │ Progress   │
+├────────────────────────────────────────┼──────────┼────────────┤
+│ 1. Requirements Analysis               │ ✅ Done  │ 100% (6/6) │
+│ 2. Technical Design                    │ ✅ Done  │ 100% (6/6) │
+│ 3. Task Breakdown                      │ 🔄 Active│  60% (6/10)│
+│ 4. Feature Development                 │ ⏳ Pending│   0% (0/12)│
+└────────────────────────────────────────┴──────────┴────────────┘
+
+Task Summary:
+- Total Tasks: 28
+- Completed: 12 (43%)
+- In Progress: 6 (21%)
+- Pending: 10 (36%)
+```
+
+**发布平台支持**：
+- **Confluence**: 发布到企业 Wiki
+- **GitBook**: 发布到技术文档平台
+- **GitHub Wiki**: 发布到项目 Wiki
+- **Notion**: 发布到团队空间
+- **Slack**: 发送进度摘要到频道
 
 ---
 
@@ -415,6 +725,38 @@
 4. 质量评审（reviewer agent，可跳过）
 5. 多平台发布
 
+**输出示例**：
+```
+✍️ 内容创作启动：AI 手机热点分析
+
+Step 1: 初始化工作空间...
+✅ 创建目录：article/2025-04-11-ai-phone/
+✅ 生成配置文件
+
+Step 2: 数据收集（Collector Agent）...
+✅ 收集热点新闻 15 条
+✅ 收集竞品文章 8 篇
+✅ 数据整合完成
+
+Step 3: 文章撰写（Writer Agent）...
+✅ 生成文章大纲
+✅ 撰写正文（8500 字）
+✅ 配图建议 5 张
+
+Step 4: 质量评审（Reviewer Agent）...
+✅ 内容准确性：95/100
+✅ 可读性：90/100
+✅ SEO 优化：88/100
+✅ 评审通过
+
+Step 5: 多平台发布...
+✅ 发布到微信公众号
+✅ 发布到小红书
+✅ 生成发布报告
+
+完成！文章已发布，查看 article/2025-04-11-ai-phone/ 查看完整内容
+```
+
 ---
 
 #### /content-create:analysis
@@ -434,6 +776,34 @@
 - `<data-path>` (必填) - 数据文件路径（支持 CSV/Excel/JSON）
 - `analysis-type` (可选) - 分析类型（performance/trend/comparison）
 - `output-path` (可选) - 报告输出路径
+
+**输出示例**：
+```
+📊 数据分析报告
+
+数据源：article/2025-12-08/metrics.csv
+分析类型：趋势分析
+
+核心指标：
+┌─────────────────┬──────────┬──────────┬──────────┐
+│ 指标            │ 本周     │ 上周     │ 环比     │
+├─────────────────┼──────────┼──────────┼──────────┤
+│ 阅读量          │ 15,234   │ 12,456   │ +22.3%   │
+│ 分享次数        │ 1,823    │ 1,456    │ +25.2%   │
+│ 新增关注        │ 456      │ 321      │ +42.0%   │
+│ 收藏次数        │ 2,145    │ 1,789    │ +19.9%   │
+└─────────────────┴──────────┴──────────┴──────────┘
+
+趋势分析：
+✅ 阅读量连续 3 周增长，AI 话题热度持续
+✅ 分享率 11.9%，高于行业平均（8%）
+⚠️ 收藏转化率 14.1%，有提升空间
+
+建议：
+1. 继续深耕 AI 垂直领域
+2. 增加实操类内容提升收藏
+3. 保持当前发布频率（每周 2 篇）
+```
 
 ---
 
@@ -468,7 +838,25 @@
 /claude-hud:setup
 ```
 
-**作用**：将 HUD 配置写入 `~/.claude/settings.json`
+**作用**：将 HUD 配置写入 `~/.claude/settings.json`，启用实时状态显示
+
+**输出示例**：
+```
+📺 Claude HUD 配置向导
+
+Step 1: 检查当前配置...
+✅ 备份现有 settings.json
+
+Step 2: 写入 HUD 配置...
+✅ 添加 statusLine 配置
+✅ 启用 Git 状态显示
+✅ 启用 Context 使用量显示
+
+Step 3: 验证配置...
+✅ 配置验证通过
+
+完成！重新加载配置：/reload-plugins
+```
 
 ---
 
@@ -491,6 +879,23 @@
 | `display.showAgents` | boolean | false | 显示 Agent 状态 |
 | `display.showTodos` | boolean | false | 显示 Todo 进度 |
 | `display.showUsage` | boolean | true | 显示使用配额 |
+
+**HUD 显示示例**：
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 📁 claude-plugins │ 🌿 master* │ 🧩 architect-collaboration │
+│ 💬 124,582 / 200,000 (62.3%) │ 🔧 Read(3), Edit(1), Bash(2) │
+│ ✅ 8/10 Tasks                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**状态说明**：
+- `📁` 当前项目目录
+- `🌿` Git 分支（`*` 表示有未提交变更）
+- `🧩` 当前活跃的插件/Agent
+- `💬` Token 使用量（已用/总量，百分比）
+- `🔧` 当前会话使用的工具及次数
+- `✅` Todo 完成进度
 
 ---
 

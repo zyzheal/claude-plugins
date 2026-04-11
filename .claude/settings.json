@@ -1,5 +1,7 @@
 {
   "enabledPlugins": {
-    "plugin-dev@claude-code-plugins": true
+    "architect-collaboration@zyzheal-plugins": true,
+    "long-running-agent@zyzheal-plugins": true,
+    "dev-enegine@zyzheal-plugins": true
   }
 }
