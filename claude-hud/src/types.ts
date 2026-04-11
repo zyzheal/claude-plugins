@@ -75,12 +75,14 @@ export interface TranscriptData {
   sessionName?: string;
 }
 
-export interface DevEngineData {
-  requirementName: string | null;
-  requirementStatus: string | null;
-  currentFeatureName: string | null;
-  featureTotal: number;
-  featureDone: number;
+export interface ProgressData {
+  source: 'long-running-agent' | 'dev-enegine' | 'architect-collaboration';
+  projectName: string | null;
+  phase: string | null;
+  phaseLabel: string | null;
+  completed: number;
+  total: number;
+  currentTask: string | null;
   lastLog: string | null;
 }
 
@@ -96,5 +98,5 @@ export interface RenderContext {
   usageData: UsageData | null;
   config: HudConfig;
   extraLabel: string | null;
-  devEngine: DevEngineData | null;
+  progress: ProgressData | null;
 }

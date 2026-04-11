@@ -36,11 +36,20 @@
 - 🔧 工具调用历史展示
 - ✅ Todo 进度实时显示
 - 📈 Usage 配额消耗监控
+- 🚀 **新增**：插件进度统一追踪（支持 dev-enegine / long-running-agent / architect-collaboration）
+
+**进度追踪功能**：
+```
+🚀 [Feature 3/10] my-project → 实现用户登录  3/10     # long-running-agent
+⚙️ [Developing] api-gateway → Add auth middleware  5/8   # dev-enegine
+📐 [Task Breakdown] user-system → [ ] 编写单元测试  2/5  # architect-collaboration
+```
 
 **适用场景**：
 - 长时间运行的任务监控
 - 多 Agent 协作开发
 - Context 配额敏感的项目
+- 需要实时了解插件执行进度
 
 **[📖 查看详细文档](claude-hud/README.md)**
 
@@ -253,6 +262,8 @@
    - 默认配置适合大多数场景
    - 开启 `showTools`/`showAgents`/`showTodos` 需要额外消耗
    - Context 阈值建议保持默认（70% 警告，85% 红色）
+   - **进度追踪功能**：默认启用，自动检测项目使用的插件并显示进度
+   - 配置项：`display.showProgress`（默认 `true`，设为 `false` 禁用进度显示）
 
 ### 性能相关
 
@@ -284,11 +295,12 @@
 
 | 项目类型 | 推荐组合 | 说明 |
 |----------|----------|------|
-| **企业级 SaaS** | architect-collaboration + dev-enegine + claude-hud | 架构设计 → 多需求开发 → 实时监控 |
-| **个人小工具** | long-running-agent + claude-hud | 快速开发 + 状态监控 |
+| **企业级 SaaS** | architect-collaboration + dev-enegine + claude-hud | 架构设计 → 多需求开发 → 实时监控（进度自动显示） |
+| **个人小工具** | long-running-agent + claude-hud | 快速开发 + 状态监控（进度自动显示） |
 | **自媒体内容** | content-create + claude-hud | 内容创作 + 长任务监控 |
 | **技术探索/Demo** | long-running-agent | 单一需求完整实现 |
 | **核心业务系统** | architect-collaboration → dev-enegine | 先架构设计，后迭代开发 |
+| **团队协作项目** | architect-collaboration + claude-hud | 多阶段协作 + 进度可视化 |
 
 ---
 

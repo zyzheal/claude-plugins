@@ -32,7 +32,7 @@ export interface HudConfig {
     showTools: boolean;
     showAgents: boolean;
     showTodos: boolean;
-    showDevEngine: boolean;
+    showProgress: boolean;
     autocompactBuffer: AutocompactBufferMode;
     usageThreshold: number;
     sevenDayThreshold: number;
@@ -64,7 +64,7 @@ export const DEFAULT_CONFIG: HudConfig = {
     showTools: false,
     showAgents: false,
     showTodos: false,
-    showDevEngine: false,
+    showProgress: true,
     autocompactBuffer: 'enabled',
     usageThreshold: 0,
     sevenDayThreshold: 80,
@@ -198,9 +198,9 @@ export function mergeConfig(userConfig: Partial<HudConfig>): HudConfig {
     showTodos: typeof migrated.display?.showTodos === 'boolean'
       ? migrated.display.showTodos
       : DEFAULT_CONFIG.display.showTodos,
-    showDevEngine: typeof migrated.display?.showDevEngine === 'boolean'
-      ? migrated.display.showDevEngine
-      : DEFAULT_CONFIG.display.showDevEngine,
+    showProgress: typeof migrated.display?.showProgress === 'boolean'
+      ? migrated.display.showProgress
+      : DEFAULT_CONFIG.display.showProgress,
     autocompactBuffer: validateAutocompactBuffer(migrated.display?.autocompactBuffer)
       ? migrated.display.autocompactBuffer
       : DEFAULT_CONFIG.display.autocompactBuffer,

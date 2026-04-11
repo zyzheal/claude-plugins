@@ -6,7 +6,7 @@ import { getGitStatus } from './git.js';
 import { getUsage } from './usage-api.js';
 import { loadConfig } from './config.js';
 import { parseExtraCmdArg, runExtraCmd } from './extra-cmd.js';
-import { getDevEngineData } from './dev-engine.js';
+import { getProgressData } from './progress-tracker.js';
 import type { RenderContext } from './types.js';
 import { fileURLToPath } from 'node:url';
 import { realpathSync } from 'node:fs';
@@ -20,7 +20,7 @@ export type MainDeps = {
   loadConfig: typeof loadConfig;
   parseExtraCmdArg: typeof parseExtraCmdArg;
   runExtraCmd: typeof runExtraCmd;
-  getDevEngineData: typeof getDevEngineData;
+  getProgressData: typeof getProgressData;
   render: typeof render;
   now: () => number;
   log: (...args: unknown[]) => void;
@@ -36,7 +36,7 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
     loadConfig,
     parseExtraCmdArg,
     runExtraCmd,
-    getDevEngineData,
+    getProgressData,
     render,
     now: () => Date.now(),
     log: console.log,
@@ -69,11 +69,11 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
     const extraCmd = deps.parseExtraCmdArg();
     const extraLabel = extraCmd ? await deps.runExtraCmd(extraCmd) : null;
 
-    let devEngine = null;
-    if (config.display.showDevEngine) {
+    let progress = null;
+    if (config.display.showProgress !== false) {
       try {
-        devEngine = deps.getDevEngineData(stdin.cwd);
-      } catch { /* silently ignore dev-engine errors */ }
+        progress = deps.getProgressData(stdin.cwd);
+      } catch { /* silently ignore progress errors */ }
     }
 
     const sessionDuration = formatSessionDuration(transcript.sessionStart, deps.now);
@@ -90,7 +90,7 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
       usageData,
       config,
       extraLabel,
-      devEngine,
+      progress,
     };
 
     deps.render(ctx);

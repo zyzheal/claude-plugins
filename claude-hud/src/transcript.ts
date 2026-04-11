@@ -7,6 +7,7 @@ interface TranscriptLine {
   type?: string;
   slug?: string;
   customTitle?: string;
+  command?: string;  // Command name for type: 'command' entries
   message?: {
     content?: ContentBlock[];
   };
@@ -85,6 +86,21 @@ function processEntry(
 
   if (!result.sessionStart && entry.timestamp) {
     result.sessionStart = timestamp;
+  }
+
+  // Handle command entries (e.g., /architect:phase-workflow, /dev-engnie:requirement-dev)
+  // Commands are recorded at entry level with type: 'command' and command name
+  if (entry.type === 'command' && entry.command) {
+    const commandId = `cmd_${timestamp.getTime()}`;
+    const toolEntry: ToolEntry = {
+      id: commandId,
+      name: entry.command,
+      target: undefined,
+      status: 'completed',
+      startTime: timestamp,
+      endTime: timestamp,
+    };
+    toolMap.set(commandId, toolEntry);
   }
 
   const content = entry.message?.content;

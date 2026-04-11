@@ -77,7 +77,13 @@ Context █████░░░░░ 45% │ Usage ██░░░░░░░
 ◐ Edit: auth.ts | ✓ Read ×3 | ✓ Grep ×2        ← Tools activity
 ◐ explore [haiku]: Finding auth code (2m 15s)    ← Agent status
 ▸ Fix authentication bug (2/5)                   ← Todo progress
+🚀 [Feature 3/10] my-project → 实现用户登录  3/10  ← Plugin progress (NEW!)
 ```
+
+**Plugin Progress** automatically detects and displays progress from:
+- **long-running-agent**: `feature_list.json` + `claude-progress.txt`
+- **dev-enegine**: `.dev-enegine/requirements/manifest.json`
+- **architect-collaboration**: `docs/开发任务.md`
 
 ---
 
@@ -148,6 +154,26 @@ You can also edit the config file directly at `~/.claude/plugins/claude-hud/conf
 | `display.showTools` | boolean | false | Show tools activity line |
 | `display.showAgents` | boolean | false | Show agents activity line |
 | `display.showTodos` | boolean | false | Show todos progress line |
+| `display.showProgress` | boolean | true | Show plugin progress line (NEW!) |
+
+### Plugin Progress (NEW!)
+
+The `showProgress` option (enabled by default) automatically detects and displays progress from supported plugins:
+
+| Plugin | Status Files | Display Format |
+|--------|-------------|----------------|
+| **long-running-agent** | `feature_list.json`, `claude-progress.txt` | 🚀 [Feature 3/10] project → task |
+| **dev-enegine** | `.dev-enegine/requirements/manifest.json` | ⚙️ [Developing] project → task |
+| **architect-collaboration** | `docs/开发任务.md` | 📐 [Task Breakdown] project → task |
+
+**Example Output:**
+```
+🚀 [Feature 3/10] my-project → 实现用户登录  3/10
+⚙️ [Developing] api-gateway → Add auth middleware  5/8
+📐 [Task Breakdown] user-system → [ ] 编写单元测试  2/5
+```
+
+To disable, set `display.showProgress` to `false` in config.
 
 ### Usage Limits (Pro/Max/Team)
 

@@ -3,7 +3,7 @@ import { renderSessionLine } from './session-line.js';
 import { renderToolsLine } from './tools-line.js';
 import { renderAgentsLine } from './agents-line.js';
 import { renderTodosLine } from './todos-line.js';
-import { renderDevEngineLine } from './dev-engine-line.js';
+import { renderProgressLine } from './progress-line.js';
 import {
   renderIdentityLine,
   renderProjectLine,
@@ -321,13 +321,13 @@ function collectActivityLines(ctx: RenderContext): string[] {
     }
   }
 
-  if (display?.showDevEngine !== false) {
+  if (display?.showProgress !== false) {
     try {
-      const devEngineLine = renderDevEngineLine(ctx);
-      if (devEngineLine) {
-        activityLines.push(devEngineLine);
+      const progressLine = renderProgressLine(ctx);
+      if (progressLine) {
+        activityLines.push(progressLine);
       }
-    } catch { /* silently ignore dev-engine render errors */ }
+    } catch { /* silently ignore progress render errors */ }
   }
 
   return activityLines;

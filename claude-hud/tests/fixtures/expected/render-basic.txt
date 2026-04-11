@@ -1,2 +1,2 @@
-[Opus] │ my-project
+[Opus | API] │ my-project
 Context █████░░░░░ 45%

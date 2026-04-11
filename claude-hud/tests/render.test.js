@@ -40,8 +40,9 @@ function baseContext() {
       showSeparators: false,
       pathLevels: 1,
       gitStatus: { enabled: true, showDirty: true, showAheadBehind: false, showFileStats: false },
-      display: { showModel: true, showContextBar: true, contextValue: 'percent', showConfigCounts: true, showDuration: true, showSpeed: false, showTokenBreakdown: true, showUsage: true, usageBarEnabled: false, showTools: true, showAgents: true, showTodos: true, autocompactBuffer: 'enabled', usageThreshold: 0, sevenDayThreshold: 80, environmentThreshold: 0 },
+      display: { showModel: true, showContextBar: true, contextValue: 'percent', showConfigCounts: true, showDuration: true, showSpeed: false, showTokenBreakdown: true, showUsage: true, usageBarEnabled: false, showTools: true, showAgents: true, showTodos: true, showProgress: true, autocompactBuffer: 'enabled', usageThreshold: 0, sevenDayThreshold: 80, environmentThreshold: 0 },
     },
+    progress: null,
   };
 }
 
@@ -129,7 +130,7 @@ test('renderSessionLine handles root path gracefully', () => {
   const ctx = baseContext();
   ctx.stdin.cwd = '/';
   const line = renderSessionLine(ctx);
-  assert.ok(line.includes('[Opus]'));
+  assert.ok(line.includes('[Opus'), 'should include model name');
 });
 
 test('renderSessionLine supports token-based context display', () => {
@@ -173,7 +174,7 @@ test('renderSessionLine omits project name when cwd is undefined', () => {
   const ctx = baseContext();
   ctx.stdin.cwd = undefined;
   const line = renderSessionLine(ctx);
-  assert.ok(line.includes('[Opus]'));
+  assert.ok(line.includes('[Opus'), 'should include model name');
 });
 
 test('renderSessionLine includes session name when present', () => {

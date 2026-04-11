@@ -199,12 +199,12 @@ export function renderSessionLine(ctx: RenderContext): string {
     parts.push(dim(ctx.extraLabel));
   }
 
-  if (ctx.devEngine?.requirementName) {
-    const de = ctx.devEngine;
-    const statusTag = de.requirementStatus ? `[${de.requirementStatus}]` : '';
-    const featurePart = de.currentFeatureName ? ` → ${de.currentFeatureName}` : '';
-    const progress = de.featureTotal > 0 ? ` ${de.featureDone}/${de.featureTotal}` : '';
-    parts.push(dim(`${statusTag} ${de.requirementName}${featurePart}${progress}`.trim()));
+  if (ctx.progress?.projectName) {
+    const p = ctx.progress;
+    const phaseTag = p.phaseLabel ? `[${p.phaseLabel}]` : '';
+    const featurePart = p.currentTask ? ` → ${p.currentTask}` : '';
+    const progress = p.total > 0 ? ` ${p.completed}/${p.total}` : '';
+    parts.push(dim(`${phaseTag} ${p.projectName}${featurePart}${progress}`.trim()));
   }
 
   let line = parts.join(' | ');
