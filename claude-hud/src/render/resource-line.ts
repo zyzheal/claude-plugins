@@ -1,5 +1,5 @@
 import type { RenderContext } from '../types.js';
-import { dim, bold } from './colors.js';
+import { bold, green } from './colors.js';
 import { formatResourceBar } from './resource-bar.js';
 
 export function renderResourceLine(ctx: RenderContext): string | null {
@@ -21,5 +21,5 @@ export function renderResourceLine(ctx: RenderContext): string | null {
   // PID
   parts.push(`PID ${resource.pid}`);
 
-  return dim(parts.join(' \u2502 '));
+  return green(parts.join(' \u2502 '));
 }

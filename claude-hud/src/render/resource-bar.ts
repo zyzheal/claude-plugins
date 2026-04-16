@@ -1,4 +1,6 @@
-import { yellow, dim, RESET, green } from './colors.js';
+import { yellow, green, RESET } from './colors.js';
+
+const EMPTY_BLOCK = '\u2591';
 
 export function formatResourceBar(value: number, max: number, width: number): string {
   const ratio = Math.min(value / max, 1);
@@ -6,5 +8,6 @@ export function formatResourceBar(value: number, max: number, width: number): st
   const empty = width - filled;
 
   const color = ratio > 0.8 ? yellow : green;
-  return `${color('\u2588'.repeat(Math.max(filled, 0)))}${dim('\u2591'.repeat(Math.max(empty, 0)))}${RESET}`;
+  const emptyColor = ratio > 0.8 ? yellow : green;
+  return `${color('\u2588'.repeat(Math.max(filled, 0)))}${emptyColor(EMPTY_BLOCK.repeat(Math.max(empty, 0)))}${RESET}`;
 }

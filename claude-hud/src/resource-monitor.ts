@@ -1,9 +1,122 @@
-import { execSync } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
+import * as path from 'node:path';
+import { execSync } from 'node:child_process';
 import { createDebug } from './debug.js';
 
 const debug = createDebug('resource');
+
+// ============================================================
+// CPU delta tracking (cross-process, file-based)
+// ============================================================
+
+const CACHE_DIR = path.join(os.tmpdir(), 'claude-hud');
+const CPU_STATE_FILE = path.join(CACHE_DIR, 'cpu-state.json');
+
+interface CpuState {
+  pid: number;
+  cpuTimeSec: number;
+  wallMs: number;
+}
+
+function getCpuState(): CpuState | null {
+  try {
+    const raw = fs.readFileSync(CPU_STATE_FILE, 'utf8');
+    return JSON.parse(raw) as CpuState;
+  } catch {
+    return null;
+  }
+}
+
+function setCpuState(state: CpuState): void {
+  try {
+    if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true });
+    fs.writeFileSync(CPU_STATE_FILE, JSON.stringify(state));
+  } catch {
+    // ignore
+  }
+}
+
+function getCpuStateForPid(pid: number): CpuState | null {
+  try {
+    const file = path.join(CACHE_DIR, `cpu-state-${pid}.json`);
+    const raw = fs.readFileSync(file, 'utf8');
+    return JSON.parse(raw) as CpuState;
+  } catch {
+    return null;
+  }
+}
+
+function setCpuStateForPid(pid: number, cpuTimeSec: number, wallMs: number): void {
+  try {
+    if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true });
+    const file = path.join(CACHE_DIR, `cpu-state-${pid}.json`);
+    fs.writeFileSync(file, JSON.stringify({ pid, cpuTimeSec, wallMs }));
+  } catch {
+    // ignore
+  }
+}
+
+/**
+ * Parse cumulative CPU time (seconds) for a process.
+ * macOS: `ps -o time=` → M:SS.ss or H:MM:SS or D-HH:MM:SS
+ * Linux: `/proc/[pid]/stat` fields 14+15 → (utime+stime)/clk_tck
+ */
+function getCpuTimeSec(pid: number): number {
+  if (process.platform === 'darwin') {
+    const out = execSync(`ps -o time= -p ${pid} 2>/dev/null`, {
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+      timeout: 500,
+    }).trim();
+    // Handle D-HH:MM:SS (days prefix)
+    const daysPart = out.includes('-') ? parseInt(out.split('-')[0], 10) * 86400 : 0;
+    const timeStr = out.includes('-') ? out.split('-')[1] : out;
+    const parts = timeStr.split(':');
+    let seconds = daysPart;
+    if (parts.length === 3) {
+      seconds += parseInt(parts[0], 10) * 3600 + parseInt(parts[1], 10) * 60 + parseFloat(parts[2]);
+    } else if (parts.length === 2) {
+      seconds += parseInt(parts[0], 10) * 60 + parseFloat(parts[1]);
+    }
+    return seconds;
+  }
+
+  // Linux
+  try {
+    const stat = fs.readFileSync(`/proc/${pid}/stat`, 'utf8');
+    const fields = stat.split(/\s+/);
+    const utime = parseInt(fields[13], 10);
+    const stime = parseInt(fields[14], 10);
+    const clkTck = 100; // standard Linux HZ
+    return (utime + stime) / clkTck;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * Compute instantaneous CPU % by comparing current cumulative CPU time
+ * with the cached value from the previous HUD invocation.
+ */
+function computeCpuPercent(claudePid: number): number {
+  const prev = getCpuState();
+  const nowCpuTime = getCpuTimeSec(claudePid);
+  const nowWall = Date.now();
+
+  if (prev && prev.pid === claudePid && prev.cpuTimeSec >= 0) {
+    const cpuDeltaMs = (nowCpuTime - prev.cpuTimeSec) * 1000;
+    const wallDeltaMs = nowWall - prev.wallMs;
+    if (wallDeltaMs > 50) {
+      const cpuPercent = (cpuDeltaMs / wallDeltaMs) * 100;
+      setCpuState({ pid: claudePid, cpuTimeSec: nowCpuTime, wallMs: nowWall });
+      return Math.round(cpuPercent * 10) / 10;
+    }
+  }
+
+  setCpuState({ pid: claudePid, cpuTimeSec: nowCpuTime, wallMs: nowWall });
+  return 0;
+}
 
 export interface ResourceData {
   cpuPercent: number;
@@ -169,7 +282,6 @@ function getResourceMacOS(): ResourceData | null {
     });
 
     let memColIndex = -1;
-    let cpuColIndex = -1;
 
     for (const line of topOutput.split('\n')) {
       const parts = line.trim().split(/\s+/);
@@ -178,7 +290,6 @@ function getResourceMacOS(): ResourceData | null {
       if (parts[0] === 'PID' && parts[1] === 'COMMAND') {
         for (let i = 0; i < parts.length; i++) {
           if (parts[i] === 'MEM') memColIndex = i;
-          if (parts[i] === '%CPU') cpuColIndex = i;
         }
         continue;
       }
@@ -187,10 +298,6 @@ function getResourceMacOS(): ResourceData | null {
       if (parts[0] === String(claudePid) && memColIndex >= 0) {
         const memStr = parts[memColIndex];
         const memoryMB = parseMemoryValue(memStr);
-
-        const cpuPercent = cpuColIndex >= 0
-          ? (parseFloat(parts[cpuColIndex]) || 0)
-          : 0;
 
         // Get %mem from ps
         let memoryPercent = 0;
@@ -206,6 +313,7 @@ function getResourceMacOS(): ResourceData | null {
         }
 
         if (memoryMB > 0) {
+          const cpuPercent = computeCpuPercent(claudePid);
           return {
             cpuPercent: Math.round(cpuPercent * 10) / 10,
             memoryMB,
@@ -225,16 +333,17 @@ function getResourceMacOS(): ResourceData | null {
 
 function getResourceMacOSFallback(pid: number): ResourceData | null {
   try {
-    const output = execSync(`ps -o %cpu=,%mem=,rss= -p ${pid} 2>/dev/null`, {
+    const output = execSync(`ps -o %mem=,rss= -p ${pid} 2>/dev/null`, {
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 1000,
     }).trim();
 
     const parts = output.trim().split(/\s+/).map(Number);
-    if (parts.length < 3 || parts.some(isNaN)) return null;
+    if (parts.length < 2 || parts.some(isNaN)) return null;
 
-    const [cpuPercent, memoryPercent, rssKB] = parts;
+    const [memoryPercent, rssKB] = parts;
+    const cpuPercent = computeCpuPercent(pid);
 
     return {
       cpuPercent: Math.round(cpuPercent * 10) / 10,
@@ -261,8 +370,8 @@ function getResourceLinux(): ResourceData | null {
     getChildrenLinux(claudePid, allPids);
 
     let totalRssPages = 0;
-    let totalCpuPercent = 0;
     let totalMemPercent = 0;
+    let totalCpuTimeSec = 0;
     const pageSize = getPageSizeLinux();
 
     for (const pid of allPids) {
@@ -277,15 +386,15 @@ function getResourceLinux(): ResourceData | null {
       }
 
       try {
-        const psOut = execSync(`ps -o %cpu=,%mem= -p ${pid} 2>/dev/null`, {
+        totalCpuTimeSec += getCpuTimeSec(pid);
+        const psOut = execSync(`ps -o %mem= -p ${pid} 2>/dev/null`, {
           encoding: 'utf8',
           stdio: ['pipe', 'pipe', 'pipe'],
           timeout: 500,
         }).trim();
-        const parts = psOut.split(/\s+/).map(Number);
-        if (parts.length >= 2 && !parts.some(isNaN)) {
-          totalCpuPercent += parts[0];
-          totalMemPercent += parts[1];
+        const memVal = parseFloat(psOut);
+        if (!isNaN(memVal)) {
+          totalMemPercent += memVal;
         }
       } catch {
         // ignore
@@ -295,8 +404,24 @@ function getResourceLinux(): ResourceData | null {
     const memoryMB = Math.round((totalRssPages * pageSize / 1024 / 1024) * 10) / 10;
     if (memoryMB === 0) return null;
 
+    // Compute CPU from delta
+    let cpuPercent = 0;
+    for (const pid of allPids) {
+      const prev = getCpuStateForPid(pid);
+      const nowCpu = getCpuTimeSec(pid);
+      const nowWall = Date.now();
+      if (prev && prev.pid === pid && prev.cpuTimeSec >= 0) {
+        const cpuDelta = (nowCpu - prev.cpuTimeSec) * 1000;
+        const wallDelta = nowWall - prev.wallMs;
+        if (wallDelta > 50) {
+          cpuPercent += (cpuDelta / wallDelta) * 100;
+        }
+      }
+      setCpuStateForPid(pid, nowCpu, nowWall);
+    }
+
     return {
-      cpuPercent: Math.round(totalCpuPercent * 10) / 10,
+      cpuPercent: Math.round(cpuPercent * 10) / 10,
       memoryMB,
       memoryPercent: Math.round(totalMemPercent * 100) / 100,
       pid: claudePid,
