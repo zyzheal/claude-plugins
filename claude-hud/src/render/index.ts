@@ -4,6 +4,7 @@ import { renderToolsLine } from './tools-line.js';
 import { renderAgentsLine } from './agents-line.js';
 import { renderTodosLine } from './todos-line.js';
 import { renderProgressLine } from './progress-line.js';
+import { renderResourceLine } from './resource-line.js';
 import {
   renderIdentityLine,
   renderProjectLine,
@@ -328,6 +329,15 @@ function collectActivityLines(ctx: RenderContext): string[] {
         activityLines.push(progressLine);
       }
     } catch { /* silently ignore progress render errors */ }
+  }
+
+  if (display?.showResource !== false) {
+    try {
+      const resourceLine = renderResourceLine(ctx);
+      if (resourceLine) {
+        activityLines.push(resourceLine);
+      }
+    } catch { /* silently ignore resource render errors */ }
   }
 
   return activityLines;

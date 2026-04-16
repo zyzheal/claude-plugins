@@ -1,5 +1,6 @@
 import type { HudConfig } from './config.js';
 import type { GitStatus } from './git.js';
+import type { ResourceData } from './resource-monitor.js';
 
 export interface StdinData {
   transcript_path?: string;
@@ -96,6 +97,7 @@ export interface RenderContext {
   sessionDuration: string;
   gitStatus: GitStatus | null;
   usageData: UsageData | null;
+  resourceData: ResourceData | null;
   config: HudConfig;
   extraLabel: string | null;
   progress: ProgressData | null;

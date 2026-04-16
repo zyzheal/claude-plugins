@@ -7,6 +7,7 @@ import { getUsage } from './usage-api.js';
 import { loadConfig } from './config.js';
 import { parseExtraCmdArg, runExtraCmd } from './extra-cmd.js';
 import { getProgressData } from './progress-tracker.js';
+import { getResourceData } from './resource-monitor.js';
 import type { RenderContext } from './types.js';
 import { fileURLToPath } from 'node:url';
 import { realpathSync } from 'node:fs';
@@ -21,6 +22,7 @@ export type MainDeps = {
   parseExtraCmdArg: typeof parseExtraCmdArg;
   runExtraCmd: typeof runExtraCmd;
   getProgressData: typeof getProgressData;
+  getResourceData: typeof getResourceData;
   render: typeof render;
   now: () => number;
   log: (...args: unknown[]) => void;
@@ -37,6 +39,7 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
     parseExtraCmdArg,
     runExtraCmd,
     getProgressData,
+    getResourceData,
     render,
     now: () => Date.now(),
     log: console.log,
@@ -76,6 +79,13 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
       } catch { /* silently ignore progress errors */ }
     }
 
+    let resourceData = null;
+    if (config.display.showResource !== false) {
+      try {
+        resourceData = deps.getResourceData();
+      } catch { /* silently ignore resource errors */ }
+    }
+
     const sessionDuration = formatSessionDuration(transcript.sessionStart, deps.now);
 
     const ctx: RenderContext = {
@@ -88,6 +98,7 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
       sessionDuration,
       gitStatus,
       usageData,
+      resourceData,
       config,
       extraLabel,
       progress,

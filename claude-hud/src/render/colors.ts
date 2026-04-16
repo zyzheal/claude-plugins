@@ -8,6 +8,7 @@ const MAGENTA = '\x1b[35m';
 const CYAN = '\x1b[36m';
 const BRIGHT_BLUE = '\x1b[94m';
 const BRIGHT_MAGENTA = '\x1b[95m';
+const BOLD = '\x1b[1m';
 
 export function green(text: string): string {
   return `${GREEN}${text}${RESET}`;
@@ -31,6 +32,10 @@ export function magenta(text: string): string {
 
 export function dim(text: string): string {
   return `${DIM}${text}${RESET}`;
+}
+
+export function bold(text: string): string {
+  return `${BOLD}${text}${RESET}`;
 }
 
 export function getContextColor(percent: number): string {

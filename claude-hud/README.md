@@ -78,6 +78,7 @@ Context █████░░░░░ 45% │ Usage ██░░░░░░░
 ◐ explore [haiku]: Finding auth code (2m 15s)    ← Agent status
 ▸ Fix authentication bug (2/5)                   ← Todo progress
 🚀 [Feature 3/10] my-project → 实现用户登录  3/10  ← Plugin progress (NEW!)
+◉ CPU ████░░░░ 42.3% | MEM ██░░░░░░░ 128.5MB    ← Resource monitor
 ```
 
 **Plugin Progress** automatically detects and displays progress from:
@@ -155,6 +156,7 @@ You can also edit the config file directly at `~/.claude/plugins/claude-hud/conf
 | `display.showAgents` | boolean | false | Show agents activity line |
 | `display.showTodos` | boolean | false | Show todos progress line |
 | `display.showProgress` | boolean | true | Show plugin progress line (NEW!) |
+| `display.showResource` | boolean | false | Show resource monitor (CPU/MEM) |
 
 ### Plugin Progress (NEW!)
 
@@ -174,6 +176,29 @@ The `showProgress` option (enabled by default) automatically detects and display
 ```
 
 To disable, set `display.showProgress` to `false` in config.
+
+### Resource Monitor
+
+The `showResource` option (disabled by default) displays Claude Code process resource usage:
+
+```
+◉ CPU ████░░░░░░ 42.3% │ MEM ██░░░░░░░░ 462.1MB (2.9%) │ PID 77604
+```
+
+- **CPU** — Claude Code process CPU usage (single-core normalized, 100% = one full core)
+- **MEM** — Memory usage (absolute MB + percentage of system memory)
+- **PID** — Claude Code process ID
+
+**Cross-platform implementation:**
+
+| Platform | Method | Metric | Speed | Matches |
+|----------|--------|--------|-------|---------|
+| macOS | `top -l 1` MEM | physFootprint | ~700ms | Activity Monitor |
+| macOS (fallback) | `ps -o rss` | RSS | ~5ms | `ps` standard |
+| Linux | `/proc/[pid]/statm` | RSS | <1ms | `ps` standard |
+| Windows | `Get-Process` | WorkingSet64 | ~200ms | Task Manager |
+
+To enable, set `display.showResource` to `true` in config or use `/claude-hud:configure`.
 
 ### Usage Limits (Pro/Max/Team)
 

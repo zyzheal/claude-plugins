@@ -191,6 +191,7 @@ Info items (Counts, Tokens, Usage, Speed, Duration) can be turned off via "Reset
 | Usage limits | `display.showUsage` |
 | Usage bar style | `display.usageBarEnabled` |
 | Session duration | `display.showDuration` |
+| Resource monitor | `display.showResource` |
 
 **Always true (not configurable):**
 - `display.showModel: true`
