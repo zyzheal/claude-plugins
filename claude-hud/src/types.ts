@@ -5,6 +5,7 @@ import type { ResourceData } from './resource-monitor.js';
 export interface StdinData {
   transcript_path?: string;
   cwd?: string;
+  session_id?: string;
   model?: {
     id?: string;
     display_name?: string;

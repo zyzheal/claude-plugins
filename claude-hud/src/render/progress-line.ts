@@ -1,5 +1,5 @@
 import type { RenderContext } from '../types.js';
-import { cyan, dim, green, yellow } from './colors.js';
+import { cyan, dim, green, yellow, magenta } from './colors.js';
 
 /**
  * Renders the unified progress line for multiple plugin components.
@@ -26,8 +26,8 @@ export function renderProgressLine(ctx: RenderContext): string | null {
   // Phase label
   const phaseStr = phaseLabel ? dim(`[${phaseLabel}]`) : '';
 
-  // Project name
-  const namePart = projectName ? cyan(projectName) : '';
+  // Project name with "项目" prefix to indicate project-level scope
+  const namePart = projectName ? `${magenta('项目')} ${cyan(projectName)}` : '';
 
   // Current task
   const taskStr = currentTask ? ` → ${yellow(currentTask)}` : '';

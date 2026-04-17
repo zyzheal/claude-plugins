@@ -1,4 +1,4 @@
-import { cyan, dim, green, yellow } from './colors.js';
+import { cyan, dim, green, yellow, magenta } from './colors.js';
 /**
  * Renders the unified progress line for multiple plugin components.
  * Format: [phase] projectName → currentTask  X/Y features
@@ -18,8 +18,8 @@ export function renderProgressLine(ctx) {
             source === 'architect-collaboration' ? '📐' : '·';
     // Phase label
     const phaseStr = phaseLabel ? dim(`[${phaseLabel}]`) : '';
-    // Project name
-    const namePart = projectName ? cyan(projectName) : '';
+    // Project name with "项目" prefix to indicate project-level scope
+    const namePart = projectName ? `${magenta('项目')} ${cyan(projectName)}` : '';
     // Current task
     const taskStr = currentTask ? ` → ${yellow(currentTask)}` : '';
     // Progress

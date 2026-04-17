@@ -1,5 +1,5 @@
 import type { RenderContext } from '../types.js';
-import { yellow, green, dim } from './colors.js';
+import { yellow, green, dim, cyan } from './colors.js';
 
 export function renderTodosLine(ctx: RenderContext): string | null {
   const { todos } = ctx.transcript;
@@ -14,7 +14,7 @@ export function renderTodosLine(ctx: RenderContext): string | null {
 
   if (!inProgress) {
     if (completed === total && total > 0) {
-      return `${green('✓')} All todos complete ${dim(`(${completed}/${total})`)}`;
+      return `${cyan('Session')} ${green('✓')} All todos complete ${dim(`(${completed}/${total})`)}`;
     }
     return null;
   }
@@ -22,7 +22,7 @@ export function renderTodosLine(ctx: RenderContext): string | null {
   const content = truncateContent(inProgress.content);
   const progress = dim(`(${completed}/${total})`);
 
-  return `${yellow('▸')} ${content} ${progress}`;
+  return `${cyan('Session')} ${yellow('▸')} ${content} ${progress}`;
 }
 
 function truncateContent(content: string, maxLen: number = 50): string {
