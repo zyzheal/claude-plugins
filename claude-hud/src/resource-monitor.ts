@@ -11,30 +11,11 @@ const debug = createDebug('resource');
 // ============================================================
 
 const CACHE_DIR = path.join(os.tmpdir(), 'claude-hud');
-const CPU_STATE_FILE = path.join(CACHE_DIR, 'cpu-state.json');
 
 interface CpuState {
   pid: number;
   cpuTimeSec: number;
   wallMs: number;
-}
-
-function getCpuState(): CpuState | null {
-  try {
-    const raw = fs.readFileSync(CPU_STATE_FILE, 'utf8');
-    return JSON.parse(raw) as CpuState;
-  } catch {
-    return null;
-  }
-}
-
-function setCpuState(state: CpuState): void {
-  try {
-    if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true });
-    fs.writeFileSync(CPU_STATE_FILE, JSON.stringify(state));
-  } catch {
-    // ignore
-  }
 }
 
 function getCpuStateForPid(pid: number): CpuState | null {
@@ -98,9 +79,12 @@ function getCpuTimeSec(pid: number): number {
 /**
  * Compute instantaneous CPU % by comparing current cumulative CPU time
  * with the cached value from the previous HUD invocation.
+ *
+ * Uses per-PID state files so CPU tracking works correctly even when
+ * multiple Claude sessions have different PIDs.
  */
 function computeCpuPercent(claudePid: number): number {
-  const prev = getCpuState();
+  const prev = getCpuStateForPid(claudePid);
   const nowCpuTime = getCpuTimeSec(claudePid);
   const nowWall = Date.now();
 
@@ -109,12 +93,12 @@ function computeCpuPercent(claudePid: number): number {
     const wallDeltaMs = nowWall - prev.wallMs;
     if (wallDeltaMs > 50) {
       const cpuPercent = (cpuDeltaMs / wallDeltaMs) * 100;
-      setCpuState({ pid: claudePid, cpuTimeSec: nowCpuTime, wallMs: nowWall });
+      setCpuStateForPid(claudePid, nowCpuTime, nowWall);
       return Math.round(cpuPercent * 10) / 10;
     }
   }
 
-  setCpuState({ pid: claudePid, cpuTimeSec: nowCpuTime, wallMs: nowWall });
+  setCpuStateForPid(claudePid, nowCpuTime, nowWall);
   return 0;
 }
 
