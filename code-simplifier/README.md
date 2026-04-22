@@ -1,51 +1,92 @@
-# code-simplifier
+# 代码简化代理
 
-Agent that simplifies and refines code for clarity, consistency, and maintainability while preserving functionality.
+自动审查并简化代码，提升可读性、一致性和可维护性，同时保持原有功能不变。
 
-## Overview
+## 功能简介
 
-The code-simplifier agent reviews changed code and identifies opportunities to improve readability, reduce duplication, and align with project conventions — without altering behavior.
+代码简化代理（code-simplifier）会在检测到代码变更后自动触发。它分析代码差异并识别以下优化机会：
 
-## Installation
+- **冗余代码** -- 未使用的变量、导入、死代码分支
+- **抽象机会** -- 重复模式提取为公共函数
+- **命名清晰度** -- 变量/函数名是否可以更富有描述性
+- **复杂度降低** -- 嵌套条件语句、过长函数拆分
+- **规范对齐** -- 与项目现有代码风格保持一致
 
-### Via Plugin Marketplace
+**核心原则：只优化表达，不改变行为。**
+
+## 安装方法
+
+### 通过插件市场安装
+
 ```bash
 /plugin install code-simplifier@claude-plugins-official
 ```
 
-### Manual
-Copy this directory to your plugins folder or create a symlink:
+### 手动安装
+
+将本目录复制到插件目录或创建符号链接：
+
 ```bash
 ln -s /path/to/code-simplifier ~/.claude/plugins/local/code-simplifier
 ```
 
-## Usage
+## 使用说明
 
-The agent is invoked automatically when code changes are detected. It analyzes the diff and suggests simplifications.
+### 自动触发
 
-### Trigger Manually
+当 Claude Code 完成代码变更后，代码简化代理会自动分析变更并提出简化建议。
 
-Ask Claude Code to use the code-simplifier agent:
+### 手动触发
+
+你可以随时要求 Claude Code 使用代码简化代理：
+
 ```
-Simplify the recent changes using the code-simplifier agent
+"使用 code-simplifier 代理简化最近的代码变更"
+"审查并优化刚写的代码"
+"检查这段代码有没有可以简化的地方"
+"optimize the recent changes with code-simplifier"
 ```
 
-### What It Checks
+### 检查项目详解
 
-- **Redundant code** — Unused variables, imports, dead branches
-- **Abstraction opportunities** — Repeated patterns that should be extracted
-- **Naming clarity** — Variables/functions that could be more descriptive
-- **Complexity reduction** — Nested conditionals, long functions
-- **Convention alignment** — Style consistency with existing code
+| 检查项 | 说明 | 示例 |
+|--------|------|------|
+| **冗余代码** | 识别未使用的变量、导入语句和无用分支 | 删除声明但从未调用的函数 |
+| **抽象机会** | 发现重复出现的代码模式，建议提取为公共函数 | 多处相同的验证逻辑提取为 `validateInput()` |
+| **命名清晰度** | 建议更具描述性的变量和函数名 | `d` → `deliveryDate`、`fn` → `formatUser` |
+| **复杂度降低** | 简化嵌套条件、拆分过长的函数 | 3 层嵌套改为卫语句（guard clause） |
+| **规范对齐** | 确保代码风格与项目已有约定一致 | 统一使用箭头函数或统一命名风格 |
 
-## Agent Configuration
+### 代理配置
 
-The agent definition is in `agents/code-simplifier.md`. It specifies:
-- Allowed tools (Read, Grep, Glob, Edit, Bash)
-- Analysis patterns
-- Output format
+代理定义位于 `agents/code-simplifier.md`，包含：
 
-## Requirements
+- **允许使用的工具**：Read、Grep、Glob、Edit、Bash
+- **分析模式**：代码扫描和匹配规则
+- **输出格式**：简化建议的结构化输出
 
-- Claude Code with agent support enabled
-- Git repository (for diff analysis)
+## 工作流程
+
+```
+代码变更 → 自动触发 code-simplifier
+         → 分析 diff
+         → 识别优化点
+         → 输出建议（或直接应用）
+```
+
+1. 代理读取变更后的代码
+2. 逐项检查上述 5 个维度
+3. 生成具体的优化建议
+4. 经确认后直接应用修改，或输出建议供你参考
+
+## 系统要求
+
+- Claude Code（支持 Agent 功能）
+- Git 仓库（用于差异分析）
+
+## 注意事项
+
+- 代理**仅建议优化，不会自动修改代码**，所有变更需经你确认
+- 保持功能不变是首要原则 -- 优化前后行为应当完全一致
+- 对于业务逻辑复杂的核心代码，建议谨慎审查后再应用简化
+- 可以配合 `/revise-claude-md` 命令，将项目特有的代码规范记录到 CLAUDE.md 中

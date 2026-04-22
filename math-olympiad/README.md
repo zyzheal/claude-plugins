@@ -1,40 +1,79 @@
-# math-olympiad
+# math-olympiad（数学奥林匹克）
 
-Competition math solver with adversarial verification.
+带有对抗性验证的竞赛数学解题插件。支持 IMO、Putnam、USAMO 等数学竞赛题目的自动求解与验证。
 
-## The problem
+## 问题背景
 
-Self-verification gets fooled. A verifier that sees the reasoning is biased
-toward agreement. arXiv:2503.21934 ("Proof or Bluff") showed 85.7% self-verified
-IMO success drops to <5% under human grading.
+自我验证容易被误导。一个看到了推理过程的验证器会偏向于同意结论。arXiv:2503.21934（"Proof or Bluff"）研究表明，自我验证声称 85.7% 的 IMO 解题成功率，在人工评分下实际不到 5%。
 
-## The approach
+## 解决方案
 
-- **Context-isolated verification**: verifier sees only the clean proof, never
-  the reasoning trace
-- **Pattern-armed adversarial checks**: not "is this correct?" but "does this
-  accidentally prove RH?" / "extract the general lemma, find a 2×2
-  counterexample"
-- **Calibrated abstention**: says "no confident solution" rather than bluff
-- **Presentation pass**: produces clean LaTeX/PDF after verification passes
+- **上下文隔离验证**：验证器只看到干净的证明，永远不会看到推理过程
+- **模式驱动的对抗检查**：不是"这个正确吗？"而是"这是否意外地证明了黎曼猜想？"、"提取通用引理，找到 2×2 反例"
+- **校准后的弃权**：在没有自信解时说"没有可靠解"而非强行编造
+- **呈现优化**：验证通过后生成干净的 LaTeX/PDF
 
-## Validation
+## 验证结果
 
-17/18 IMO+Putnam 2025 problems solved, 0 false positives, 2 novel proofs found.
-See the skill's eval data in the
-[anthropic monorepo](https://github.com/anthropics/anthropic/tree/staging/sandbox/sandbox/ralph/math_skills/eval_harness).
+- 17/18 道 IMO+Putnam 2025 题目成功求解
+- 0 个假阳性
+- 发现了 2 个新证明
 
-## Install
+## 安装
 
-```
+```bash
 /plugin install math-olympiad@claude-plugins-official
 ```
 
-## Use
+### 手动安装
+
+```bash
+ln -s /path/to/math-olympiad ~/.claude/plugins/local/math-olympiad
+```
+
+## 使用说明
+
+### 自然语言触发
+
+直接描述数学题目，插件会自动激活：
 
 ```
-> Solve this IMO problem: [statement]
+> 求解这道 IMO 题目：[题目描述]
+> 验证这个证明是否正确
+> Putnam 竞赛题：[题目]
+> 数学奥林匹克：[题目]
 ```
 
-The skill auto-triggers on "IMO", "Putnam", "olympiad", "verify this proof",
-etc.
+### 触发词
+
+以下关键词会自动触发：
+
+- "IMO"、"Putnam"、"olympiad"（奥林匹克）
+- "verify this proof"、"验证证明"
+- "math competition"、"数学竞赛"
+- "数学奥林匹克"
+
+### 工作流程
+
+1. **解题**：生成解题思路和完整证明
+2. **对抗验证**：独立验证器检查证明正确性
+3. **反例搜索**：尝试找到反例或边界情况
+4. **输出**：生成格式化的 LaTeX/PDF 解答
+
+## 特性
+
+- ✅ 竞赛数学自动求解（IMO、Putnam、USAMO）
+- ✅ 上下文隔离的对抗性验证
+- ✅ 高精度（0 假阳性）
+- ✅ 自动 LaTeX/PDF 格式化输出
+- ✅ 新型证明发现能力
+
+## 注意事项
+
+- 验证器仅基于干净的数学证明进行判断，不参考推理过程
+- 对于没有可靠解的题目，插件会明确说明而非强行作答
+- 适合竞赛题目验证，不建议用于生产环境的关键数学证明
+
+## License
+
+MIT License

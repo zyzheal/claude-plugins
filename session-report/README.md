@@ -1,66 +1,105 @@
-# session-report
+# session-report（会话报告）
 
-Generate explorable HTML reports of Claude Code session usage — tokens, cache efficiency, subagent activity, skills used, and expensive prompts.
+生成可探索的 HTML 格式的 Claude Code 会话使用报告，包含 Token 消耗、缓存效率、子 Agent 活动、技能使用和昂贵提示等详细分析。
 
-## Installation
+## 功能特性
+
+- ✅ **Token 用量**：每次会话的输入/输出 Token 数和总花费
+- ✅ **缓存效率**：缓存命中率分析、节省量计算
+- ✅ **子 Agent 活动**：生成的 Agent 数量、成功率
+- ✅ **技能使用**：最常触发的技能统计
+- ✅ **昂贵提示**：最高 Token 消耗的操作
+- ✅ **会话时间线**：随时间变化的活动趋势
+
+## 安装
 
 ```bash
 /plugin install session-report@claude-plugins-official
 ```
 
-### Manual
+### 手动安装
+
 ```bash
 ln -s /path/to/session-report ~/.claude/plugins/local/session-report
 ```
 
-## Usage
+## 使用说明
 
-### Via Skill
+### 自然语言触发
 
 ```
-Generate a session report for the last 7 days
+"生成一份会话报告"
+"分析最近 7 天的 Token 使用情况"
+"查看缓存效率"
+"生成使用报告"
+"查看最昂贵的提示"
+"会话分析"
 ```
 
-Or trigger with any of these phrases:
-- "session report"
-- "token usage"
-- "cache analysis"
-- "usage report"
-- "expensive prompts"
-- "session analytics"
+### 触发词
 
-### Parameters
+以下关键词会自动触发：
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `--since` | `7d` | Time window: `24h`, `7d`, `30d`, `all` |
-| `--json` | false | Output raw JSON instead of HTML |
-| `--output` | `./report.html` | Output file path |
+- "session report"、"会话报告"
+- "token usage"、"Token 用量"
+- "cache analysis"、"缓存分析"
+- "usage report"、"使用报告"
+- "expensive prompts"、"昂贵提示"
+- "session analytics"、"会话分析"
 
-### Examples
+### 命令行参数
+
+| 参数 | 默认值 | 描述 |
+|------|--------|------|
+| `--since` | `7d` | 时间窗口：`24h`、`7d`、`30d`、`all` |
+| `--json` | false | 输出原始 JSON 而非 HTML |
+| `--output` | `./report.html` | 输出文件路径 |
+
+### 示例
 
 ```bash
-# Last 7 days (default)
+# 最近 7 天的报告（默认）
+node skills/session-report/analyze-sessions.mjs --since 7d
+
+# 全部历史报告
+node skills/session-report/analyze-sessions.mjs --since all
+
+# 最近 30 天报告
+node skills/session-report/analyze-sessions.mjs --since 30d
+
+# 输出 JSON 格式
 node skills/session-report/analyze-sessions.mjs --json --since 7d
 
-# All-time report
-node skills/session-report/analyze-sessions.mjs --json
-
-# Specific time window
-node skills/session-report/analyze-sessions.mjs --json --since 30d
+# 自定义输出路径
+node skills/session-report/analyze-sessions.mjs --output ./my-report.html
 ```
 
-## Report Contents
+## 报告内容
 
-The HTML report includes:
-- **Token usage** — Input/output tokens per session, total spend
-- **Cache efficiency** — Cache hit/miss ratios, savings
-- **Subagent activity** — Number of agents spawned, success rate
-- **Skills used** — Most frequently triggered skills
-- **Expensive prompts** — Highest token-consuming operations
-- **Session timeline** — Activity over time
+生成的 HTML 报告包含：
 
-## Requirements
+1. **Token 用量概览** - 总输入/输出 Token、费用估算
+2. **缓存效率分析** - 缓存命中率、节省的 Token 数
+3. **子 Agent 活动** - 生成的 Agent 数量、成功率、运行时间
+4. **技能使用统计** - 最常使用的技能排名
+5. **昂贵提示分析** - Token 消耗最高的操作
+6. **会话时间线** - 随时间变化的活动趋势图
+
+## 前置要求
 
 - Node.js 18+
-- Access to `~/.claude/projects/` transcript directory
+- 可访问 `~/.claude/projects/` 会话记录目录
+
+## 常见问题
+
+### 找不到会话数据
+
+确保 `~/.claude/projects/` 目录下有会话记录文件。
+
+### HTML 报告无法打开
+
+报告是独立的 HTML 文件，可以在任何浏览器中打开。
+
+## License
+
+MIT License
