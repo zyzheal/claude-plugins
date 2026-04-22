@@ -11,17 +11,18 @@
  * - 截完自动用 open 命令打开图片
  */
 
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+import { chromium } from 'playwright-core';
+import { execFile } from 'child_process';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
-// 使用全局安装的 playwright-core
-const pw = require('/Users/alchain/.npm-global/lib/node_modules/playwright/node_modules/playwright-core');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const htmlPath = process.argv[2] || new URL('../templates/result-card.html', import.meta.url).pathname;
-const outputPath = process.argv[3] || new URL('../templates/result-card.png', import.meta.url).pathname;
+const htmlPath = process.argv[2] || resolve(__dirname, '../templates/result-card.html');
+const outputPath = process.argv[3] || resolve(__dirname, '../templates/result-card.png');
 
 async function screenshot() {
-  const browser = await pw.chromium.launch();
+  const browser = await chromium.launch();
 
   try {
     const context = await browser.newContext({
@@ -35,8 +36,9 @@ async function screenshot() {
 
     // 等待字体加载
     await page.evaluate(() => document.fonts.ready);
-    // 额外等待确保渲染完成
-    await page.waitForTimeout(2000);
+    // 额外等待确保渲染完成（用 setTimeout 替代 page.waitForTimeout，
+    // 避免新版 playwright-core 的废弃警告）
+    await new Promise(r => setTimeout(r, 2000));
 
     // 只截 .card 元素
     const card = await page.locator('.card');
@@ -56,9 +58,12 @@ async function screenshot() {
     await browser.close();
   }
 
-  // 自动打开图片
-  const { execSync } = require('child_process');
-  execSync(`open "${outputPath}"`);
+  // 自动打开图片（使用 execFile 避免 shell 注入）
+  execFile('open', [outputPath], err => {
+    if (err) {
+      console.log(`请手动打开: ${outputPath}`);
+    }
+  });
 }
 
 screenshot().catch(err => {

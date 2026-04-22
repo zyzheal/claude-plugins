@@ -47,7 +47,7 @@ autoresearch 的精髓：
 ### 评分规则
 - 维度1-7：每个维度打 1-10 分，乘以权重得到该维度得分
 - 维度8（实测表现）：跑2-3个测试prompt，按输出质量打1-10分
-- **总分 = Σ(维度分 × 权重) / 10**，满分100
+- **总分 = Σ((维度分/10) × 权重)**，满分100。例：维度1打8分→(8/10)×8=6.4分
 - 改进后总分必须 **严格高于** 改进前才保留
 
 ### 关于「实测表现」维度
@@ -71,7 +71,7 @@ autoresearch 的精髓：
 
 ```
 1. 确认优化范围：
-   - 全部skills → 扫描 .claude/skills/*/SKILL.md
+   - 全部skills → 扫描 ~/.claude/skills/*/SKILL.md（全局）+ .claude/skills/*/SKILL.md（项目级）+ ~/.claude/plugins/*/skills/*/SKILL.md（插件级）
    - 指定skills → 用户指定列表
 2. 创建 git 分支：auto-optimize/YYYYMMDD-HHMM
 3. 初始化 results.tsv（如不存在）
@@ -114,7 +114,7 @@ for each skill in 优化范围:
 
   # 汇总
   5. 计算加权总分
-  6. 记录到 results.tsv
+  6. 记录到 results.tsv（darwin-skill 安装目录下的文件）
 ```
 
 **如果子agent不可用**（超时、环境限制），维度8用干跑验证打分，标注 `dry_run`。不要因为跑不了测试就跳过这个维度——哪怕是模拟推演也比完全不看效果好。
@@ -237,7 +237,7 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 ```
 
 新增 `eval_mode` 列：`full_test`（跑了子agent测试）或 `dry_run`（模拟推演）。
-文件位置：`.claude/skills/darwin-skill/results.tsv`
+文件位置：darwin-skill 安装目录下的 `results.tsv`（如 `~/.claude/skills/darwin-skill/results.tsv` 或项目中的 `darwin-skill/results.tsv`）。始终存放在 darwin-skill 自身目录，不放在被优化 skill 的目录。
 
 ---
 
