@@ -1,78 +1,82 @@
-# Hookify Plugin
+# hookify（Hook 创建器）
 
-Easily create custom hooks to prevent unwanted behaviors by analyzing conversation patterns or from explicit instructions.
+通过简单的 Markdown 配置文件创建自定义 Hook，防止不需要的行为。无需编辑复杂的 `hooks.json` 文件，只需用自然语言描述规则即可。
 
-## Overview
+## 功能特性
 
-The hookify plugin makes it simple to create hooks without editing complex `hooks.json` files. Instead, you create lightweight markdown configuration files that define patterns to watch for and messages to show when those patterns match.
+- ✅ 自动分析对话发现不需要的行为
+- ✅ 简单的 Markdown 配置 + YAML frontmatter
+- ✅ 正则表达式模式匹配
+- ✅ 无需编码 - 只需描述行为
+- ✅ 即时生效，无需重启
+- ✅ 支持警告（warn）和阻止（block）两种动作
 
-**Key features:**
-- 🎯 Analyze conversations to find unwanted behaviors automatically
-- 📝 Simple markdown configuration files with YAML frontmatter
-- 🔍 Regex pattern matching for powerful rules
-- 🚀 No coding required - just describe the behavior
-- 🔄 Easy enable/disable without restarting
-
-## Quick Start
-
-### 1. Create Your First Rule
+## 安装
 
 ```bash
-/hookify Warn me when I use rm -rf commands
+/plugin install hookify@claude-plugins-official
 ```
 
-This analyzes your request and creates `.claude/hookify.warn-rm.local.md`.
+### 手动安装
 
-### 2. Test It Immediately
-
-**No restart needed!** Rules take effect on the very next tool use.
-
-Ask Claude to run a command that should trigger the rule:
-```
-Run rm -rf /tmp/test
+```bash
+ln -s /path/to/hookify ~/.claude/plugins/local/hookify
 ```
 
-You should see the warning message immediately!
+## 快速开始
 
-## Usage
+### 1. 创建第一条规则
 
-### Main Command: /hookify
-
-**With arguments:**
-```
-/hookify Don't use console.log in TypeScript files
-```
-Creates a rule from your explicit instructions.
-
-**Without arguments:**
-```
-/hookify
-```
-Analyzes recent conversation to find behaviors you've corrected or been frustrated by.
-
-### Helper Commands
-
-**List all rules:**
-```
-/hookify:list
+```bash
+/hookify 警告我使用 rm -rf 命令
 ```
 
-**Configure rules interactively:**
-```
-/hookify:configure
-```
-Enable/disable existing rules through an interactive interface.
+这会分析你的请求并创建 `.claude/hookify.warn-rm.local.md`。
 
-**Get help:**
+### 2. 立即测试
+
+**无需重启！** 规则在下一次工具使用时立即生效。
+
 ```
-/hookify:help
+运行 rm -rf /tmp/test
 ```
 
-## Rule Configuration Format
+你应该立即看到警告消息！
 
-### Simple Rule (Single Pattern)
+## 命令
 
-`.claude/hookify.dangerous-rm.local.md`:
+### `/hookify <描述>`
+
+根据明确指示创建规则。
+
+```bash
+/hookify 不要在 TypeScript 文件中使用 console.log
+/hookify 阻止所有删除操作
+/hookify 提醒我不要忘记运行测试
+```
+
+### `/hookify`（无参数）
+
+分析最近的对话，找出你纠正过或感到沮丧的行为。
+
+### `/hookify:list`
+
+列出所有规则。
+
+### `/hookify:configure`
+
+通过交互界面启用/禁用现有规则。
+
+### `/hookify:help`
+
+获取帮助。
+
+## 规则配置格式
+
+### 简单规则（单模式）
+
+`.claude/hookify.dangerous-rm.local.md`：
+
 ```markdown
 ---
 name: block-dangerous-rm
@@ -82,21 +86,22 @@ pattern: rm\s+-rf
 action: block
 ---
 
-⚠️ **Dangerous rm command detected!**
+⚠️ **检测到危险的 rm 命令！**
 
-This command could delete important files. Please:
-- Verify the path is correct
-- Consider using a safer approach
-- Make sure you have backups
+此命令可能删除重要文件。请：
+- 验证路径是否正确
+- 考虑使用更安全的方法
+- 确保有备份
 ```
 
-**Action field:**
-- `warn`: Shows warning but allows operation (default)
-- `block`: Prevents operation from executing (PreToolUse) or stops session (Stop events)
+**动作字段：**
+- `warn`：显示警告但允许操作（默认）
+- `block`：阻止操作执行
 
-### Advanced Rule (Multiple Conditions)
+### 高级规则（多条件）
 
-`.claude/hookify.sensitive-files.local.md`:
+`.claude/hookify.sensitive-files.local.md`：
+
 ```markdown
 ---
 name: warn-sensitive-files
@@ -112,44 +117,44 @@ conditions:
     pattern: KEY
 ---
 
-🔐 **Sensitive file edit detected!**
+🔐 **检测到编辑敏感文件！**
 
-Ensure credentials are not hardcoded and file is in .gitignore.
+确保凭据没有硬编码，且文件在 .gitignore 中。
 ```
 
-**All conditions must match** for the rule to trigger.
+**所有条件必须匹配**才会触发规则。
 
-## Event Types
+## 事件类型
 
-- **`bash`**: Triggers on Bash tool commands
-- **`file`**: Triggers on Edit, Write, MultiEdit tools
-- **`stop`**: Triggers when Claude wants to stop (for completion checks)
-- **`prompt`**: Triggers on user prompt submission
-- **`all`**: Triggers on all events
+| 事件 | 触发条件 |
+|------|----------|
+| `bash` | Bash 工具命令 |
+| `file` | Edit、Write、MultiEdit 工具 |
+| `stop` | Claude 想要停止时（完成检查） |
+| `prompt` | 用户提交提示时 |
+| `all` | 所有事件 |
 
-## Pattern Syntax
+## 模式语法
 
-Use Python regex syntax:
+使用 Python 正则表达式语法：
 
-| Pattern | Matches | Example |
-|---------|---------|---------|
+| 模式 | 匹配 | 示例 |
+|------|------|------|
 | `rm\s+-rf` | rm -rf | rm -rf /tmp |
 | `console\.log\(` | console.log( | console.log("test") |
-| `(eval\|exec)\(` | eval( or exec( | eval("code") |
-| `\.env$` | files ending in .env | .env, .env.local |
+| `(eval\|exec)\(` | eval( 或 exec( | eval("code") |
+| `\.env$` | 以 .env 结尾的文件 | .env, .env.local |
 | `chmod\s+777` | chmod 777 | chmod 777 file.txt |
 
-**Tips:**
-- Use `\s` for whitespace
-- Escape special chars: `\.` for literal dot
-- Use `|` for OR: `(foo|bar)`
-- Use `.*` to match anything
-- Set `action: block` for dangerous operations
-- Set `action: warn` (or omit) for informational warnings
+**提示：**
+- 使用 `\s` 匹配空白
+- 转义特殊字符：`\.` 匹配字面点
+- 使用 `|` 表示 OR：`(foo|bar)`
+- 使用 `.*` 匹配任意内容
 
-## Examples
+## 使用示例
 
-### Example 1: Block Dangerous Commands
+### 示例 1：阻止危险命令
 
 ```markdown
 ---
@@ -160,15 +165,12 @@ pattern: rm\s+-rf|dd\s+if=|mkfs|format
 action: block
 ---
 
-🛑 **Destructive operation detected!**
+🛑 **检测到破坏性操作！**
 
-This command can cause data loss. Operation blocked for safety.
-Please verify the exact path and use a safer approach.
+此命令可能导致数据丢失。操作已阻止。
 ```
 
-**This rule blocks the operation** - Claude will not be allowed to execute these commands.
-
-### Example 2: Warn About Debug Code
+### 示例 2：警告调试代码
 
 ```markdown
 ---
@@ -179,14 +181,12 @@ pattern: console\.log\(|debugger;|print\(
 action: warn
 ---
 
-🐛 **Debug code detected**
+🐛 **检测到调试代码**
 
-Remember to remove debugging statements before committing.
+提交前请记得删除调试语句。
 ```
 
-**This rule warns but allows** - Claude sees the message but can still proceed.
-
-### Example 3: Require Tests Before Stopping
+### 示例 3：停止前要求测试
 
 ```markdown
 ---
@@ -200,140 +200,66 @@ conditions:
     pattern: npm test|pytest|cargo test
 ---
 
-**Tests not detected in transcript!**
+**未在对话中检测到测试！**
 
-Before stopping, please run tests to verify your changes work correctly.
+停止前请先运行测试验证变更。
 ```
 
-**This blocks Claude from stopping** if no test commands appear in the session transcript. Enable only when you want strict enforcement.
+## 高级用法
 
-## Advanced Usage
+### 操作符参考
 
-### Multiple Conditions
+| 操作符 | 含义 |
+|--------|------|
+| `regex_match` | 正则匹配（最常用） |
+| `contains` | 包含模式 |
+| `equals` | 精确匹配 |
+| `not_contains` | 不包含模式 |
+| `starts_with` | 以...开头 |
+| `ends_with` | 以...结尾 |
 
-Check multiple fields simultaneously:
+### 字段参考
 
-```markdown
----
-name: api-key-in-typescript
-enabled: true
-event: file
-conditions:
-  - field: file_path
-    operator: regex_match
-    pattern: \.tsx?$
-  - field: new_text
-    operator: regex_match
-    pattern: (API_KEY|SECRET|TOKEN)\s*=\s*["']
----
+**Bash 事件：**
+- `command`：Bash 命令字符串
 
-🔐 **Hardcoded credential in TypeScript!**
+**File 事件：**
+- `file_path`：被编辑的文件路径
+- `new_text`：新添加的内容
+- `old_text`：被替换的内容
+- `content`：文件内容（Write 专属）
 
-Use environment variables instead of hardcoded values.
-```
+**Prompt 事件：**
+- `user_prompt`：用户提交的提示文本
 
-### Operators Reference
+## 规则管理
 
-- `regex_match`: Pattern must match (most common)
-- `contains`: String must contain pattern
-- `equals`: Exact string match
-- `not_contains`: String must NOT contain pattern
-- `starts_with`: String starts with pattern
-- `ends_with`: String ends with pattern
+### 启用/禁用规则
 
-### Field Reference
+编辑 `.local.md` 文件，设置 `enabled: false` 或 `enabled: true`。
 
-**For bash events:**
-- `command`: The bash command string
-
-**For file events:**
-- `file_path`: Path to file being edited
-- `new_text`: New content being added (Edit, Write)
-- `old_text`: Old content being replaced (Edit only)
-- `content`: File content (Write only)
-
-**For prompt events:**
-- `user_prompt`: The user's submitted prompt text
-
-**For stop events:**
-- Use general matching on session state
-
-## Management
-
-### Enable/Disable Rules
-
-**Temporarily disable:**
-Edit the `.local.md` file and set `enabled: false`
-
-**Re-enable:**
-Set `enabled: true`
-
-**Or use interactive tool:**
-```
+或使用交互工具：
+```bash
 /hookify:configure
 ```
 
-### Delete Rules
+### 删除规则
 
-Simply delete the `.local.md` file:
+直接删除 `.local.md` 文件：
 ```bash
 rm .claude/hookify.my-rule.local.md
 ```
 
-### View All Rules
+### 查看所有规则
 
-```
+```bash
 /hookify:list
 ```
 
-## Installation
-
-This plugin is part of the Claude Code Marketplace. It should be auto-discovered when the marketplace is installed.
-
-**Manual testing:**
-```bash
-cc --plugin-dir /path/to/hookify
-```
-
-## Requirements
+## 前置要求
 
 - Python 3.7+
-- No external dependencies (uses stdlib only)
-
-## Troubleshooting
-
-**Rule not triggering:**
-1. Check rule file exists in `.claude/` directory (in project root, not plugin directory)
-2. Verify `enabled: true` in frontmatter
-3. Test regex pattern separately
-4. Rules should work immediately - no restart needed
-5. Try `/hookify:list` to see if rule is loaded
-
-**Import errors:**
-- Ensure Python 3 is available: `python3 --version`
-- Check hookify plugin is installed
-
-**Pattern not matching:**
-- Test regex: `python3 -c "import re; print(re.search(r'pattern', 'text'))"`
-- Use unquoted patterns in YAML to avoid escaping issues
-- Start simple, then add complexity
-
-**Hook seems slow:**
-- Keep patterns simple (avoid complex regex)
-- Use specific event types (bash, file) instead of "all"
-- Limit number of active rules
-
-## Contributing
-
-Found a useful rule pattern? Consider sharing example files via PR!
-
-## Future Enhancements
-
-- Severity levels (error/warning/info distinctions)
-- Rule templates library
-- Interactive pattern builder
-- Hook testing utilities
-- JSON format support (in addition to markdown)
+- 无外部依赖（仅使用标准库）
 
 ## License
 

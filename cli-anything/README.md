@@ -1,458 +1,214 @@
-# cli-anything Plugin for Claude Code
+# cli-anything（CLI 生成器）
 
-Build powerful, stateful CLI interfaces for any GUI application using the cli-anything harness methodology.
+为任何 GUI 应用程序构建功能强大的有状态命令行界面（CLI）。基于经过验证的 cli-anything 方法论，已成功为 GIMP、Blender、Inkscape、Audacity、LibreOffice、OBS Studio 和 Kdenlive 生成 CLI，累计超过 1,245 个通过测试。
 
-## Overview
+## 功能特性
 
-The cli-anything plugin automates the process of creating production-ready command-line interfaces for GUI applications. It follows a proven methodology that has successfully generated CLIs for GIMP, Blender, Inkscape, Audacity, LibreOffice, OBS Studio, and Kdenlive — with over 1,100 passing tests across all implementations.
+- ✅ 自动分析应用架构和数据模型
+- ✅ 设计镜像 GUI 功能的 CLI 结构
+- ✅ 实现核心模块和状态管理
+- ✅ 全面的单元测试和 E2E 测试
+- ✅ 自动生成 SKILL.md 供 AI Agent 发现
+- ✅ PyPI 打包和分发支持
+- ✅ REPL 模式、JSON 输出、撤销/重做
 
-## What It Does
-
-This plugin transforms GUI applications into agent-usable CLIs by:
-
-1. **Analyzing** the application's architecture and data model
-2. **Designing** a CLI that mirrors the GUI's functionality
-3. **Implementing** core modules with proper state management
-4. **Testing** with comprehensive unit and E2E test suites
-5. **Documenting** everything for maintainability
-
-The result: A stateful CLI with REPL mode, JSON output, undo/redo, and full test coverage.
-
-## Installation
-
-### From Claude Code
+## 安装
 
 ```bash
-/plugin install cli-anything@your-registry
+/plugin install cli-anything@claude-plugins-official
 ```
 
-### Manual Installation
+### 手动安装
 
-1. Clone this repository to your Claude Code plugins directory:
-   ```bash
-   cd ~/.claude/plugins
-   git clone https://github.com/yourusername/cli-anything-plugin.git
-   ```
+```bash
+ln -s /path/to/cli-anything ~/.claude/plugins/local/cli-anything
+```
 
-2. Reload plugins:
-   ```bash
-   /reload-plugins
-   ```
-
-## Prerequisites
+### 前置要求
 
 - Python 3.10+
-- `click` - CLI framework
-- `pytest` - Testing framework
-- HARNESS.md (included in this plugin at `~/.claude/plugins/cli-anything/HARNESS.md`)
+- `click` - CLI 框架
+- `pytest` - 测试框架
 
-**Windows note:** Claude Code runs shell commands via `bash`. On Windows, install Git for Windows (includes `bash` and
-`cygpath`) or use WSL; otherwise commands may fail with `cygpath: command not found`.
-
-Install Python dependencies:
 ```bash
 pip install click pytest
 ```
 
-## Commands
+## 命令
 
-### `/cli-anything <software-path-or-repo>`
+### `/cli-anything <软件路径或仓库>`
 
-Build a complete CLI harness for any software application. Accepts a local path to the software source code or a GitHub repository URL.
+为任意软件构建完整的 CLI 工具。接受本地源码路径或 GitHub 仓库 URL。
 
-**Examples:**
+**示例：**
+
 ```bash
-# Build from local source
+# 从本地源码构建
 /cli-anything /home/user/gimp
 
-# Build from a GitHub repo
+# 从 GitHub 仓库构建
 /cli-anything https://github.com/blender/blender
 ```
 
-This runs all phases:
-1. Source Acquisition (clone if GitHub URL)
-2. Codebase Analysis
-3. CLI Architecture Design
-4. Implementation
-5. Test Planning
-6. Test Implementation & Documentation
-7. SKILL.md Generation
-8. PyPI Publishing and Installation
+执行所有阶段：源码获取 → 代码分析 → CLI 架构设计 → 实现 → 测试 → 文档 → SKILL.md 生成 → PyPI 发布
 
-### `/cli-anything:refine <software-path> [focus]`
+### `/cli-anything:refine <软件路径> [焦点]`
 
-Refine an existing CLI harness to expand coverage. Analyzes gaps between the software's full capabilities and what the current CLI covers, then iteratively adds new commands and tests.
+扩展现有 CLI 的功能覆盖范围，分析差距并迭代添加新命令和测试。
 
-**Examples:**
+**示例：**
+
 ```bash
-# Broad refinement — agent finds gaps across all capabilities
+# 广泛扩展 - Agent 自动查找所有差距
 /cli-anything:refine /home/user/gimp
 
-# Focused refinement — agent targets a specific functionality area
-/cli-anything:refine /home/user/shotcut "vid-in-vid and picture-in-picture compositing"
-/cli-anything:refine /home/user/blender "particle systems and physics simulation"
+# 聚焦扩展 - 针对特定功能区域
+/cli-anything:refine /home/user/blender "粒子系统和物理模拟"
 ```
 
-### `/cli-anything:test <software-path-or-repo>`
+### `/cli-anything:test <软件路径或仓库>`
 
-Run tests for a CLI harness and update TEST.md with results.
+运行 CLI 测试并更新 TEST.md 结果。
 
-**Examples:**
 ```bash
-# Run all tests for GIMP CLI
 /cli-anything:test /home/user/gimp
-
-# Run tests for Blender from GitHub
-/cli-anything:test https://github.com/blender/blender
 ```
 
-### `/cli-anything:validate <software-path-or-repo>`
+### `/cli-anything:validate <软件路径或仓库>`
 
-Validate a CLI harness against HARNESS.md standards and best practices.
+验证 CLI 是否符合 HARNESS.md 标准和最佳实践。
 
-**Examples:**
 ```bash
-# Validate GIMP CLI
 /cli-anything:validate /home/user/gimp
-
-# Validate from GitHub repo
-/cli-anything:validate https://github.com/blender/blender
 ```
 
-### `/cli-anything:list [--path <directory>] [--depth <n>] [--json]`
+### `/cli-anything:list [--path <目录>] [--depth <n>] [--json]`
 
-List all available CLI-Anything tools, including both installed packages and generated directories.
+列出所有可用的 CLI-Anything 工具。
 
-**Options:**
-- `--path <directory>` - Directory to search (default: current directory)
-- `--depth <n>` - Maximum recursion depth (default: unlimited). Scans depths 0 through N.
-- `--json` - Output in JSON format
-
-**Examples:**
 ```bash
-# List all tools in current directory (unlimited depth)
+# 列出当前目录的所有工具
 /cli-anything:list
 
-# List tools with depth limit
+# 限制扫描深度
 /cli-anything:list --depth 2
 
-# List tools with JSON output
+# JSON 格式输出
 /cli-anything:list --json
-
-# Search a specific directory with depth limit
-/cli-anything:list --path /projects/my-tools --depth 3
 ```
 
-**Output includes:**
-- Tool name
-- Status (installed/generated)
-- Version
-- Source path
+## 构建流程
 
-## The cli-anything Methodology
+### 阶段 1：代码分析
 
-### Phase 1: Codebase Analysis
+分析目标应用：
+- 后端引擎（如 MLT、GEGL、bpy）
+- 数据模型（XML、JSON、二进制）
+- 现有 CLI 工具
+- GUI 到 API 的映射
 
-Analyze the target application:
-- Backend engine (e.g., MLT, GEGL, bpy)
-- Data model (XML, JSON, binary)
-- Existing CLI tools
-- GUI-to-API mappings
+**产出：** 软件专用的 SOP 文档
 
-**Output:** Software-specific SOP document (e.g., `GIMP.md`)
+### 阶段 2：CLI 架构设计
 
-### Phase 2: CLI Architecture Design
+设计 CLI 结构：
+- 与应用领域对应的命令组
+- 状态模型（JSON 项目格式）
+- 输出格式（人类可读 + JSON）
+- 渲染管道
 
-Design the CLI structure:
-- Command groups matching app domains
-- State model (JSON project format)
-- Output formats (human + JSON)
-- Rendering pipeline
+### 阶段 3：实现
 
-**Output:** Architecture documented in SOP
+构建 CLI：
+- 核心模块（项目、会话、导出等）
+- Click CLI 带命令组
+- REPL 模式（默认行为）
+- `--json` 机器可读输出
+- 全局会话状态 + 撤销/重做（50 级栈）
 
-### Phase 3: Implementation
+### 阶段 4-5：测试
 
-Build the CLI:
-- Core modules (project, session, export, etc.)
-- Click-based CLI with command groups
-- REPL mode as default with unified `ReplSkin` (copy `repl_skin.py` from plugin to `utils/`)
-- `--json` flag for machine-readable output
-- Global session state with undo/redo
-- `invoke_without_command=True` so bare `cli-anything-<software>` enters REPL
+- 单元测试（合成数据）
+- E2E 测试（真实文件）
+- 工作流测试（多步骤场景）
+- 输出验证（像素分析、格式验证）
 
-**Output:** Working CLI at `agent-harness/cli_anything/<software>/`
+### 阶段 6.5：SKILL.md 生成
 
-### Phase 4: Test Planning
+自动生成 AI 可发现的技能定义，包含 YAML frontmatter、命令组、示例和 Agent 指导。
 
-Plan comprehensive tests:
-- Unit test plan (modules, functions, edge cases)
-- E2E test plan (workflows, file types, validations)
-- Realistic workflow scenarios
+### 阶段 7：PyPI 发布
 
-**Output:** `TEST.md` Part 1 (the plan)
+使用 PEP 420 命名空间包打包，支持多个 CLI 共存而不冲突。
 
-### Phase 5: Test Implementation
+## 成功案例
 
-Write the tests:
-- `test_core.py` - Unit tests (synthetic data)
-- `test_full_e2e.py` - E2E tests (real files)
-- Workflow tests (multi-step scenarios)
-- Output verification (pixel analysis, format validation)
-- `TestCLISubprocess` class using `_resolve_cli("cli-anything-<software>")` to
-  test the installed command via subprocess (falls back to `python -m` in dev)
+| 软件 | 测试数 | 描述 |
+|------|--------|------|
+| GIMP | 103 | 位图图像编辑器 |
+| Blender | 200 | 3D 创作套件 |
+| Inkscape | 197 | 矢量图形编辑器 |
+| Audacity | 154 | 音频编辑器 |
+| LibreOffice | 143 | 办公套件 |
+| OBS Studio | 153 | 流媒体/录制 |
+| Kdenlive | 151 | 视频编辑器 |
+| Shotcut | 144 | 视频编辑器 |
+| **总计** | **1,245** | 全部通过 |
 
-**Output:** Complete test suite
+## 核心特性
 
-### Phase 6: Test Documentation
+### 有状态会话管理
+- 撤销/重做（深拷贝快照，50 级栈）
+- 项目状态持久化
+- 历史记录跟踪
 
-Run and document:
-- Execute `pytest -v --tb=no`
-- Append full results to `TEST.md`
-- Document coverage and gaps
+### 双输出模式
+- 人类可读（表格、颜色）
+- 机器可读（`--json` 标志）
 
-**Output:** `TEST.md` Part 2 (the results)
+### REPL 模式
+- 无子命令时默认进入
+- 统一 ReplSkin 带品牌横幅和彩色提示
+- 持久化命令历史
 
-### Phase 6.5: SKILL.md Generation
+## 何时使用
 
-Generate AI-discoverable skill definition:
-- Extract CLI metadata using `skill_generator.py`
-- Generate SKILL.md with YAML frontmatter (name, description)
-- Include command groups, examples, and agent-specific guidance
-- Output to `cli_anything/<software>/skills/SKILL.md` (inside the Python package)
+✅ **适合：**
+- 具有清晰数据模型的 GUI 应用
+- 有现有 CLI 工具或 API 的应用
+- 需要 Agent 可用界面的项目
+- 自动化和脚本工作流
 
-**Output:** SKILL.md file for AI agent discovery
+❌ **不适合：**
+- 纯二进制、未文档化格式的应用
+- 实时交互式应用
+- 需要 GPU/显示访问的应用
 
-### Phase 7: PyPI Publishing and Installation
+## 发布和分发
 
-Package and install:
-- Create `setup.py` with `find_namespace_packages(include=["cli_anything.*"])`
-- Structure as namespace package: `cli_anything/<software>/` (no `__init__.py` in `cli_anything/`)
-- Configure console_scripts entry point for PATH installation
-- Test local installation: `pip install -e .`
-- Verify CLI is in PATH: `which cli-anything-<software>`
+### 本地安装
 
-**Output:** Installable package ready for distribution
-
-## Output Structure
-
-```
-<software>/
-└── agent-harness/
-    ├── <SOFTWARE>.md          # Software-specific SOP
-    ├── setup.py               # PyPI config (find_namespace_packages)
-    └── cli_anything/          # Namespace package (NO __init__.py)
-        └── <software>/        # Sub-package (HAS __init__.py)
-            ├── README.md          # Installation and usage
-            ├── <software>_cli.py  # Main CLI entry point
-            ├── __init__.py
-            ├── __main__.py        # python -m cli_anything.<software>
-            ├── core/              # Core modules
-            │   ├── __init__.py
-            │   ├── project.py     # Project management
-            │   ├── session.py     # Undo/redo
-            │   ├── export.py      # Rendering/export
-            │   └── ...            # Domain-specific modules
-            ├── skills/            # AI-discoverable skill definition
-            │   └── SKILL.md       # Installed with the package via package_data
-            ├── utils/             # Utilities
-            │   ├── __init__.py
-            │   ├── repl_skin.py   # Unified REPL skin (copy from plugin)
-            │   └── ...
-            └── tests/
-                ├── __init__.py
-                ├── TEST.md        # Test plan + results
-                ├── test_core.py   # Unit tests
-                └── test_full_e2e.py # E2E tests
-```
-
-All CLIs use PEP 420 namespace packages under `cli_anything.*`. The `cli_anything/`
-directory has NO `__init__.py`, allowing multiple separately-installed CLI packages
-to coexist in the same Python environment without conflicts.
-
-## Success Stories
-
-The cli-anything methodology has successfully built CLIs for:
-
-| Software | Tests | Description |
-|----------|-------|-------------|
-| GIMP | 103 | Raster image editor (Pillow-based) |
-| Blender | 200 | 3D creation suite (bpy script generation) |
-| Inkscape | 197 | Vector graphics editor (SVG manipulation) |
-| Audacity | 154 | Audio editor (WAV processing) |
-| LibreOffice | 143 | Office suite (ODF ZIP/XML) |
-| OBS Studio | 153 | Streaming/recording (JSON scene collections) |
-| Kdenlive | 151 | Video editor (MLT XML) |
-| Shotcut | 144 | Video editor (MLT XML, ffmpeg) |
-| **Total** | **1,245** | All tests passing |
-
-## Key Features
-
-### Stateful Session Management
-- Undo/redo with deep-copy snapshots (50-level stack)
-- Project state persistence
-- History tracking
-
-### Dual Output Modes
-- Human-readable (tables, colors)
-- Machine-readable (`--json` flag)
-
-### REPL Mode
-- Default behavior when CLI is invoked without a subcommand
-- Unified `ReplSkin` with branded banner, colored prompts, and styled messages
-- Persistent command history via `prompt_toolkit`
-- Pre-built message helpers: `success()`, `error()`, `warning()`, `info()`, `status()`, `table()`, `progress()`
-- Software-specific accent colors with consistent cli-anything branding
-
-### Comprehensive Testing
-- Unit tests (synthetic data, no external deps)
-- E2E tests (real files, full pipeline)
-- Workflow tests (multi-step scenarios)
-- CLI subprocess tests via `_resolve_cli()` against the installed command
-- Force-installed mode (`CLI_ANYTHING_FORCE_INSTALLED=1`) for release validation
-- Output verification (pixel/audio analysis)
-
-### Complete Documentation
-- Installation guides
-- Command reference
-- Architecture analysis
-- Test plans and results
-
-### SKILL.md Generation
-- Automatic skill definition generation for AI agent discovery
-- YAML frontmatter with name and description for triggering
-- Command groups and usage examples
-- Agent-specific guidance for programmatic usage
-- Follows skill-creator methodology
-
-### PyPI Distribution
-- PEP 420 namespace packages under `cli_anything.*`
-- Unified package naming: `cli-anything-<software>`
-- Multiple CLIs coexist without conflicts in the same environment
-- Automatic PATH installation via console_scripts
-- Easy installation: `pip install cli-anything-<software>`
-- Agent-discoverable via `which cli-anything-<software>`
-
-## Best Practices
-
-### When to Use cli-anything
-
-✅ **Good for:**
-- GUI applications with clear data models
-- Apps with existing CLI tools or APIs
-- Projects needing agent-usable interfaces
-- Automation and scripting workflows
-
-❌ **Not ideal for:**
-- Apps with purely binary, undocumented formats
-- Real-time interactive applications
-- Apps requiring GPU/display access
-
-### Tips for Success
-
-1. **Start with analysis** - Understand the app's architecture before coding
-2. **Follow the phases** - Don't skip test planning
-3. **Test thoroughly** - Aim for 100% pass rate
-4. **Document everything** - Future you will thank you
-5. **Use the validation command** - Catch issues early
-6. **Generate SKILL.md** - Make CLIs discoverable by AI agents
-7. **Install to PATH** - Make CLIs discoverable by running Phase 7
-8. **Publish to PyPI** - Share your CLI with the community
-
-## Installation and Distribution
-
-After building a CLI with this plugin, you can:
-
-### Install Locally
 ```bash
 cd /root/cli-anything/<software>/agent-harness
 pip install -e .
 cli-anything-<software> --help
 ```
 
-### Publish to PyPI
+### 发布到 PyPI
+
 ```bash
 pip install build twine
 python -m build
 twine upload dist/*
 ```
 
-### Users Install from PyPI
+### 用户安装
+
 ```bash
 pip install cli-anything-<software>
-cli-anything-<software> --help  # Available in PATH
+cli-anything-<software> --help
 ```
-
-This makes CLIs discoverable by AI agents that can check `which cli-anything-<software>` to find available tools.
-
-## Troubleshooting
-
-### Tests fail after building
-
-1. Check dependencies: `pip list | grep -E 'click|pytest'`
-2. Verify Python version: `python3 --version` (need 3.10+)
-3. Run validation: `/cli-anything:validate <software>`
-4. Check TEST.md for specific failures
-
-### CLI not found
-
-- Verify output directory: `ls -la /root/cli-anything/<software>/agent-harness/cli_anything/<software>/`
-- Check for errors in build phase
-- Try rebuilding: `/cli-anything <software-path>`
-
-### Import errors
-
-- Ensure `__init__.py` files exist in all packages
-- Check Python path: `echo $PYTHONPATH`
-- Verify directory structure matches expected layout
-
-### CLI not in PATH after installation
-
-- Verify installation: `pip show cli-anything-<software>`
-- Check entry points: `pip show -f cli-anything-<software> | grep console_scripts`
-- Reinstall: `pip uninstall cli-anything-<software> && pip install cli-anything-<software>`
-- Check PATH: `echo $PATH | grep -o '[^:]*bin'`
-
-## Contributing
-
-To add support for new software:
-
-1. Clone the target application's repository
-2. Run `/cli-anything <software-name>`
-3. Review and refine the generated CLI
-4. Submit a PR with the new harness
 
 ## License
 
-MIT License - See LICENSE file for details
-
-## Credits
-
-Built on the cli-anything methodology developed through the creation of 8 production CLI harnesses with 1,245 passing tests.
-
-Inspired by the ralph-loop plugin's iterative development approach.
-
-## Support
-
-- Documentation: See HARNESS.md in this plugin for the complete methodology
-- Issues: Report bugs or request features on GitHub
-- Examples: Check `/root/cli-anything/` for reference implementations
-
-## Version History
-
-### 1.1.0 (2026-03-12)
-- Added SKILL.md generation (Phase 6.5)
-- New `skill_generator.py` module for extracting CLI metadata
-- Jinja2-based `SKILL.md.template` for customizable skill definitions
-- SKILL.md files follow skill-creator methodology with YAML frontmatter
-- AI agents can discover and use generated CLIs via SKILL.md files
-
-### 1.0.0 (2026-03-05)
-- Initial release
-- Support for 4 commands: cli-anything, refine, test, validate
-- Complete 7-phase methodology implementation
-- Comprehensive documentation
-- PyPI publishing support with namespace isolation
-- `_resolve_cli()` helper for subprocess tests against installed commands
-- `CLI_ANYTHING_FORCE_INSTALLED=1` env var for release validation
-- 8 reference implementations, 1,245 passing tests
+MIT License

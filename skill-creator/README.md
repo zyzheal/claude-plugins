@@ -1,64 +1,71 @@
-# skill-creator
+# skill-creator（技能创建器）
 
-Create, improve, and measure Claude Code skills.
+创建、改进和评估 Claude Code 技能的专用工具。提供结构化的技能开发流程，包含 YAML frontmatter、工作流定义和边界覆盖等最佳实践。
 
-## Installation
+## 安装
 
 ```bash
-/plugin install skill-creator
+/plugin install skill-creator@claude-plugins-official
 ```
 
-Or manually symlink:
+### 手动安装
+
 ```bash
-ln -s /path/to/claude-plugins/skill-creator ~/.claude/skills/skill-creator
+ln -s /path/to/skill-creator ~/.claude/skills/skill-creator
 ```
 
-## Usage
+## 使用说明
 
-### Create a new skill
-```
-Create a skill that helps Claude do X
-```
+### 创建新技能
 
-### Improve an existing skill
 ```
-Improve the X skill to handle Y edge case better
+创建一个技能，用于 X
 ```
 
-### Run skill evaluation
+### 改进现有技能
+
 ```
-Run evals on the X skill
+改进 X 技能以更好地处理 Y 边界情况
 ```
 
-## What This Plugin Provides
+### 运行技能评估
 
-- **skill-creator** skill — Guides you through creating well-structured skills with proper frontmatter, workflow definitions, and boundary coverage
-- Supports skill quality measurement via darwin-skill's 8-dimension rubric
+```
+对 X 技能运行评估
+```
 
-## Skill Quality Dimensions
+## 功能特性
 
-| Dimension | Description |
-|-----------|-------------|
-| Frontmatter | Trigger phrases, use-when conditions, clear description |
-| Workflow clarity | Step-by-step process with clear goals and actions |
-| Boundary coverage | Edge cases, error handling, failure modes |
-| Checkpoint design | Verification points before proceeding |
-| Instruction specificity | Concrete examples, not vague guidance |
-| Resource integration | Links to CLAUDE.md, references, tools |
-| Overall architecture | Logical flow, minimal redundancy |
-| 实测表现 | Real-world performance in sessions |
+- ✅ 结构化的技能创建流程
+- ✅ 正确的 YAML frontmatter 定义（name、description、trigger）
+- ✅ 清晰的工作流步骤定义
+- ✅ 边界情况和错误处理覆盖
+- ✅ 基于 darwin-skill 的 8 维度质量评估
 
-## Commands
+## 技能质量评估维度
 
-None — this plugin provides a skill only. Invoke by saying "create a skill" or describing what skill you need.
+| 维度 | 说明 |
+|------|------|
+| Frontmatter | 触发短语、使用时机、清晰描述 |
+| 工作流清晰度 | 带明确目标和动作的分步流程 |
+| 边界覆盖 | 边界情况、错误处理、失败模式 |
+| 检查点设计 | 继续前的验证点 |
+| 指令具体性 | 具体示例，而非模糊指导 |
+| 资源整合 | 指向 CLAUDE.md、参考、工具的链接 |
+| 整体架构 | 逻辑流程、最小冗余 |
+| 实测表现 | 会话中的实际性能 |
 
-## Files
+## 文件结构
 
 ```
 skill-creator/
-├── .claude-plugin/plugin.json    # Plugin manifest
-├── README.md                      # This file
+├── .claude-plugin/plugin.json    # 插件清单
+├── README.md                      # 本文件
 └── skills/
     └── skill-creator/
-        └── SKILL.md               # The skill definition
+        └── SKILL.md               # 技能定义
 ```
+
+## License
+
+MIT License

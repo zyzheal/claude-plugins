@@ -1,246 +1,144 @@
-# Code Review Plugin
+# code-review（代码审查）
 
-Automated code review for pull requests using multiple specialized agents with confidence-based scoring to filter false positives.
+自动化的 Pull Request 代码审查插件，使用多个专业 Agent 并行审计，基于置信度评分过滤误报，只发布高质量、可操作的反馈。
 
-## Overview
+## 功能特性
 
-The Code Review Plugin automates pull request review by launching multiple agents in parallel to independently audit changes from different perspectives. It uses confidence scoring to filter out false positives, ensuring only high-quality, actionable feedback is posted.
+- ✅ 多 Agent 并行独立审查
+- ✅ 置信度评分（0-100），过滤 80 分以下的误报
+- ✅ CLAUDE.md 规范合规检查
+- ✅ 变更代码的 Bug 检测
+- ✅ Git blame 历史上下文分析
+- ✅ 自动跳过已关闭、草稿或已审查的 PR
+- ✅ 直接链接到代码行（完整 SHA + 行范围）
 
-## Commands
+## 安装
+
+```bash
+/plugin install code-review@claude-plugins-official
+```
+
+### 手动安装
+
+```bash
+ln -s /path/to/code-review ~/.claude/plugins/local/code-review
+```
+
+## 使用说明
 
 ### `/code-review`
 
-Performs automated code review on a pull request using multiple specialized agents.
+对当前 Pull Request 执行自动代码审查。
 
-**What it does:**
-1. Checks if review is needed (skips closed, draft, trivial, or already-reviewed PRs)
-2. Gathers relevant CLAUDE.md guideline files from the repository
-3. Summarizes the pull request changes
-4. Launches 4 parallel agents to independently review:
-   - **Agents #1 & #2**: Audit for CLAUDE.md compliance
-   - **Agent #3**: Scan for obvious bugs in changes
-   - **Agent #4**: Analyze git blame/history for context-based issues
-5. Scores each issue 0-100 for confidence level
-6. Filters out issues below 80 confidence threshold
-7. Posts review comment with high-confidence issues only
+**工作流程：**
 
-**Usage:**
+1. 检查是否需要审查（跳过已关闭、草稿、微小或已审查的 PR）
+2. 收集仓库中的 CLAUDE.md 指导文件
+3. 汇总 PR 变更
+4. 启动 4 个并行 Agent 独立审查：
+   - **Agent #1 & #2**：CLAUDE.md 合规性审计
+   - **Agent #3**：扫描明显 Bug
+   - **Agent #4**：Git blame 历史上下文分析
+5. 每个问题独立评分（0-100）
+6. 过滤 80 分以下的问题
+7. 仅发布高置信度问题的审查评论
+
+**示例：**
+
 ```bash
-/code-review
-```
-
-**Example workflow:**
-```bash
-# On a PR branch, run:
+# 在 PR 分支上运行
 /code-review
 
-# Claude will:
-# - Launch 4 review agents in parallel
-# - Score each issue for confidence
-# - Post comment with issues ≥80 confidence
-# - Skip posting if no high-confidence issues found
+# Claude 将：
+# - 启动 4 个并行审查 Agent
+# - 为每个问题评分置信度
+# - 发布 80 分以上的问题评论
+# - 如无高置信度问题则跳过发布
 ```
 
-**Features:**
-- Multiple independent agents for comprehensive review
-- Confidence-based scoring reduces false positives (threshold: 80)
-- CLAUDE.md compliance checking with explicit guideline verification
-- Bug detection focused on changes (not pre-existing issues)
-- Historical context analysis via git blame
-- Automatic skipping of closed, draft, or already-reviewed PRs
-- Links directly to code with full SHA and line ranges
+## 置信度评分标准
 
-**Review comment format:**
+| 分数 | 含义 |
+|------|------|
+| 0 | 不确信，误报 |
+| 25 |  somewhat 确信，可能是真的 |
+| 50 | 中等确信，真实但轻微 |
+| 75 | 高度确信，真实且重要 |
+| 100 | 绝对确定，肯定是真的 |
+
+## 被过滤的误报类型
+
+- PR 之前就存在的问题（非本次引入）
+- 看起来像 Bug 但实际上不是
+- 吹毛求疵的意见
+- Linter 能捕获的问题
+- 一般质量问题（除非 CLAUDE.md 明确规定）
+- 带有 lint 忽略注释的问题
+
+## 审查评论格式
+
 ```markdown
 ## Code review
 
 Found 3 issues:
 
-1. Missing error handling for OAuth callback (CLAUDE.md says "Always handle OAuth errors")
+1. OAuth 回调缺少错误处理（CLAUDE.md 规定"始终处理 OAuth 错误"）
+   https://github.com/owner/repo/blob/abc123.../src/auth.ts#L67-L72
 
-https://github.com/owner/repo/blob/abc123.../src/auth.ts#L67-L72
+2. 内存泄漏：OAuth 状态未清理（finally 块缺少清理）
+   https://github.com/owner/repo/blob/abc123.../src/auth.ts#L88-L95
 
-2. Memory leak: OAuth state not cleaned up (bug due to missing cleanup in finally block)
-
-https://github.com/owner/repo/blob/abc123.../src/auth.ts#L88-L95
-
-3. Inconsistent naming pattern (src/conventions/CLAUDE.md says "Use camelCase for functions")
-
-https://github.com/owner/repo/blob/abc123.../src/utils.ts#L23-L28
+3. 命名风格不一致（规范要求"函数使用 camelCase"）
+   https://github.com/owner/repo/blob/abc123.../src/utils.ts#L23-L28
 ```
 
-**Confidence scoring:**
-- **0**: Not confident, false positive
-- **25**: Somewhat confident, might be real
-- **50**: Moderately confident, real but minor
-- **75**: Highly confident, real and important
-- **100**: Absolutely certain, definitely real
+## 何时使用
 
-**False positives filtered:**
-- Pre-existing issues not introduced in PR
-- Code that looks like a bug but isn't
-- Pedantic nitpicks
-- Issues linters will catch
-- General quality issues (unless in CLAUDE.md)
-- Issues with lint ignore comments
+✅ **适合：**
+- 所有有实质变更的 Pull Request
+- 涉及关键代码路径的 PR
+- 多贡献者的 PR
+- 需要规范合规性的 PR
 
-## Installation
+❌ **不适合：**
+- 已关闭或草稿 PR（自动跳过）
+- 微小的自动化 PR（自动跳过）
+- 需要立即合并的紧急修复
+- 已审查的 PR（自动跳过）
 
-This plugin is included in the Claude Code repository. The command is automatically available when using Claude Code.
+## 配置
 
-## Best Practices
+### 调整置信度阈值
 
-### Using `/code-review`
-- Maintain clear CLAUDE.md files for better compliance checking
-- Trust the 80+ confidence threshold - false positives are filtered
-- Run on all non-trivial pull requests
-- Review agent findings as a starting point for human review
-- Update CLAUDE.md based on recurring review patterns
+默认阈值为 80。编辑 `commands/code-review.md` 修改：
 
-### When to use
-- All pull requests with meaningful changes
-- PRs touching critical code paths
-- PRs from multiple contributors
-- PRs where guideline compliance matters
-
-### When not to use
-- Closed or draft PRs (automatically skipped anyway)
-- Trivial automated PRs (automatically skipped)
-- Urgent hotfixes requiring immediate merge
-- PRs already reviewed (automatically skipped)
-
-## Workflow Integration
-
-### Standard PR review workflow:
-```bash
-# Create PR with changes
-/code-review
-
-# Review the automated feedback
-# Make any necessary fixes
-# Merge when ready
-```
-
-### As part of CI/CD:
-```bash
-# Trigger on PR creation or update
-# Automatically posts review comments
-# Skip if review already exists
-```
-
-## Requirements
-
-- Git repository with GitHub integration
-- GitHub CLI (`gh`) installed and authenticated
-- CLAUDE.md files (optional but recommended for guideline checking)
-
-## Troubleshooting
-
-### Review takes too long
-
-**Issue**: Agents are slow on large PRs
-
-**Solution**:
-- Normal for large changes - agents run in parallel
-- 4 independent agents ensure thoroughness
-- Consider splitting large PRs into smaller ones
-
-### Too many false positives
-
-**Issue**: Review flags issues that aren't real
-
-**Solution**:
-- Default threshold is 80 (already filters most false positives)
-- Make CLAUDE.md more specific about what matters
-- Consider if the flagged issue is actually valid
-
-### No review comment posted
-
-**Issue**: `/code-review` runs but no comment appears
-
-**Solution**:
-Check if:
-- PR is closed (reviews skipped)
-- PR is draft (reviews skipped)
-- PR is trivial/automated (reviews skipped)
-- PR already has review (reviews skipped)
-- No issues scored ≥80 (no comment needed)
-
-### Link formatting broken
-
-**Issue**: Code links don't render correctly in GitHub
-
-**Solution**:
-Links must follow this exact format:
-```
-https://github.com/owner/repo/blob/[full-sha]/path/file.ext#L[start]-L[end]
-```
-- Must use full SHA (not abbreviated)
-- Must use `#L` notation
-- Must include line range with at least 1 line of context
-
-### GitHub CLI not working
-
-**Issue**: `gh` commands fail
-
-**Solution**:
-- Install GitHub CLI: `brew install gh` (macOS) or see [GitHub CLI installation](https://cli.github.com/)
-- Authenticate: `gh auth login`
-- Verify repository has GitHub remote
-
-## Tips
-
-- **Write specific CLAUDE.md files**: Clear guidelines = better reviews
-- **Include context in PRs**: Helps agents understand intent
-- **Use confidence scores**: Issues ≥80 are usually correct
-- **Iterate on guidelines**: Update CLAUDE.md based on patterns
-- **Review automatically**: Set up as part of PR workflow
-- **Trust the filtering**: Threshold prevents noise
-
-## Configuration
-
-### Adjusting confidence threshold
-
-The default threshold is 80. To adjust, modify the command file at `commands/code-review.md`:
 ```markdown
 Filter out any issues with a score less than 80.
 ```
 
-Change `80` to your preferred threshold (0-100).
+将 `80` 改为你偏好的阈值（0-100）。
 
-### Customizing review focus
+### 自定义审查焦点
 
-Edit `commands/code-review.md` to add or modify agent tasks:
-- Add security-focused agents
-- Add performance analysis agents
-- Add accessibility checking agents
-- Add documentation quality checks
+编辑 `commands/code-review.md` 添加或修改 Agent 任务：
+- 添加安全导向的 Agent
+- 添加性能分析 Agent
+- 添加可访问性检查 Agent
+- 添加文档质量检查
 
-## Technical Details
+## Agent 架构
 
-### Agent architecture
-- **2x CLAUDE.md compliance agents**: Redundancy for guideline checks
-- **1x bug detector**: Focused on obvious bugs in changes only
-- **1x history analyzer**: Context from git blame and history
-- **Nx confidence scorers**: One per issue for independent scoring
+- **2x CLAUDE.md 合规 Agent**：冗余确保规范检查准确
+- **1x Bug 检测器**：专注于变更中的明显 Bug
+- **1x 历史分析器**：从 git blame 获取上下文
+- **Nx 置信度评分器**：每个问题独立评分
 
-### Scoring system
-- Each issue independently scored 0-100
-- Scoring considers evidence strength and verification
-- Threshold (default 80) filters low-confidence issues
-- For CLAUDE.md issues: verifies guideline explicitly mentions it
+## 前置要求
 
-### GitHub integration
-Uses `gh` CLI for:
-- Viewing PR details and diffs
-- Fetching repository data
-- Reading git blame and history
-- Posting review comments
+- Git 仓库（含 GitHub 集成）
+- GitHub CLI（`gh`）已安装并认证
+- CLAUDE.md 文件（可选但推荐用于规范检查）
 
-## Author
+## License
 
-Boris Cherny (boris@anthropic.com)
-
-## Version
-
-1.0.0
+MIT License
