@@ -1,0 +1,14 @@
+{
+  "name": "session-report",
+  "description": "Generate explorable HTML reports of Claude Code session usage — tokens, cache, subagents, skills, and expensive prompts.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Anthropic",
+    "url": "https://github.com/anthropics/claude-plugins-official"
+  },
+  "keywords": ["report", "session", "tokens", "usage", "analytics", "html"],
+  "skills": [
+    "./skills/session-report/SKILL.md"
+  ],
+  "license": "MIT"
+}

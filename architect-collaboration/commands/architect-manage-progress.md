@@ -2,7 +2,8 @@
 name: "architect:manage-progress"
 description: "Progress tracking and documentation publishing command for monitoring task completion, phase status, and exporting to documentation systems"
 argument-hint: "[--project <name>] [--export <format>] [--publish <system>] [--url <url>] [--status] [--report]"
-allowed-tools: ["Read", "Write", "Bash", "Edit", "Grep"]
+allowed-tools: Read, Write, Bash, Edit, Grep
+trigger: manage progress, track progress, view status, export report
 ---
 
 # /architect:manage-progress

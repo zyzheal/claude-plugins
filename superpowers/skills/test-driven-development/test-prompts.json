@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "用 TDD 实现 rate limiter",
+    "expected": "先写失败测试→实现→重构循环"
+  },
+  {
+    "id": 2,
+    "prompt": "Add email validation using TDD",
+    "expected": "边界案例测试优先，最小实现"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "name": "csharp-lsp",
+  "description": "LSP plugin for C# using csharp language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

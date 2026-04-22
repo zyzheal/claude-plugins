@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "创建一个新的数据库 schema 生成技能",
+    "expected": "完整 SKILL.md 含 frontmatter+workflow+error handling"
+  },
+  {
+    "id": 2,
+    "prompt": "优化我的 skill，workflow 部分太模糊了",
+    "expected": "具体改进建议+修改后内容"
+  }
+]

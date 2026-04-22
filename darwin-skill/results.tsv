@@ -1,0 +1,123 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-04-22T07:32	baseline	godot	-	1	baseline	无frontmatter/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	exa	-	1	baseline	无frontmatter/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	cli-anything-hub	-	2	baseline	描述不完整/无错误处理	dry_run
+2026-04-22T07:32	baseline	codex-skill	-	2	baseline	缺少触发词/无错误处理	dry_run
+2026-04-22T07:32	baseline	openclaw-skill	-	2	baseline	缺少触发词/无错误处理	dry_run
+2026-04-22T07:32	baseline	adguardhome	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	anygen	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	audacity	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	blender	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	chromadb	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	comfyui	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	drawio	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	gimp	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	inkscape	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	kdenlive	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	libreoffice	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	mermaid	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	mubu	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	notebooklm	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	novita	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	obs-studio	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	ollama	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	openscreen	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	pm2	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	rms	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	seaclip	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	shotcut	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	slay_the_spire_ii	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	videocaptioner	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	zoom	-	2	baseline	boilerplate/无工作流/无错误处理	dry_run
+2026-04-22T07:32	baseline	iterm2	-	3	baseline	描述好但工作流不完整	dry_run
+2026-04-22T07:32	baseline	zotero	-	3	baseline	有约束但无触发词	dry_run
+2026-04-22T07:32	baseline	wiremock	-	3	baseline	上下文好但无when	dry_run
+2026-04-22T07:32	baseline	browser	-	3	baseline	有prereqs但无工作流	dry_run
+2026-04-22T07:32	baseline	renderdoc	-	3	baseline	能力列表好但无工作流	dry_run
+2026-04-22T07:32	baseline	krita	-	3	baseline	有when但无完整流程	dry_run
+2026-04-22T07:32	baseline	dify-workflow	-	3	baseline	有install但无错误处理	dry_run
+2026-04-22T07:32	baseline	musescore	-	3	baseline	有cmd groups但无错误处理	dry_run
+2026-04-22T07:32	baseline	cloudanalyzer	-	3	baseline	描述详细但无工作流	dry_run
+2026-04-22T07:32	baseline	cloudcompare	-	3	baseline	文件过大无工作流	dry_run
+2026-04-22T07:32	baseline	freecad	-	3	baseline	文件过大无工作流	dry_run
+2026-04-22T07:32	baseline	cli-hub-meta-skill	-	4	baseline	有4步工作流但无错误处理	dry_run
+2026-04-22T07:32	baseline	example-command	-	4	baseline	示例非功能技能	dry_run
+2026-04-22T07:32	baseline	example-skill	-	4	baseline	示例非功能技能	dry_run
+2026-04-22T07:32	baseline	session-report	-	5	baseline	有5步但无触发词/错误处理	dry_run
+2026-04-22T07:32	baseline	frontend-design	-	5	baseline	有NEVER列表但无when/triggers	dry_run
+2026-04-22T07:32	baseline	platform-publishing	-	5	baseline	中文有工作流但缺name字段	dry_run
+2026-04-22T07:32	baseline	playground	-	5	baseline	有4步但无触发词	dry_run
+2026-04-22T07:32	baseline	claude-automation-recommender	-	6	baseline	有Phase但guidelines不足	dry_run
+2026-04-22T07:32	baseline	writing-hookify-rules	-	6	baseline	有rule格式但无完整工作流	dry_run
+2026-04-22T07:32	baseline	skill-creator	-	6	baseline	有迭代循环但灵活性不足	dry_run
+2026-04-22T07:32	baseline	build-mcpb	-	6	baseline	有when/when-not但无工作流	dry_run
+2026-04-22T07:32	baseline	build-mcp-app	-	6	baseline	有决策表但无完整流程	dry_run
+2026-04-22T07:32	baseline	build-mcp-server	-	7	baseline	有5-phase discovery	dry_run
+2026-04-22T07:32	baseline	configure-discord	-	7	baseline	有dispatch/lockdown	dry_run
+2026-04-22T07:32	baseline	access-discord	-	7	baseline	有injection defense	dry_run
+2026-04-22T07:32	baseline	configure-imessage	-	7	baseline	有dispatch/lockdown	dry_run
+2026-04-22T07:32	baseline	access-imessage	-	7	baseline	有injection defense	dry_run
+2026-04-22T07:32	baseline	configure-telegram	-	7	baseline	有dispatch/lockdown	dry_run
+2026-04-22T07:32	baseline	access-telegram	-	7	baseline	有injection defense	dry_run
+2026-04-22T07:32	baseline	executing-plans	-	7	baseline	有3步+stop-and-ask	dry_run
+2026-04-22T07:32	baseline	finishing-a-development-branch	-	7	baseline	有3步+test fail stop	dry_run
+2026-04-22T07:32	baseline	requesting-code-review	-	7	baseline	有3步但无触发词	dry_run
+2026-04-22T07:32	baseline	using-superpowers	-	7	baseline	有priority flow	dry_run
+2026-04-22T07:32	baseline	writing-plans	-	7	baseline	有scope check/stop conditions	dry_run
+2026-04-22T07:32	baseline	claude-md-improver	-	7	baseline	有Phase+user approval	dry_run
+2026-04-22T07:32	baseline	receiving-code-review	-	8	baseline	有6步+forbidden responses	dry_run
+2026-04-22T07:32	baseline	using-git-worktrees	-	8	baseline	有safety verify+ask before	dry_run
+2026-04-22T07:32	baseline	verification-before-completion	-	8	baseline	有iron law+failures table	dry_run
+2026-04-22T07:32	baseline	dispatching-parallel-agents	-	8	baseline	有phases+decision graph	dry_run
+2026-04-22T07:32	baseline	subagent-driven-development	-	8	baseline	有flow diagram+per-task cycle	dry_run
+2026-04-22T07:32	baseline	systematic-debugging	-	8	baseline	有4 phases+iron law	dry_run
+2026-04-22T07:32	baseline	test-driven-development	-	8	baseline	有red-green-refactor+iron law	dry_run
+2026-04-22T07:32	baseline	writing-skills	-	8	baseline	有TDD mapping+self-review	dry_run
+2026-04-22T07:32	baseline	math-olympiad	-	8	baseline	有adversarial+5 failure patterns	dry_run
+2026-04-22T07:32	baseline	darwin-skill	-	8	baseline	有8-dim rubric+human confirm	dry_run
+2026-04-22T07:32	baseline	brainstorming	-	9	baseline	有9-item checklist+HARD-GATE+dry_run
+2026-04-22T07:45	ee30282	godot	1	7	keep	frontmatter+工作流	添加完整frontmatter+AI Agent Workflow+错误恢复	dry_run
+2026-04-22T07:45	ee30282	exa	1	7	keep	frontmatter+工作流	添加完整frontmatter+AI Agent Workflow+错误恢复	dry_run
+2026-04-22T07:45	ee30282	adguardhome	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	anygen	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	audacity	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	blender	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	chromadb	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	comfyui	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	drawio	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	gimp	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	inkscape	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	kdenlive	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	libreoffice	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	mermaid	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	mubu	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	notebooklm	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	novita	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	obs-studio	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	ollama	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	openscreen	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	pm2	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	rms	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	seaclip	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	shotcut	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	slay_the_spire_ii	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	videocaptioner	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:45	ee30282	zoom	2	6	keep	frontmatter+工作流	补全description+AI Agent Workflow	dry_run
+2026-04-22T07:50	f32fd1b	browser	3	6	keep	frontmatter	添加结构化frontmatter+triggers	dry_run
+2026-04-22T07:50	f32fd1b	krita	3	6	keep	frontmatter	添加结构化frontmatter+triggers	dry_run
+2026-04-22T07:50	f32fd1b	dify-workflow	3	6	keep	frontmatter	添加结构化frontmatter+triggers	dry_run
+2026-04-22T07:50	f32fd1b	musescore	3	6	keep	frontmatter	添加结构化frontmatter+triggers	dry_run
+2026-04-22T07:50	f32fd1b	cloudanalyzer	3	6	keep	frontmatter	添加结构化frontmatter+triggers	dry_run
+2026-04-22T07:50	f32fd1b	cloudcompare	3	6	keep	frontmatter	添加结构化frontmatter+triggers	dry_run
+2026-04-22T07:50	f32fd1b	freecad	3	6	keep	frontmatter	添加结构化frontmatter+triggers	dry_run
+2026-04-22T07:50	f32fd1b	cli-hub-meta-skill	4	7	keep	工作流+错误处理	添加Use when+Workflow+Error Handling	dry_run
+2026-04-22T07:50	f32fd1b	session-report	5	7	keep	工作流+错误处理	添加Use when+Workflow+Error Handling	dry_run
+2026-04-22T07:50	f32fd1b	frontend-design	5	7	keep	工作流+错误处理	添加Use when+Workflow+Error Handling	dry_run
+2026-04-22T07:50	f32fd1b	platform-publishing	5	6	keep	frontmatter	添加name字段+triggers	dry_run
+2026-04-22T07:50	f32fd1b	playground	5	7	keep	错误处理	添加Use when+triggers+Error Handling	dry_run
+2026-04-22T07:50	f32fd1b	claude-automation-recommender	6	7	keep	错误处理	添加Error Handling section	dry_run
+2026-04-22T07:50	f32fd1b	writing-hookify-rules	6	7	keep	frontmatter+错误处理	添加Use when+triggers+Error Handling	dry_run
+2026-04-22T07:50	f32fd1b	skill-creator	6	7	keep	frontmatter	添加Use when+triggers	dry_run
+2026-04-22T07:50	f32fd1b	build-mcpb	6	7	keep	错误处理	添加Error Handling section	dry_run
+2026-04-22T07:50	f32fd1b	build-mcp-app	6	7	keep	错误处理	添加Error Handling section	dry_run
+2026-04-22T07:50	f32fd1b	build-mcp-server	7	8	keep	错误处理	添加Error Handling section	dry_run

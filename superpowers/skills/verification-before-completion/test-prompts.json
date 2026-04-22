@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "确保所有测试都通过了再提交",
+    "expected": "全面验证+结果报告"
+  },
+  {
+    "id": 2,
+    "prompt": "Verify everything is working before marking done",
+    "expected": "验证清单逐项检查"
+  }
+]

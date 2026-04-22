@@ -2,10 +2,8 @@
 name: content:write
 description: 执行完整的内容创作工作流：数据收集 → 撰写 → 评审 → 发布
 argument-hint: <topic> [platforms:wx,xhs] [skip-review:true/false] [workspace:path]
-allowed-tools:
-  - Read
-  - Write
-  - Bash
+allowed-tools: Read, Write, Bash
+trigger: write content, create article, 内容创作, 写文章, 发布内容
 ---
 
 # Content Creation Workflow Command

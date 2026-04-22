@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "Package my MCP server into an MCPB file",
+    "expected": "MCPB 打包流程"
+  },
+  {
+    "id": 2,
+    "prompt": "Build a distributable MCPB bundle",
+    "expected": "可分发的 MCPB 包"
+  }
+]

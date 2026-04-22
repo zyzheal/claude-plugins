@@ -1,0 +1,8 @@
+{
+  "name": "php-lsp",
+  "description": "LSP plugin for PHP using php language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

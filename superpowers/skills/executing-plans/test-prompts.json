@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "这是实现计划，开始按计划执行",
+    "expected": "按步骤逐步实现，每步验证"
+  },
+  {
+    "id": 2,
+    "prompt": "Plan is ready at docs/plans/feature-plan.md",
+    "expected": "读取计划文件，逐步实现"
+  }
+]

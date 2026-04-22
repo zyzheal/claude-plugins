@@ -24,7 +24,7 @@
     "./agents/writer-xhs.md"
   ],
   "skills": [
-    "./skills/platform-publishing/"
+    "./skills/platform-publishing/SKILL.md"
   ],
   "commands": [
     "./commands/analysis.md",

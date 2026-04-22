@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "开始新特性开发，先创建工作树",
+    "expected": "隔离工作区创建+基线验证"
+  },
+  {
+    "id": 2,
+    "prompt": "Set up isolated workspace for feature/auth",
+    "expected": "工作树设置流程"
+  }
+]

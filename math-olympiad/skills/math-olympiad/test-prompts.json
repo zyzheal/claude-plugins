@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "解 IMO 不等式：证明 a²/b + b²/c + c²/a ≥ a + b + c",
+    "expected": "完整证明+对抗验证"
+  },
+  {
+    "id": 2,
+    "prompt": "验证这个证明是否正确：By AM-GM...",
+    "expected": "对抗攻击+错误定位"
+  }
+]

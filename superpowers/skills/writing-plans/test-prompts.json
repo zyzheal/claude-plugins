@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "根据这个设计规范写实现计划",
+    "expected": "结构化技术方案文档"
+  },
+  {
+    "id": 2,
+    "prompt": "Create an implementation plan for the auth system",
+    "expected": "架构+任务分解"
+  }
+]

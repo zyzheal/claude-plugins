@@ -1,0 +1,14 @@
+{
+  "name": "darwin-skill",
+  "description": "8-dimension skill evaluator and auto-optimizer. Evaluates SKILL.md files using structure + effectiveness rubric, runs hill-climbing with git version control, and generates visual result cards.",
+  "version": "1.0.0",
+  "author": {
+    "name": "alchaincyf",
+    "url": "https://github.com/alchaincyf/darwin-skill"
+  },
+  "keywords": ["skill", "optimizer", "eval", "quality", "darwin", "autoresearch"],
+  "skills": [
+    "./SKILL.md"
+  ],
+  "license": "MIT"
+}

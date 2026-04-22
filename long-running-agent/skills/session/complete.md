@@ -1,3 +1,9 @@
+---
+name: session:complete
+description: 将通过验证的功能标记为已完成，更新 feature_list.json 和进度日志
+trigger: mark complete, feature done, 标记完成, 功能完成
+---
+
 # Skill: 标记功能完成
 
 Agent 在功能**真正验证通过**后，执行以下步骤将功能标记为已完成。

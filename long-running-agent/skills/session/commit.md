@@ -1,3 +1,9 @@
+---
+name: session:commit
+description: 提交已完成的功能代码，遵循规范的提交信息格式
+trigger: commit, submit code, 提交代码, git commit
+---
+
 # Skill: 提交代码
 
 Agent 在每次完成功能并验证通过后，执行以下步骤提交代码。

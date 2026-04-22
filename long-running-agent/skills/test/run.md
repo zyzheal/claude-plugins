@@ -1,3 +1,9 @@
+---
+name: test:run
+description: 运行前端、后端和集成测试验证功能实现
+trigger: run tests, test, 运行测试, 测试
+---
+
 # Skill: 运行测试
 
 Agent 在完成功能实现后、标记完成前，必须运行测试进行验证。

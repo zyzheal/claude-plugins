@@ -1,0 +1,9 @@
+{
+  "name": "lsp-plugins",
+  "description": "Collection of LSP (Language Server Protocol) plugins for various programming languages. Each language has its own sub-plugin with specialized agent definitions.",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  },
+  "keywords": ["lsp", "language-server", "code-analysis", "multi-language"]
+}

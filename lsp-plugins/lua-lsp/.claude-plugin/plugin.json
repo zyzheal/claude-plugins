@@ -1,0 +1,8 @@
+{
+  "name": "lua-lsp",
+  "description": "LSP plugin for Lua using lua language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

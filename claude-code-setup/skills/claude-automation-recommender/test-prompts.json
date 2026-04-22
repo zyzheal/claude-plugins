@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "分析这个代码库，推荐自动化配置",
+    "expected": "代码库分析+hook/skill/MCP 推荐"
+  },
+  {
+    "id": 2,
+    "prompt": "What automations would you recommend for this project?",
+    "expected": "项目特定推荐"
+  }
+]

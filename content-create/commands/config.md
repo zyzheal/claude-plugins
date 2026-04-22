@@ -1,11 +1,9 @@
 ---
 name: content:config
 description: 交互式配置向导 - 快速设置 content-create 插件
-allowed-tools:
-  - Read
-  - Write
-  - AskUserQuestion
-  - Bash
+argument-hint: 无参数，通过交互式问答完成配置
+allowed-tools: Read, Write, AskUserQuestion, Bash
+trigger: config content-create, setup content-create, 配置插件, 设置插件
 ---
 
 # 配置向导

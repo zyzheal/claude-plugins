@@ -1,0 +1,8 @@
+{
+  "name": "ruby-lsp",
+  "description": "LSP plugin for Ruby using ruby language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "superpowers",
+  "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
+  "version": "5.0.7",
+  "author": {
+    "name": "Jesse Vincent",
+    "email": "jesse@fsck.com"
+  },
+  "homepage": "https://github.com/obra/superpowers",
+  "repository": "https://github.com/obra/superpowers",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "tdd",
+    "debugging",
+    "collaboration",
+    "best-practices",
+    "workflows"
+  ],
+  "skills": [
+    "./skills/using-superpowers/SKILL.md",
+    "./skills/brainstorming/SKILL.md",
+    "./skills/writing-plans/SKILL.md",
+    "./skills/executing-plans/SKILL.md",
+    "./skills/test-driven-development/SKILL.md",
+    "./skills/systematic-debugging/SKILL.md",
+    "./skills/verification-before-completion/SKILL.md",
+    "./skills/requesting-code-review/SKILL.md",
+    "./skills/receiving-code-review/SKILL.md",
+    "./skills/writing-skills/SKILL.md",
+    "./skills/finishing-a-development-branch/SKILL.md",
+    "./skills/using-git-worktrees/SKILL.md",
+    "./skills/dispatching-parallel-agents/SKILL.md",
+    "./skills/subagent-driven-development/SKILL.md"
+  ],
+  "commands": [
+    "./commands/brainstorm.md",
+    "./commands/write-plan.md",
+    "./commands/execute-plan.md"
+  ]
+}

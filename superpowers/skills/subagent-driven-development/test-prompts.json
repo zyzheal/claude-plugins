@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "用 Subagent-Driven Development 执行这个计划",
+    "expected": "任务分解+并行 agent 分发"
+  },
+  {
+    "id": 2,
+    "prompt": "Dispatch fresh subagents for each task",
+    "expected": "独立 agent 执行每个任务"
+  }
+]

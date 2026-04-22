@@ -2,7 +2,8 @@
 name: "architect:phase-workflow"
 description: "Comprehensive phase management command that starts, validates, and generates templates for any of the 4 architect collaboration phases"
 argument-hint: "[--phase <number>] [--project <name>] [--interactive] [--generate] [--validate]"
-allowed-tools: ["Read", "Write", "Bash", "Edit", "Grep"]
+allowed-tools: Read, Write, Bash, Edit, Grep
+trigger: phase workflow, start phase, validate phase, generate templates
 ---
 
 # /architect:phase-workflow

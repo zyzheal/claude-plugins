@@ -1,0 +1,8 @@
+{
+  "name": "pyright-lsp",
+  "description": "LSP plugin for Python using pyright language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

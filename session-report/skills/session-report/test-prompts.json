@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "生成这次会话的报告",
+    "expected": "会话摘要+关键决策+变更列表"
+  },
+  {
+    "id": 2,
+    "prompt": "Summarize what we accomplished today",
+    "expected": "简洁成果报告"
+  }
+]

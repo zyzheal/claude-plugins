@@ -1,0 +1,11 @@
+{
+  "name": "rust-analyzer-lsp",
+  "description": "Rust language server integration for Claude Code - provides code intelligence, go-to-definition, diagnostics, and completions for .rs files.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Anthropic",
+    "url": "https://github.com/anthropics/claude-plugins-official"
+  },
+  "keywords": ["rust", "lsp", "language-server", "rust-analyzer", "code-intelligence"],
+  "license": "MIT"
+}

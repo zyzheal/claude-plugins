@@ -1,0 +1,8 @@
+{
+  "name": "typescript-lsp",
+  "description": "LSP plugin for TypeScript using typescript language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

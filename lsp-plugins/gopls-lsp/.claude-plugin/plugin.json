@@ -1,0 +1,8 @@
+{
+  "name": "gopls-lsp",
+  "description": "LSP plugin for Go using gopls language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

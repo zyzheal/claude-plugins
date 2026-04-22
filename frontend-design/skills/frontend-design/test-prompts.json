@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "实现一个响应式导航栏",
+    "expected": "HTML+CSS+JS 完整实现"
+  },
+  {
+    "id": 2,
+    "prompt": "Build a card layout component",
+    "expected": "卡片布局组件"
+  }
+]

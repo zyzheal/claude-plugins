@@ -1,0 +1,17 @@
+{
+  "name": "hookify",
+  "description": "Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  },
+  "skills": [
+    "./skills/writing-rules/SKILL.md"
+  ],
+  "commands": [
+    "./commands/hookify.md",
+    "./commands/help.md",
+    "./commands/list.md",
+    "./commands/configure.md"
+  ]
+}

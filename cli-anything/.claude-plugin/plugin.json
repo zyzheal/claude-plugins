@@ -1,0 +1,14 @@
+{
+  "name": "cli-anything",
+  "description": "Build powerful, stateful CLI interfaces for any GUI application using the cli-anything harness methodology.",
+  "author": {
+    "name": "cli-anything contributors"
+  },
+  "commands": [
+    "./commands/cli-anything.md",
+    "./commands/list.md",
+    "./commands/refine.md",
+    "./commands/test.md",
+    "./commands/validate.md"
+  ]
+}

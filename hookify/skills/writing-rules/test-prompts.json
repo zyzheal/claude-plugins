@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "创建一个 hook 防止 Claude 删除文件",
+    "expected": "hook 配置+说明"
+  },
+  {
+    "id": 2,
+    "prompt": "分析最近的对话模式，创建预防性 hook",
+    "expected": "模式分析+hook 生成"
+  }
+]

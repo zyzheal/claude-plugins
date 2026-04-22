@@ -1,0 +1,8 @@
+{
+  "name": "jdtls-lsp",
+  "description": "LSP plugin for Java using jdtls language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

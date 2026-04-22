@@ -1,6 +1,8 @@
 ---
 description: Configure claude-hud as your statusline
+argument-hint: [--reset] [--compact] [--show-usage]
 allowed-tools: Bash, Read, Edit, AskUserQuestion
+trigger: setup hud, configure hud, statusline setup
 ---
 
 **Note**: Placeholders like `{RUNTIME_PATH}`, `{SOURCE}`, and `{GENERATED_COMMAND}` should be substituted with actual detected values.

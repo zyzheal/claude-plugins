@@ -1,3 +1,9 @@
+---
+name: session:status
+description: 查看项目当前进度、待办功能和会话状态
+trigger: status, check progress, view state, 查看状态, 查看进度
+---
+
 # Skill: 查看会话状态
 
 Agent 在每次会话开始时，以及需要了解当前进度时，应执行以下操作。

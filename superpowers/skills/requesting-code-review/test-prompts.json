@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "任务完成了，请求代码审查",
+    "expected": "启动审查 agent，收集变更，生成报告"
+  },
+  {
+    "id": 2,
+    "prompt": "Before I continue, let me review the code",
+    "expected": "当前变更审查流程"
+  }
+]

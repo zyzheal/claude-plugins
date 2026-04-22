@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "审查反馈：items 1-6 需要修复",
+    "expected": "逐项处理反馈，分类优先级"
+  },
+  {
+    "id": 2,
+    "prompt": "Reviewer says we should add logging everywhere",
+    "expected": "分析建议合理性，选择性采纳"
+  }
+]

@@ -1,7 +1,8 @@
 ---
 description: 查看或修改 Long-Running Agent 配置项。
 argument-hint: [配置项=值] 或留空查看当前配置
-allowed-tools: Bash,Read,Write
+allowed-tools: Bash, Read, Write
+trigger: config dev-enegine, 查看配置, 修改配置, 设置控制等级
 ---
 
 # Config

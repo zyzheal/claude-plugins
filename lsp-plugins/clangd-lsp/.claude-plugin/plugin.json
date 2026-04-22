@@ -1,0 +1,8 @@
+{
+  "name": "clangd-lsp",
+  "description": "LSP plugin for C/C++ using clangd language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

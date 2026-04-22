@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "POST /users 返回 500 但 GET 正常",
+    "expected": "系统性排查：复现→假设→验证→修复"
+  },
+  {
+    "id": 2,
+    "prompt": "Tests pass locally but fail in CI",
+    "expected": "环境差异分析+系统排查"
+  }
+]

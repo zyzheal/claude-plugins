@@ -1,7 +1,8 @@
 ---
 description: 启动 Long-Running Agent 开发模式，根据需求进行自动化开发
 argument-hint: <需求描述（可选，新项目时提供）>
-allowed-tools: Bash,Read,Write,Grep,TodoWrite
+allowed-tools: Bash, Read, Write, Grep, TodoWrite
+trigger: start development, run agent, 启动开发, 自动化开发, 增量开发
 ---
 
 # Requirement Develop

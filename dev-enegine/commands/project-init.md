@@ -1,7 +1,8 @@
 ---
 description: 初始化新项目，拉取模板并跑通 demo。仅在首次创建项目时使用。
 argument-hint: <项目名称> [--no-template]
-allowed-tools: Bash,Read,Write,Grep,TodoWrite
+allowed-tools: Bash, Read, Write, Grep, TodoWrite
+trigger: init project, create project, 初始化项目, 新项目
 ---
 
 # Project Init

@@ -1,3 +1,10 @@
+---
+description: 对已完成的代码进行专业审查，生成结构化审查报告
+argument-hint: [--feature <id>] [--commit <hash>] [--last] [--files <paths>] [--focus <dimension>]
+allowed-tools: Bash, Read, Agent, TodoWrite
+trigger: review code, code review, 代码审查, 审查代码, 检查代码质量
+---
+
 # 代码审查命令
 
 对已完成的代码进行专业审查，生成结构化审查报告。

@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "审计并改进 CLAUDE.md",
+    "expected": "质量评估+改进建议"
+  },
+  {
+    "id": 2,
+    "prompt": "我的 CLAUDE.md 太大了，帮我精简",
+    "expected": "冗余检测+精简版本"
+  }
+]

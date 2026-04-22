@@ -1,6 +1,8 @@
 ---
 description: Configure HUD display options (layout, presets, display elements)
+argument-hint: [--reset]
 allowed-tools: Read, Write, AskUserQuestion
+trigger: configure hud, customize hud, hud settings
 ---
 
 # Configure Claude HUD

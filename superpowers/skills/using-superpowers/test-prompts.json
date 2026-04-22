@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "帮我做一个新功能",
+    "expected": "skill 选择+流程引导"
+  },
+  {
+    "id": 2,
+    "prompt": "Hello, let's start working on a new feature",
+    "expected": "superpowers 流程启动"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "Build an MCP server for a weather API",
+    "expected": "完整 MCP server 实现"
+  },
+  {
+    "id": 2,
+    "prompt": "How do I add authentication to my MCP server?",
+    "expected": "auth 实现步骤"
+  }
+]

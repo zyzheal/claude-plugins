@@ -1,7 +1,8 @@
 ---
 description: 需求开发主流程。传入需求描述，自动完成规划→编码→测试的全流程。
 argument-hint: <需求描述> [--level high|medium|low] [--parallel_features true|false]
-allowed-tools: Bash,Read,Write,Grep,TodoWrite
+allowed-tools: Bash, Read, Write, Grep, TodoWrite
+trigger: requirement dev, develop requirement, 需求开发, 开发需求, 实现需求
 ---
 
 # Requirement Dev

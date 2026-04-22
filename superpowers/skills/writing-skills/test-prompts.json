@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "帮我创建一个新的 skill",
+    "expected": "完整 SKILL.md 创建流程"
+  },
+  {
+    "id": 2,
+    "prompt": "Create a skill for async data fetching patterns",
+    "expected": "从零创建 skill"
+  }
+]

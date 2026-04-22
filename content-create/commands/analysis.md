@@ -2,10 +2,8 @@
 name: content:analysis
 description: 分析内容创作数据并生成可视化报告
 argument-hint: <data-path> [analysis-type:performance|trend|comparison] [output-path:path]
-allowed-tools:
-  - Read
-  - Write
-  - Bash
+allowed-tools: Read, Write, Bash
+trigger: analyze data, content analysis, data report, 数据分析
 ---
 
 # Content Analysis Command

@@ -1,0 +1,8 @@
+{
+  "name": "swift-lsp",
+  "description": "LSP plugin for Swift using swift language server",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "prompt": "Build an interactive MCP app for a todo list",
+    "expected": "交互式 MCP 应用"
+  },
+  {
+    "id": 2,
+    "prompt": "Create an MCP app with file browser interface",
+    "expected": "文件浏览器 MCP 应用"
+  }
+]
