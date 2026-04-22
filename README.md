@@ -1,7 +1,166 @@
-"GDPR 合规检查"                     → 合规专家介入
+# Claude Code Plugins
+
+A collection of plugins for [Claude Code](https://code.claude.com) - from workflow automation and architecture design to content creation and security auditing.
+
+## Quick Start
+
+```bash
+# Install any plugin by name
+/plugin install <plugin-name>
 ```
 
-### Content-Create（自媒体内容创作）
+All 26 plugins in this repository can be installed via the Claude Code plugin marketplace or by manual symlink.
+
+---
+
+## Plugin Inventory
+
+### Workflow & Development
+
+| Plugin | Skills | Commands | Description |
+|--------|:------:|:--------:|-------------|
+| [architect-collaboration](./architect-collaboration/) | 10 | 2 | 4-phase development: Requirements → Design → Task Breakdown → Feature Dev |
+| [dev-enegine](./dev-enegine/) | - | 4 | Multi-agent system: Plan → Code → Test with DAG-based feature development |
+| [long-running-agent](./long-running-agent/) | 4 | 1 | Dual-track agent for incremental development from Anthropic's paper |
+| [feature-dev](./feature-dev/) | - | 1 | Feature development with code explorer, architect, and reviewer agents |
+| [cli-anything](./cli-anything/) | - | 5 | Build stateful CLI interfaces for any GUI application |
+
+### Code Quality & Review
+
+| Plugin | Skills | Commands | Description |
+|--------|:------:|:--------:|-------------|
+| [code-review](./code-review/) | - | 1 | Automated PR review with multi-agent confidence scoring |
+| [pr-review-toolkit](./pr-review-toolkit/) | - | 1 | Comprehensive PR review: comments, tests, errors, types, quality |
+| [code-simplifier](./code-simplifier/) | - | - | Simplify and refine code for clarity while preserving functionality |
+| [superpowers](./superpowers/) | 14 | 3 | Core skills library: TDD, debugging, collaboration, best practices |
+
+### Infrastructure & MCP
+
+| Plugin | Skills | Commands | Description |
+|--------|:------:|:--------:|-------------|
+| [context7](./context7/) | - | - | MCP server for up-to-date documentation lookup from source repos |
+| [playwright](./playwright/) | - | - | Browser automation MCP: screenshots, clicks, form filling, testing |
+| [mcp-server-dev](./mcp-server-dev/) | 3 | - | Skills for designing and building MCP servers (HTTP, MCPB, local) |
+| [lsp-plugins](./lsp-plugins/) | - | - | LSP integration for 11 languages: TypeScript, Python, Go, Java, etc. |
+
+### Content & Documentation
+
+| Plugin | Skills | Commands | Description |
+|--------|:------:|:--------:|-------------|
+| [content-create](./content-create/) | 1 | 3 | Content creation workflow: hot topics → writing → review → multi-platform publish |
+| [session-report](./session-report/) | 1 | - | HTML session reports: tokens, cache, subagents, expensive prompts |
+| [skill-creator](./skill-creator/) | 1 | - | Create, improve, and measure Claude Code skills with eval support |
+| [darwin-skill](./darwin-skill/) | - | - | 8-dimension skill evaluator and hill-climbing optimizer |
+
+### Security & Configuration
+
+| Plugin | Skills | Commands | Description |
+|--------|:------:|:--------:|-------------|
+| [security-guidance](./security-guidance/) | - | - | Security warnings for dangerous patterns (injection, XSS, unsafe ops) |
+| [hookify](./hookify/) | 1 | 4 | Create custom hooks to prevent unwanted behaviors from conversation analysis |
+| [claude-md-management](./claude-md-management/) | 1 | 1 | Audit and improve CLAUDE.md project memory files |
+| [claude-code-setup](./claude-code-setup/) | 1 | - | Analyze codebase and recommend tailored automations |
+
+### UI & Git
+
+| Plugin | Skills | Commands | Description |
+|--------|:------:|:--------:|-------------|
+| [claude-hud](./claude-hud/) | - | 2 | Real-time statusline HUD: context health, tool activity, agent tracking |
+| [commit-commands](./commit-commands/) | - | 3 | Git workflow: commit, push, create PR, clean gone branches |
+| [frontend-design](./frontend-design/) | 1 | - | Frontend design skill for UI/UX implementation |
+
+### Math & Specialized
+
+| Plugin | Skills | Commands | Description |
+|--------|:------:|:--------:|-------------|
+| [math-olympiad](./math-olympiad/) | 1 | - | Competition math (IMO, Putnam, USAMO) with adversarial verification |
+| [rust-analyzer-lsp](./rust-analyzer-lsp/) | - | - | Rust language server: code intelligence, go-to-definition, diagnostics |
+
+---
+
+## Featured Plugins
+
+### architect-collaboration（架构师协作）
+
+**首次激活命令**：
+```bash
+"请帮我设计一个用户认证系统"     → 架构师介入
+```
+
+**完整使用流程**：
+```bash
+# Phase 1: 需求分析
+/architect:phase-workflow --phase 1    # 产出 docs/requirements.md
+
+# Phase 2: 技术设计
+/architect:phase-workflow --phase 2    # 产出 docs/technical-design.md
+
+# Phase 3: 任务拆解
+/architect:phase-workflow --phase 3    # 产出 docs/开发任务.md
+
+# Phase 4: 功能开发
+/architect:phase-workflow --phase 4    # 开始实现
+
+# 进度管理
+/architect:manage-progress --status    # 查看整体进度
+```
+
+**专家技能**（自然语言触发）：
+```
+"这个方案的安全风险大吗？"         → 安全审查专家
+"数据库表结构怎么设计？"           → 数据库设计专家
+"这段代码需要重构吗？"             → 代码审查专家
+"部署方案怎么写？"                 → SRE 专家
+"是否需要满足 GDPR？"              → 合规专家
+```
+
+### dev-enegine（开发引擎）
+
+**首次激活命令**：
+```bash
+/project-init "MySaaS Platform"     # 初始化项目
+/requirement-dev "用户管理系统"      # 需求开发
+```
+
+**完整使用流程**：
+```bash
+# 1. 初始化项目（首次）
+/project-init "MySaaS Platform"        # 拉取模板 + 创建配置
+
+# 2. 需求开发
+/requirement-dev "用户登录功能"         # Planner → Coder → Reviewer
+/requirement-dev "支付模块" --level high  # 高控制级别
+
+# 3. 代码审查
+/review-code --feature F001            # 专业代码审查
+/review-code --last --focus security   # 重点审查安全性
+
+# 4. 配置管理
+/config control_level=high             # 调整控制等级
+```
+
+**控制等级**：
+- `high`：核心业务、首次使用，每个阶段都确认
+- `medium`：常规迭代，规划后确认，Feature 自动继续
+- `low`：信任度高的小需求，全自动
+
+### long-running-agent（长运行 Agent）
+
+**首次激活命令**：
+```bash
+/requirement-develop "Todo App"    # 新项目 → Initializer Agent → 自动开发
+```
+
+**完整使用流程**：
+```bash
+# 1. 新项目（自动初始化 + 开发）
+/requirement-develop "Todo App"          # Initializer Agent 创建骨架
+
+# 2. 继续开发（增量）
+/requirement-develop "添加任务分类功能"   # Coding Agent 读取进度继续
+```
+
+### content-create（内容创作）
 
 **首次激活命令**：
 ```bash
@@ -26,23 +185,12 @@
 /content-create:config                  # 查看/修改配置
 ```
 
-**参数详解**：
-
-| 命令 | 参数 | 说明 | 必填 |
-|------|------|------|------|
-| `/content-create:write` | `<主题>` | 文章主题/标题 | 是 |
-| `/content-create:write` | `platforms:wx` | 指定发布平台 | 否 |
-| `/content-create:analysis` | `<数据文件>` |  metrics.csv 路径 | 是 |
-| `/content-create:config` | - | 配置管理 | - |
-
 **支持平台**：
 - `wx` - 微信公众号
 - `xiaohongshu` - 小红书
 - `feishu` - 飞书文档
 
----
-
-### Claude HUD（实时状态监控）
+### claude-hud（实时状态监控）
 
 **首次激活命令**：
 ```bash
@@ -67,237 +215,99 @@
 
 | 配置项 | 默认值 | 说明 |
 |--------|--------|------|
-| `display.showProgress` | `true` | 插件进度追踪（新增！） |
 | `display.showTools` | `false` | 工具活动行 |
 | `display.showAgents` | `false` | Agent 状态行 |
 | `display.showTodos` | `false` | Todo 进度行 |
 | `display.showDuration` | `false` | 会话时长 |
 | `display.showConfigCounts` | `false` | 配置文件计数 |
 
-**进度追踪显示示例**：
-```
-🚀 [Feature 3/10] my-project → 实现用户登录  3/10     # long-running-agent
-⚙️ [Developing] api-gateway → Add auth middleware  5/8   # dev-enegine
-📐 [Task Breakdown] user-system → [ ] 编写单元测试  2/5  # architect-collaboration
-```
+---
+
+## Plugin Combinations
+
+| Project Type | Combination | Description |
+|-------------|-------------|-------------|
+| **Enterprise SaaS** | architect-collaboration + dev-enegine + claude-hud | Architecture → multi-feature dev → real-time monitoring |
+| **Personal Tool** | long-running-agent + claude-hud | Quick dev + status monitoring |
+| **Content Creator** | content-create + claude-hud | Content creation + task monitoring |
+| **Core Business** | architect-collaboration → dev-enegine | Design first, then implement |
+| **Team Collaboration** | architect-collaboration + claude-hud | Multi-phase collaboration + progress visualization |
 
 ---
 
-## ⚠️ 注意事项
+## Complete Workflow Example
 
-### 安装相关
-
-1. **Linux 用户注意**：`/tmp` 可能是独立文件系统，安装可能失败
-   ```bash
-   mkdir -p ~/.cache/tmp && TMPDIR=~/.cache/tmp claude
-   ```
-
-2. **插件加载失败**：运行 `/reload-plugins` 重新加载
-
-3. **配置文件位置**：
-   - 全局配置：`~/.claude/settings.json`
-   - 项目配置：`.claude/*.local.md`（不提交到 git）
-
-### 使用相关
-
-1. **DevEngine 控制等级选择**：
-   - `high`：核心业务、首次使用，每个阶段都确认
-   - `medium`：常规迭代，规划后确认，Feature 自动继续
-   - `low`：信任度高的小需求，全自动
-
-2. **Architect Collaboration 触发技巧**：
-   - 使用自然语言直接描述需求，无需记忆命令
-   - 触发词越明确，技能匹配越准确
-   - 可以同时触发多个专家技能（如"审查代码安全性和性能"）
-
-3. **Content-Create 最佳实践**：
-   - 准备 2-3 篇风格参考文章，放在 `article/style_references/`
-   - 首次使用不建议跳过评审环节
-   - API 密钥使用环境变量，不要硬编码
-
-4. **Claude HUD 配置建议**：
-   - 默认配置适合大多数场景
-   - 开启 `showTools`/`showAgents`/`showTodos` 需要额外消耗
-   - Context 阈值建议保持默认（70% 警告，85% 红色）
-   - **进度追踪功能**：默认启用，自动检测项目使用的插件并显示进度
-   - 配置项：`display.showProgress`（默认 `true`，设为 `false` 禁用进度显示）
-
-### 性能相关
-
-1. **Context 使用量高时**：
-   - 开启新会话而不是延续长会话
-   - 使用 `/clear` 清理上下文
-   - 使用 `claude-hud` 监控 Context 消耗
-
-2. **长任务执行**：
-   - 使用 `long-running-agent` 或 `dev-enegine` 的增量开发能力
-   - 避免单次会话执行过长时间的任务
-   - 定期保存进度到状态文件
-
-### 安全相关
-
-1. **敏感信息**：
-   - 不要在配置文件硬编码 API 密钥
-   - 使用环境变量管理敏感凭证
-   - 将 `.claude/*.local.md` 添加到 `.gitignore`
-
-2. **代码审查**：
-   - 核心业务代码建议设置 `control_level=high`
-   - 审查不通过的问题必须修复后再合并
-   - 安全性问题（阻塞/严重级别）零容忍
-
----
-
-## 🔗 插件组合推荐
-
-| 项目类型 | 推荐组合 | 说明 |
-|----------|----------|------|
-| **企业级 SaaS** | architect-collaboration + dev-enegine + claude-hud | 架构设计 → 多需求开发 → 实时监控（进度自动显示） |
-| **个人小工具** | long-running-agent + claude-hud | 快速开发 + 状态监控（进度自动显示） |
-| **自媒体内容** | content-create + claude-hud | 内容创作 + 长任务监控 |
-| **技术探索/Demo** | long-running-agent | 单一需求完整实现 |
-| **核心业务系统** | architect-collaboration → dev-enegine | 先架构设计，后迭代开发 |
-| **团队协作项目** | architect-collaboration + claude-hud | 多阶段协作 + 进度可视化 |
-
----
-
-## 🔄 完整工作流程示例
-
-### 示例 1：从零开始企业级项目
+### Enterprise Project
 
 ```bash
-# 第 1 步：安装插件（一次性）
-/plugins install dev-enegine
-/plugins install architect-collaboration
-/plugins install claude-hud
+# Step 1: Architecture Design
+/architect:phase-workflow --phase 1    # Requirements → docs/requirements.md
+/architect:phase-workflow --phase 2    # Technical Design → docs/tech-design.md
+/architect:phase-workflow --phase 3    # Task Breakdown → docs/开发任务.md
 
-# 第 2 步：架构设计（Architect Collaboration）
-/architect:phase-workflow --phase 1    # 需求分析 → docs/requirements.md
-/architect:phase-workflow --phase 2    # 技术设计 → docs/tech-design.md
-/architect:phase-workflow --phase 3    # 任务拆解 → docs/开发任务.md
-
-# 第 3 步：初始化开发环境（DevEngine）
+# Step 2: Initialize Dev Environment
 /project-init "MySaaS Platform"
 
-# 第 4 步：需求开发（DevEngine）
-/requirement-dev "用户管理系统"          # 自动读取架构文档
-                                        # Planner → Coder → Reviewer 循环
+# Step 3: Feature Development
+/requirement-dev "用户管理系统"          # Planner → Coder → Reviewer cycle
 
-# 第 5 步：实时监控（Claude HUD）
-# 无需命令，HUD 自动显示进度：
+# Step 4: Real-time Monitoring
+# HUD automatically shows progress:
 # ⚙️ [Developing] MySaaS → 实现用户登录  3/10
 ```
 
-### 示例 2：个人快速原型
+### Personal Prototype
 
 ```bash
-# 第 1 步：安装插件
-/plugins install long-running-agent
-/plugins install claude-hud
+# Step 1: Start Development
+/requirement-develop "Todo App"         # Auto-init + first feature
 
-# 第 2 步：开始开发（自动初始化 + 开发）
-/requirement-develop "Todo App"         # 新项目 → Initializer Agent
-                                        # 创建 feature_list.json
-                                        # 实现第一个功能
-
-# 第 3 步：继续开发
-/requirement-develop "添加任务分类功能"   # Coding Agent 读取进度
-                                        # 实现下一个功能
-
-# 第 4 步：实时监控（Claude HUD）
-# 🚀 [Feature 2/5] todo-app → 添加分类  2/5
-```
-
-### 示例 3：架构评审 + 自主开发
-
-```bash
-# 第 1 步：架构评审
-"请设计一个高并发的秒杀系统架构"
-# → architect-collaboration 自动介入
-# → 产出：requirements.md + tech-design.md + 开发任务.md
-
-# 第 2 步：初始化开发
-/project-init "Seckill System" --no-template
-
-# 第 3 步：需求开发
-/requirement-dev "秒杀核心流程" --level high
-                                        # 高控制级别，每步确认
-                                        # 适合核心业务
+# Step 2: Continue
+/requirement-develop "Add task categories"  # Incremental development
 ```
 
 ---
 
-## ❓ 常见问题
+## FAQ
 
-### Q: dev-enegine 和 long-running-agent 怎么选？
+**Q: dev-enegine vs long-running-agent?**
+- **dev-enegine** = enterprise, multi-feature, team, Hooks automation
+- **long-running-agent** = personal, single-feature, rapid prototype
 
-**A**: 
-- **dev-enegine** = 企业级、多需求、团队协作、Hooks 自动化
-- **long-running-agent** = 个人、单需求、快速原型
+**Q: architect-collaboration vs dev-enegine?**
+- **architect-collaboration** = architecture design, tech planning, code review
+- **dev-enegine** = automated development implementation
+- Recommended: architect first, then dev-enegine
 
-简单判断：如果需要管理多个需求或团队协作，选 dev-enegine；如果是一次性 Demo 或个人小项目，选 long-running-agent。
-
----
-
-### Q: architect-collaboration 和 dev-enegine 有什么区别？
-
-**A**:
-- **architect-collaboration** = 架构设计、技术方案评审、代码审查
-- **dev-enegine** = 自动化开发实施
-
-推荐组合：先用 architect-collaboration 做架构设计，再用 dev-enegine 实施开发。
+**Q: Can I use multiple plugins together?**
+Yes! Recommended combos: dev-enegine + claude-hud, architect → dev-enegine, content-create + claude-hud.
 
 ---
 
-### Q: 代码审查功能在哪里？
+## Contributing
 
-**A**: 两个插件提供代码审查：
-- **dev-enegine** - `/review-code` 命令，自动化审查
-- **architect-collaboration** - Code Review Skill，自然语言触发
+Welcome to contribute new plugins or improve existing ones!
 
----
+1. Fork this repository
+2. Create a new plugin directory
+3. Follow [Claude Code Plugin docs](https://code.claude.com/docs/en/plugins)
+4. Submit a Pull Request
 
-### Q: 可以同时使用多个插件吗？
+### Requirements
 
-**A**: 可以！推荐组合：
-- dev-enegine + claude-hud（开发 + 监控）
-- architect-collaboration → dev-enegine（设计 → 开发）
-- content-create + claude-hud（创作 + 监控）
-
----
-
-## 🤝 贡献
-
-欢迎贡献新的 Plugin 或改进现有 Plugin！
-
-推荐安装：[Plugin Dev](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev) 插件，用于快速开发和调试 Plugin。
-
-### 贡献指南
-
-1. Fork 本仓库
-2. 创建新的 Plugin 目录
-3. 遵循 [Claude Code Plugin 规范](https://code.claude.com/docs/en/plugins)
-4. 提交 Pull Request
-
-### Plugin 开发规范
-
-- 每个 Plugin 独立目录
-- 必须包含 `.claude-plugin/plugin.json` 和 `README.md`
-- Skills/Commands/Agents 采用 Markdown 格式
-- 提供完整的使用示例
-- 添加必要的配置说明
+- Each plugin in its own directory
+- Must include `.claude-plugin/plugin.json` and `README.md`
+- Skills/Commands/Agents in Markdown format
+- Provide complete usage examples
+- Add necessary configuration documentation
 
 ---
 
-## 📝 许可证
+## License
 
-本项目采用 MIT 许可证，详见 [LICENSE](LICENSE) 文件。
+MIT License, see [LICENSE](LICENSE) file.
 
-## 🙏 致谢
+## Acknowledgments
 
-- [Claude Code](https://code.claude.com) - 强大的 AI 编程助手
-- 所有贡献者和使用者
-
----
-
-**⭐️ 如果觉得有用，请给个 Star！**
+- [Claude Code](https://code.claude.com) - AI programming assistant
+- All contributors and users
