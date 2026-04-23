@@ -3,6 +3,7 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { execSync } from 'node:child_process';
 import { createDebug } from './debug.js';
+import type { StdinData } from './types.js';
 
 const debug = createDebug('resource');
 
@@ -131,7 +132,7 @@ function parseMemoryValue(str: string): number {
 
 /**
  * Check if a process is the Claude Code root by examining its cmdline.
- * Looks for 'claude' binary (not just any process with 'claude' in args).
+ * Looks for 'claude', 'ola-cc' binary (not just any process with 'claude' in args).
  */
 function isClaudeCodeProcess(pid: number): boolean {
   try {
@@ -142,9 +143,10 @@ function isClaudeCodeProcess(pid: number): boolean {
       timeout: 500,
     }).trim().toLowerCase();
 
-    if (comm === 'claude') return true;
+    // Support both original 'claude' and fork 'ola-cc'
+    if (comm === 'claude' || comm === 'ola-cc') return true;
 
-    // Check full args for 'claude-code' or node/bun running claude
+    // Check full args for 'claude-code', 'ola-cc' or node/bun running claude
     const args = execSync(`ps -o args= -p ${pid}`, {
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe'],
@@ -155,6 +157,8 @@ function isClaudeCodeProcess(pid: number): boolean {
     // But exclude: processes that just have "claude" in their working dir name
     if (/claude-code/.test(args)) return true;
     if (/claude-code/.test(comm)) return true;
+    // Support ola-cc (fork project)
+    if (/ola-cc/.test(args)) return true;
 
     return false;
   } catch {
@@ -571,7 +575,52 @@ function getResourceWindows(): ResourceData | null {
  * | Linux | `/proc/[pid]/statm` | RSS | <1ms | `ps` standard |
  * | Windows | `Get-Process` | WorkingSet64 | ~200ms | Task Manager |
  */
-export function getResourceData(): ResourceData | null {
+export interface StdinProcessInfo {
+  pid: number;
+  memory: {
+    rss: number;
+    heap_total: number;
+    heap_used: number;
+    external: number;
+    array_buffers: number;
+  };
+}
+
+/**
+ * Get resource data using stdin-provided PID and memory (v2.2.0+).
+ * When Claude Code/ola-cc passes process metrics via stdin, use them directly
+ * for instant, accurate per-session data without process tree traversal.
+ */
+export function getResourceDataFromStdin(stdin: StdinData): ResourceData | null {
+  if (!stdin.process?.pid) return null;
+
+  const { pid, memory } = stdin.process;
+
+  // Convert bytes to MB
+  const memoryMB = Math.round((memory.rss / 1024 / 1024) * 10) / 10;
+
+  // Calculate memory percentage from system total
+  const totalMemoryMB = os.totalmem() / 1024 / 1024;
+  const memoryPercent = Math.round((memoryMB / totalMemoryMB) * 100 * 100) / 100;
+
+  // CPU still requires delta calculation (not provided in stdin)
+  const cpuPercent = computeCpuPercent(pid);
+
+  return {
+    cpuPercent,
+    memoryMB,
+    memoryPercent,
+    pid,
+  };
+}
+
+export function getResourceData(stdin?: StdinData): ResourceData | null {
+  // Priority 1: Use stdin-provided metrics if available (v2.2.0+)
+  if (stdin?.process?.pid) {
+    return getResourceDataFromStdin(stdin);
+  }
+
+  // Priority 2: Fallback to process tree traversal for older Claude versions
   switch (process.platform) {
     case 'darwin':
       return getResourceMacOS();

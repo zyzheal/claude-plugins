@@ -56,7 +56,8 @@ export async function main(overrides = {}) {
         let resourceData = null;
         if (config.display.showResource !== false) {
             try {
-                resourceData = deps.getResourceData();
+                // Pass stdin to enable direct PID/memory usage (v2.2.0+)
+                resourceData = deps.getResourceData(stdin);
             }
             catch { /* silently ignore resource errors */ }
         }

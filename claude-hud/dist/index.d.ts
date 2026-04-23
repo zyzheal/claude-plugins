@@ -1,4 +1,5 @@
 import { readStdin } from './stdin.js';
+import type { StdinData } from './types.js';
 import { parseTranscript } from './transcript.js';
 import { render } from './render/index.js';
 import { countConfigs } from './config-reader.js';
@@ -18,7 +19,7 @@ export type MainDeps = {
     parseExtraCmdArg: typeof parseExtraCmdArg;
     runExtraCmd: typeof runExtraCmd;
     getProgressData: typeof getProgressData;
-    getResourceData: typeof getResourceData;
+    getResourceData: (stdin?: StdinData) => ReturnType<typeof getResourceData>;
     render: typeof render;
     now: () => number;
     log: (...args: unknown[]) => void;

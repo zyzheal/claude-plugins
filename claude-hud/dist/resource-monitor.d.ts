@@ -1,3 +1,4 @@
+import type { StdinData } from './types.js';
 export interface ResourceData {
     cpuPercent: number;
     memoryMB: number;
@@ -16,5 +17,21 @@ export interface ResourceData {
  * | Linux | `/proc/[pid]/statm` | RSS | <1ms | `ps` standard |
  * | Windows | `Get-Process` | WorkingSet64 | ~200ms | Task Manager |
  */
-export declare function getResourceData(): ResourceData | null;
+export interface StdinProcessInfo {
+    pid: number;
+    memory: {
+        rss: number;
+        heap_total: number;
+        heap_used: number;
+        external: number;
+        array_buffers: number;
+    };
+}
+/**
+ * Get resource data using stdin-provided PID and memory (v2.2.0+).
+ * When Claude Code/ola-cc passes process metrics via stdin, use them directly
+ * for instant, accurate per-session data without process tree traversal.
+ */
+export declare function getResourceDataFromStdin(stdin: StdinData): ResourceData | null;
+export declare function getResourceData(stdin?: StdinData): ResourceData | null;
 //# sourceMappingURL=resource-monitor.d.ts.map

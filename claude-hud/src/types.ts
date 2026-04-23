@@ -2,6 +2,18 @@ import type { HudConfig } from './config.js';
 import type { GitStatus } from './git.js';
 import type { ResourceData } from './resource-monitor.js';
 
+/** Process metrics from Claude Code v2.2.0+ */
+export interface ProcessInfo {
+  pid: number;
+  memory: {
+    rss: number;
+    heap_total: number;
+    heap_used: number;
+    external: number;
+    array_buffers: number;
+  };
+}
+
 export interface StdinData {
   transcript_path?: string;
   cwd?: string;
@@ -22,6 +34,8 @@ export interface StdinData {
     used_percentage?: number | null;
     remaining_percentage?: number | null;
   };
+  // Process metrics (Claude Code/ola-cc v2.2.0+)
+  process?: ProcessInfo;
 }
 
 export interface ToolEntry {

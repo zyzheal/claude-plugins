@@ -1,4 +1,5 @@
 import { readStdin } from './stdin.js';
+import type { StdinData } from './types.js';
 import { parseTranscript } from './transcript.js';
 import { render } from './render/index.js';
 import { countConfigs } from './config-reader.js';
@@ -22,7 +23,7 @@ export type MainDeps = {
   parseExtraCmdArg: typeof parseExtraCmdArg;
   runExtraCmd: typeof runExtraCmd;
   getProgressData: typeof getProgressData;
-  getResourceData: typeof getResourceData;
+  getResourceData: (stdin?: StdinData) => ReturnType<typeof getResourceData>;
   render: typeof render;
   now: () => number;
   log: (...args: unknown[]) => void;
@@ -82,7 +83,8 @@ export async function main(overrides: Partial<MainDeps> = {}): Promise<void> {
     let resourceData = null;
     if (config.display.showResource !== false) {
       try {
-        resourceData = deps.getResourceData();
+        // Pass stdin to enable direct PID/memory usage (v2.2.0+)
+        resourceData = deps.getResourceData(stdin);
       } catch { /* silently ignore resource errors */ }
     }
 
